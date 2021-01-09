@@ -1,0 +1,22 @@
+<?php
+
+namespace DummyNamespace;
+
+use Xpressengine\Widget\AbstractWidget;
+
+class DummyClass extends AbstractWidget
+{
+    public function render()
+    {
+        $widgetConfig = $this->setting();
+        return $this->renderSkin(compact('widgetConfig'));
+    }
+
+    public function renderSetting(array $args = [])
+    {
+    }
+
+    public function resolveSetting(array $inputs = [])
+    {
+    }
+}

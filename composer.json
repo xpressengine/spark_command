@@ -1,0 +1,36 @@
+{
+    "name": "xpressengine-plugin/spark_command",
+    "description": "This Package is Xpressengine Plugin - SparkCommand plugin.",
+    "keywords": [
+        "xpressengine",
+        "plugin"
+    ],
+    "license": "LGPL-3.0-or-later",
+    "version": "1.0.0",
+    "type": "xpressengine-plugin",
+    "support": {
+        "email": "input@your.email"
+    },
+    "authors": [
+        {
+            "name": "input your name",
+            "email": "input@your.email",
+            "homepage": "http://input.your.site",
+            "role": "Developer"
+        }
+    ],
+    "extra": {
+        "xpressengine": {
+            "title": "SparkCommand plugin",
+            "component": {}
+        }
+    },
+    "require": {
+        "xpressengine/xpressengine": "~3.0.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "SparkWeb\\XePlugin\\SparkCommand\\": "src/"
+        }
+    }
+}

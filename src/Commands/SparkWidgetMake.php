@@ -52,26 +52,13 @@ final class SparkWidgetMake extends ComponentMakeCommand
         $plugin = $this->getPlugin();
 
         // Get Widget Info
-        $path = $this->getPath($this->option('path'));
-        // $this->info('widget path: '. $path);
-
-        $namespace = $this->getNamespace($path);
-        // $this->info('namespace path: '. $namespace);
-
-        $className = $this->getClassName();
-        // $this->info('class name: '. $className);
-
-        $file = $this->getClassFile($path, $className);
-        // $this->info('class file: '. $file);
-
-        $id = $this->getWidgetId();
-        // $this->info('widget id: '. $id);
-
-        $title = $this->getTitleInput();
-        // $this->info($title);
-
-        $description = $this->getDescriptionInput();
-        // $this->info($description);
+        $path           = $this->getPath($this->option('path'));
+        $namespace      = $this->getNamespace($path);
+        $className      = $this->getClassName();
+        $file           = $this->getClassFile($path, $className);
+        $id             = $this->getWidgetId();
+        $title          = $this->getTitleInput();
+        $description    = $this->getDescriptionInput();
 
         $attr = new Fluent(compact(
             'plugin',
@@ -84,7 +71,6 @@ final class SparkWidgetMake extends ComponentMakeCommand
             'description'
         ));
 
-        // print and confirm the information of widget
         if ($this->confirmInfo($attr) === false) {
             return false;
         }
@@ -95,8 +81,10 @@ final class SparkWidgetMake extends ComponentMakeCommand
             $this->makeUsable($attr);
             $this->info('Generate the widget');
 
-            // composer.json 파일 수정
-            if ($this->registerComponent($plugin, $id, $namespace . '\\' . $className, $file, ['name' => $title, 'description' => $description]) === false) {
+            $className  = $namespace . '\\' . $className;
+            $info       = ['name' => $title, 'description' => $description];
+
+            if ($this->registerComponent($plugin, $id, $className, $file, $info) === false) {
                 throw new Exception('Writing to composer.json file was failed.');
             }
 
@@ -114,6 +102,66 @@ final class SparkWidgetMake extends ComponentMakeCommand
     }
 
     /**
+     * @return array|string
+     */
+    protected function getComponentName()
+    {
+        return $this->argument('name');
+    }
+
+    /**
+     * @return array|string
+     */
+    protected function getPluginName()
+    {
+        return $this->argument('plugin');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultPath()
+    {
+        return 'Widgets';
+        // return 'Widgets/' . studly_case($this->getComponentName());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getStubPath()
+    {
+        return __DIR__ . '/stubs/widget';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getStubFileName()
+    {
+        return 'widget.stub';
+    }
+
+    /**
+     * Make file for plugin by stub.
+     *
+     * @param $attr
+     * @return void
+     * @throws Exception
+     */
+    protected function makeUsable($attr)
+    {
+        $plugin = $attr['plugin'];
+        $path = $plugin->getPath($attr['path']);
+
+        $search = ['DummyNamespace', 'DummyClass'];
+        $replace = [$attr['namespace'], $attr['className']];
+
+        $this->info('widget make width class : ' . $path);
+        $this->buildFile(sprintf('%s/%s', $path, 'widget.stub'), $search, $replace, $plugin->getPath($attr['file']));
+    }
+
+    /**
      * Get class name.
      *
      * @return string
@@ -124,6 +172,24 @@ final class SparkWidgetMake extends ComponentMakeCommand
     }
 
     /**
+     * @param $path
+     * @throws Exception
+     */
+    protected function copyStubFile($path)
+    {
+        $stubFile = $this->getStubFile($this->getStubFileName());
+        $targetFile = sprintf('%s/%s', $path, $this->getStubFileName());
+
+        if ($this->files->isDirectory($path) === false) {
+            $this->files->makeDirectory($path);
+        }
+
+        if ($this->files->copy($stubFile, $targetFile) === false) {
+            throw new \Exception("Unable to create file[$targetFile]. please check permission.");
+        }
+    }
+
+    /**
      * Get widget id.    widget/<plugin_name>@<pure_id>
      *
      * @return array|string
@@ -131,7 +197,7 @@ final class SparkWidgetMake extends ComponentMakeCommand
      */
     protected function getWidgetId()
     {
-        $id = $this->option('id');
+        $id     = $this->option('id');
         $plugin = $this->getPlugin();
 
         if (is_null($id)) {
@@ -156,95 +222,30 @@ final class SparkWidgetMake extends ComponentMakeCommand
     }
 
     /**
-     * @param string $widgetId
-     * @return bool
-     */
-    protected function confirmSkin(string $widgetId)
-    {
-        while ($confirm = $this->ask('Do you want to add Skin? [yes|no]')) {
-            if ($confirm !== 'yes') {
-                return false;
-            }
-
-            $skinName = $this->ask('SkinName?', 'spark_default');
-
-            $process = new Process(sprintf('php artisan make:skin %s %s %s', $this->getPluginName(), $skinName, $widgetId));
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            $this->info('Generate the skin');
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Make file for plugin by stub.
-     *
-     * @param $attr
-     * @return void
-     * @throws Exception
-     */
-    protected function makeUsable($attr)
-    {
-        $this->makeWidgetClass($attr);
-    }
-
-    /**
-     * Make widget class.
-     *
-     * @param $attr
-     * @return void
-     * @throws Exception
-     */
-    protected function makeWidgetClass($attr)
-    {
-        $plugin = $attr['plugin'];
-        $path = $plugin->getPath($attr['path']);
-
-        $search = ['DummyNamespace', 'DummyClass'];
-        $replace = [$attr['namespace'], $attr['className']];
-
-        $this->info('widget make width class : ' . $path);
-
-        $this->buildFile($path . '/widget.stub', $search, $replace, $plugin->getPath($attr['file']));
-    }
-
-    /**
-     * @return array|string
-     */
-    protected function getPluginName()
-    {
-        return $this->argument('plugin');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDefaultPath()
-    {
-        return 'Widgets';
-    }
-
-//    /**
-//     * @return string
-//     */
-//    protected function getDefaultPath()
-//    {
-//        // return 'Widgets/' . studly_case($this->getComponentName());
-//    }
-
-    /**
      * Confirm information
      *
      * @param $attr
      * @return bool
      */
     protected function confirmInfo($attr)
+    {
+        $this->showInfo($attr);
+
+        while ($confirm = $this->ask('Do you want to add Widget? [yes|no]')) {
+            if ($confirm === 'yes') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $attr
+     */
+    protected function showInfo($attr)
     {
         $this->info(
             sprintf(
@@ -266,59 +267,32 @@ final class SparkWidgetMake extends ComponentMakeCommand
                 $attr['description']
             )
         );
+    }
 
-        while ($confirm = $this->ask('Do you want to add Widget? [yes|no]')) {
-            if ($confirm === 'yes') {
-                return true;
-            } else {
-                return false;
+    /**
+     * @param string $widgetId
+     * @return bool
+     */
+    protected function confirmSkin(string $widgetId)
+    {
+        while ($confirm = $this->ask('Do you want to add Skin? [yes|no]')) {
+            if ($confirm !== 'yes') {
+                break;
             }
+
+            $skinName = $this->ask('SkinName?', 'spark_default');
+
+            $process = new Process(sprintf('php artisan make:skin %s %s %s', $this->getPluginName(), $skinName, $widgetId));
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+            $this->info('Generate the skin');
+            continue;
         }
 
-        return null;
-    }
-
-    /**
-     * @return array|string
-     */
-    protected function getComponentName()
-    {
-        return $this->argument('name');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getStubPath()
-    {
-        return __DIR__ . '/stubs/widget';
-    }
-
-    /**
-     * 파일만 복사하기 위해서 생성.
-     *
-     * @return string
-     */
-    protected function getStubFileName()
-    {
-        return 'widget.stub';
-    }
-
-    /**
-     * @param $path
-     * @throws Exception
-     */
-    protected function copyStubFile($path)
-    {
-        $stubFile = $this->getStubFile($this->getStubFileName());
-        $targetFile = sprintf('%s/%s', $path, $this->getStubFileName());
-
-        if ($this->files->isDirectory($path) === false) {
-            $this->files->makeDirectory($path);
-        }
-
-        if ($this->files->copy($stubFile, $targetFile) === false) {
-            throw new \Exception("Unable to create file[$targetFile]. please check permission.");
-        }
+        return $confirm === 'yes';
     }
 }

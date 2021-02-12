@@ -98,6 +98,8 @@ final class SparkWidgetMake extends ComponentMakeCommand
         }
 
         $this->confirmSkin($id);
+        $this->chmod();
+
         return true;
     }
 
@@ -231,15 +233,12 @@ final class SparkWidgetMake extends ComponentMakeCommand
     {
         $this->showInfo($attr);
 
-        while ($confirm = $this->ask('Do you want to add Widget? [yes|no]')) {
-            if ($confirm === 'yes') {
-                return true;
-            } else {
-                return false;
-            }
+        while ($confirm = $this->ask('Do you want to add Widget? [yes|no]'))
+        {
+            return strtolower($confirm) === 'yes';
         }
 
-        return null;
+        return false;
     }
 
     /**
@@ -275,8 +274,9 @@ final class SparkWidgetMake extends ComponentMakeCommand
      */
     protected function confirmSkin(string $widgetId)
     {
-        while ($confirm = $this->ask('Do you want to add Skin? [yes|no]')) {
-            if ($confirm !== 'yes') {
+        while ($confirm = $this->ask('Do you want to add Skin? [yes|no]'))
+        {
+            if (strtolower($confirm) !== 'yes') {
                 break;
             }
 
@@ -293,6 +293,23 @@ final class SparkWidgetMake extends ComponentMakeCommand
             continue;
         }
 
-        return $confirm === 'yes';
+        return strtolower($confirm) === 'yes';
     }
+
+    /**
+     * @return void
+     */
+    protected function chmod()
+    {
+        $process = new Process('sudo chmod -R 0707 ./vendor ./plugins ./bootstrap ./storage | echo "permission override!" | sudo chown -R ubuntu:ubuntu ./bootstrap ./privates | echo "ubuntu user group change!"');
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        $this->info('ubuntu user group change!');
+    }
+
+
 }

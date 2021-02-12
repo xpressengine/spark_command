@@ -2,21 +2,39 @@
 
 namespace DummyNamespace;
 
+use Xpressengine\Skin\AbstractSkin;
 use Xpressengine\Widget\AbstractWidget;
 
 class DummyClass extends AbstractWidget
 {
+   /**
+     * 그려줄 내용 반환.
+     *
+     * @return string
+     */
     public function render()
     {
         $widgetConfig = $this->setting();
         return $this->renderSkin(compact('widgetConfig'));
     }
 
+    /**
+     * 위젯 설정 페이지에 출력할 폼을 출력.
+     *
+     * @param array $args 설정값
+     * @return string
+     */
     public function renderSetting(array $args = [])
     {
         return parent::renderSetting($args);
     }
 
+    /**
+     * 사용자가 위젯 설정 페이지에 입력한 설정값을 저장하기 전에 전처리.
+     *
+     * @param array $inputs 사용자가 입력한 설정값
+     * @return array
+     */
     public function resolveSetting(array $inputs = [])
     {
         return parent::resolveSetting($inputs);

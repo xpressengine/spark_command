@@ -1,6 +1,6 @@
 {
     "name": "xpressengine-plugin/spark_command",
-    "description": "This Package is Xpressengine Plugin - SparkCommand plugin.",
+    "description": "스파크웹에서 추가한 명령어를 사용자에게 제공하고 있습니다.",
     "keywords": [
         "xpressengine",
         "plugin"
@@ -13,15 +13,15 @@
     },
     "authors": [
         {
-            "name": "input your name",
-            "email": "input@your.email",
-            "homepage": "http://input.your.site",
+            "name": "Sparkweb",
+            "email": "parksu@xharpen.com",
+            "homepage": "https://sparkweb.co.kr",
             "role": "Developer"
         }
     ],
     "extra": {
         "xpressengine": {
-            "title": "SparkCommand plugin",
+            "title": "스파크웹 커맨드",
             "component": {}
         }
     },

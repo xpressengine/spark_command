@@ -14,9 +14,11 @@ class DummyClass extends AbstractWidget
 
     public function renderSetting(array $args = [])
     {
+        return parent::renderSetting($args);
     }
 
     public function resolveSetting(array $inputs = [])
     {
+        return parent::resolveSetting($inputs);
     }
 }

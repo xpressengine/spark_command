@@ -52,54 +52,65 @@ final class SparkWidgetMake extends ComponentMakeCommand
         $plugin = $this->getPlugin();
 
         // Get Widget Info
-        $path           = $this->getPath($this->option('path'));
-        $namespace      = $this->getNamespace($path);
-        $className      = $this->getClassName();
-        $file           = $this->getClassFile($path, $className);
         $id             = $this->getWidgetId();
-        $title          = $this->getTitleInput();
-        $description    = $this->getDescriptionInput();
+        $widget         = app('xe.widget')->getClassName($id);
 
-        $attr = new Fluent(compact(
-            'plugin',
-            'path',
-            'namespace',
-            'className',
-            'file',
-            'id',
-            'title',
-            'description'
-        ));
-
-        if ($this->confirmInfo($attr) === false) {
-            return false;
+        if ($widget !== null) {
+            $this->error(" Widget [$id] already exists. ");
+            // throw new Exception("Widget [$id] already exists.");
         }
 
-        $this->copyStubFile($plugin->getPath($path));
+        else
+        {
+            $path           = $this->getPath($this->option('path'));
+            $namespace      = $this->getNamespace($path);
+            $className      = $this->getClassName();
+            $file           = $this->getClassFile($path, $className);
 
-        try {
-            $this->makeUsable($attr);
-            $this->info('Generate the widget');
+            $title          = $this->getTitleInput();
+            $description    = $this->getDescriptionInput();
 
-            $className  = $namespace . '\\' . $className;
-            $info       = ['name' => $title, 'description' => $description];
+            $attr = new Fluent(compact(
+                'plugin',
+                'path',
+                'namespace',
+                'className',
+                'file',
+                'id',
+                'title',
+                'description'
+            ));
 
-            if ($this->registerComponent($plugin, $id, $className, $file, $info) === false) {
-                throw new Exception('Writing to composer.json file was failed.');
+            if ($this->confirmInfo($attr) === false) {
+                return false;
             }
 
-            $this->refresh($plugin);
-        } catch (Exception $e) {
-            $this->clean(sprintf('%s/%s', $plugin->getPath($path), $this->getStubFileName()));
-            throw $e;
-        } catch (Throwable $e) {
-            $this->clean(sprintf('%s/%s', $plugin->getPath($path), $this->getStubFileName()));
-            throw $e;
+            $this->copyStubFile($plugin->getPath($path));
+
+            try {
+                $this->makeUsable($attr);
+                $this->info('Generate the widget');
+
+                $className  = $namespace . '\\' . $className;
+                $info       = ['name' => $title, 'description' => $description];
+
+                if ($this->registerComponent($plugin, $id, $className, $file, $info) === false) {
+                    throw new Exception('Writing to composer.json file was failed.');
+                }
+
+                $this->refresh($plugin);
+            } catch (Exception $e) {
+                $this->clean(sprintf('%s/%s', $plugin->getPath($path), $this->getStubFileName()));
+                throw $e;
+            } catch (Throwable $e) {
+                $this->clean(sprintf('%s/%s', $plugin->getPath($path), $this->getStubFileName()));
+                throw $e;
+            }
+
+            $this->chmod();
         }
 
         $this->confirmSkin($id);
-        $this->chmod();
-
         return true;
     }
 
@@ -214,13 +225,7 @@ final class SparkWidgetMake extends ComponentMakeCommand
             }
         }
 
-        $widget = app('xe.widget')->getClassName($id = 'widget/' . $id);
-
-        if ($widget !== null) {
-            throw new Exception("Widget [$id] already exists.");
-        }
-
-        return $id;
+        return 'widget/' . $id;
     }
 
     /**
@@ -233,8 +238,12 @@ final class SparkWidgetMake extends ComponentMakeCommand
     {
         $this->showInfo($attr);
 
-        while ($confirm = $this->ask('Do you want to add Widget? [yes|no]'))
+        while ($confirm = $this->ask('Do you want to add widget? [yes|no]'))
         {
+            if (strtolower($confirm) !== 'yes' && strtolower($confirm) !== 'no') {
+                continue;
+            }
+
             return strtolower($confirm) === 'yes';
         }
 
@@ -274,9 +283,9 @@ final class SparkWidgetMake extends ComponentMakeCommand
      */
     protected function confirmSkin(string $widgetId)
     {
-        while ($confirm = $this->ask('Do you want to add Skin? [yes|no]'))
+        while ($confirm = $this->ask("Do you want to add widget's skin? [yes|no]"))
         {
-            if (strtolower($confirm) !== 'yes') {
+            if (strtolower($confirm) === 'no') {
                 break;
             }
 
@@ -290,6 +299,8 @@ final class SparkWidgetMake extends ComponentMakeCommand
             }
 
             $this->info('Generate the skin');
+            $this->chmod();
+
             continue;
         }
 

@@ -1,7 +1,9 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Commands;
+namespace SparkWeb\XePlugin\SparkCommand\Commands\Widget;
 
+use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
+use SparkWeb\XePlugin\SparkCommand\Traits\RunChmodAws;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use App\Console\Commands\ComponentMakeCommand;
@@ -11,8 +13,10 @@ use Illuminate\Support\Fluent;
 use ReflectionException;
 use Throwable;
 
-final class SparkWidgetMake extends ComponentMakeCommand
+final class WidgetMakeCommand extends ComponentMakeCommand
 {
+    use RegisterArtisan, RunChmodAws;
+
     /**
      * The name and signature of the console command.
      *
@@ -31,7 +35,7 @@ final class SparkWidgetMake extends ComponentMakeCommand
      *
      * @var string
      */
-    protected $description = 'Create a new widget of SparkWeb';
+    protected $description = 'Create a new widget of Sparkweb';
 
     /**
      * The type of component
@@ -57,7 +61,6 @@ final class SparkWidgetMake extends ComponentMakeCommand
 
         if ($widget !== null) {
             $this->error(" Widget [$id] already exists. ");
-            // throw new Exception("Widget [$id] already exists.");
         }
 
         else
@@ -136,7 +139,6 @@ final class SparkWidgetMake extends ComponentMakeCommand
     protected function getDefaultPath()
     {
         return 'Widgets';
-        // return 'Widgets/' . studly_case($this->getComponentName());
     }
 
     /**
@@ -144,7 +146,7 @@ final class SparkWidgetMake extends ComponentMakeCommand
      */
     protected function getStubPath()
     {
-        return __DIR__ . '/stubs/widget';
+        return __DIR__ . '/Stubs/Widget';
     }
 
     /**
@@ -203,7 +205,7 @@ final class SparkWidgetMake extends ComponentMakeCommand
     }
 
     /**
-     * Get widget id.    widget/<plugin_name>@<pure_id>
+     * Get widget id. widget/<plugin_name>@<pure_id>
      *
      * @return array|string
      * @throws Exception
@@ -290,8 +292,9 @@ final class SparkWidgetMake extends ComponentMakeCommand
             }
 
             $skinName = $this->ask('SkinName?', 'spark_default');
+            $command = sprintf('php artisan make:skin %s %s %s', $this->getPluginName(), $skinName, $widgetId);
 
-            $process = new Process(sprintf('php artisan make:skin %s %s %s', $this->getPluginName(), $skinName, $widgetId));
+            $process = new Process([$command]);
             $process->run();
 
             if (!$process->isSuccessful()) {
@@ -299,28 +302,11 @@ final class SparkWidgetMake extends ComponentMakeCommand
             }
 
             $this->info('Generate the skin');
-            $this->chmod();
+            $this->chmodAws();
 
             continue;
         }
 
         return strtolower($confirm) === 'yes';
     }
-
-    /**
-     * @return void
-     */
-    protected function chmod()
-    {
-        $process = new Process('sudo chmod -R 0707 ./vendor ./plugins ./bootstrap ./storage | echo "permission override!" | sudo chown -R ubuntu:ubuntu ./bootstrap ./privates | echo "ubuntu user group change!"');
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        $this->info('ubuntu user group change!');
-    }
-
-
 }

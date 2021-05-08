@@ -14,7 +14,7 @@ trait RunChmodAws
     {
         $commend = 'sudo chmod -R 0707 ./vendor ./plugins ./bootstrap ./storage | echo "permission override!" | sudo chown -R ubuntu:ubuntu ./bootstrap ./privates | echo "ubuntu user group change!"';
 
-        $process = new Process([$commend]);
+        $process = new Process($commend);
         $process->run();
 
         if (!$process->isSuccessful()) {

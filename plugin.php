@@ -2,7 +2,11 @@
 
 namespace SparkWeb\XePlugin\SparkCommand;
 
-use SparkWeb\XePlugin\SparkCommand\Commands\Widget\WidgetMakeCommand;
+use SparkWeb\XePlugin\SparkCommand\Commands\Error\ErrorSkinMake;
+use SparkWeb\XePlugin\SparkCommand\Commands\User\UserAuthSkinMake;
+use SparkWeb\XePlugin\SparkCommand\Commands\User\UserProfileSkinMake;
+use SparkWeb\XePlugin\SparkCommand\Commands\User\UserSettingsSkinMake;
+use SparkWeb\XePlugin\SparkCommand\Commands\Widget\WidgetMake;
 use Xpressengine\Plugin\AbstractPlugin;
 
 final class Plugin extends AbstractPlugin
@@ -12,6 +16,15 @@ final class Plugin extends AbstractPlugin
      */
     public function boot()
     {
-        WidgetMakeCommand::register();
+        /** Widgets */
+        WidgetMake::register();
+
+        /** Users */
+        UserAuthSkinMake::register();
+        UserProfileSkinMake::register();
+        UserSettingsSkinMake::register();
+
+        /** Errors */
+        ErrorSkinMake::register();
     }
 }

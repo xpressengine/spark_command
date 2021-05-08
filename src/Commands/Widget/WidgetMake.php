@@ -4,8 +4,6 @@ namespace SparkWeb\XePlugin\SparkCommand\Commands\Widget;
 
 use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
 use SparkWeb\XePlugin\SparkCommand\Traits\RunChmodAws;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 use App\Console\Commands\ComponentMakeCommand;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -13,7 +11,7 @@ use Illuminate\Support\Fluent;
 use ReflectionException;
 use Throwable;
 
-final class WidgetMakeCommand extends ComponentMakeCommand
+final class WidgetMake extends ComponentMakeCommand
 {
     use RegisterArtisan, RunChmodAws;
 
@@ -110,7 +108,7 @@ final class WidgetMakeCommand extends ComponentMakeCommand
                 throw $e;
             }
 
-            $this->chmod();
+            $this->chmodAws();
         }
 
         $this->confirmSkin($id);
@@ -146,7 +144,7 @@ final class WidgetMakeCommand extends ComponentMakeCommand
      */
     protected function getStubPath()
     {
-        return __DIR__ . '/Stubs/Widget';
+        return __DIR__ . '/stubs';
     }
 
     /**
@@ -280,10 +278,10 @@ final class WidgetMakeCommand extends ComponentMakeCommand
     }
 
     /**
-     * @param string $widgetId
+     * @param string $target
      * @return bool
      */
-    protected function confirmSkin(string $widgetId)
+    protected function confirmSkin(string $target)
     {
         while ($confirm = $this->ask("Do you want to add widget's skin? [yes|no]"))
         {
@@ -291,17 +289,10 @@ final class WidgetMakeCommand extends ComponentMakeCommand
                 break;
             }
 
-            $skinName = $this->ask('SkinName?', 'spark_default');
-            $command = sprintf('php artisan make:skin %s %s %s', $this->getPluginName(), $skinName, $widgetId);
+            $plugin = $this->getPluginName();
+            $name = $this->ask('SkinName?', 'spark_default');
 
-            $process = new Process([$command]);
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            $this->info('Generate the skin');
+            $this->call('make:skin', compact('plugin', 'name', 'target'));
             $this->chmodAws();
 
             continue;

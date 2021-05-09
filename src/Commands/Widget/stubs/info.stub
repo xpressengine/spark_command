@@ -2,7 +2,7 @@
 
 return [
     'setting' => [
-        'sample_text' => [
+        'sample_text2' => [
             '_type' => 'text',
             '_section' => '기본설정',
             'label' => '샘플 문구',

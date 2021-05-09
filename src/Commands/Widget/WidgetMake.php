@@ -24,7 +24,7 @@ final class WidgetMake extends ComponentMakeCommand
     protected $signature = 'make:widget
         {plugin : The plugin where the widget will be located}
         {name : The name of widget to create}
-    
+
         {--id= : The identifier of widget. default "<plugin>@<name>"}
         {--path= : The path of widget. Enter the path to under the plugin. ex) SomeDir/WidgetDir}
         {--class= : The class name of widget. default "<name>Widget"}';
@@ -173,7 +173,7 @@ final class WidgetMake extends ComponentMakeCommand
 
     /**
      * 생성할 컴포넌트 이름
-     * 
+     *
      * @return array|string
      */
     protected function getComponentName()
@@ -183,7 +183,7 @@ final class WidgetMake extends ComponentMakeCommand
 
     /**
      * 대상이 되는 플러그인 이름
-     * 
+     *
      * @return array|string
      */
     protected function getPluginName()
@@ -203,7 +203,7 @@ final class WidgetMake extends ComponentMakeCommand
 
     /**
      * 위젯이 생성될 기본 디렉토리 위치
-     * 
+     *
      * @return string
      */
     protected function getDefaultPath()
@@ -292,8 +292,13 @@ final class WidgetMake extends ComponentMakeCommand
 
             $plugin = $this->getPluginName();
             $name = $this->ask('SkinName?', 'spark_default');
+            $widgetName = studly_case($this->getComponentName()) . 'Widget';
+            $path = sprintf('src/Skins/%s/%s', $widgetName, studly_case($name));
 
-            $this->call('make:skin', compact('plugin', 'name', 'target'));
+            $arguments = compact('plugin', 'name', 'target');
+            $arguments['--path'] = $path;
+
+            $this->call('make:skin', $arguments);
             $this->chmodAws();
 
             continue;

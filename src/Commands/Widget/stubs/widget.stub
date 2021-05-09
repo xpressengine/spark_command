@@ -2,11 +2,16 @@
 
 namespace DummyNamespace;
 
-use Xpressengine\Skin\AbstractSkin;
+use Exception;
+use Xpressengine\Plugin\SupportInfoTrait;
 use Xpressengine\Widget\AbstractWidget;
 
 class DummyClass extends AbstractWidget
 {
+    use SupportInfoTrait;
+
+    protected static $path = 'DummyPath';
+
    /**
      * 그려줄 내용 반환.
      *
@@ -21,12 +26,51 @@ class DummyClass extends AbstractWidget
     /**
      * 위젯 설정 페이지에 출력할 폼을 출력.
      *
-     * @param array $args 설정값
+     * @param array $config 설정값
      * @return string
      */
-    public function renderSetting(array $args = [])
+    public function renderSetting(array $config = [])
     {
-        return parent::renderSetting($args);
+        if (is_null($config)) {
+            $config = $this->setting();
+        }
+
+        $view = $this->info('setting');
+
+        if (is_string($view)) {
+            return view($this->view($view), compact('config'));
+        }
+
+        else if (is_array($view)) {
+            return $this->makeConfigView($view, $config);
+        }
+
+        return null;
+    }
+
+    /**
+     * `info.php`에 적혀있는 settings 값을 바탕으로 폼을 생성하고 반환.
+     *
+     * @param array $info setting form info
+     * @param array $data old config data
+     * @return string
+     * @throws Exception
+     */
+    protected function makeConfigView(array $info, array $data)
+    {
+        return uio('form', ['type'=> 'fieldset', 'class' => $this->getId(), 'inputs' => $info, 'value' => $data]);
+    }
+
+    /**
+     * view 반환한다.
+     *
+     * @param string $view view name
+     *
+     * @return string
+     */
+    protected function view(string $view)
+    {
+       return str_replace('/', '.', static::$path) . '.views.' . $view;
     }
 
     /**

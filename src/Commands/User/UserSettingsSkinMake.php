@@ -82,11 +82,17 @@ final class UserSettingsSkinMake extends SkinMake
         /** Info */
         $this->renameStubFile($path . '/info.stub');
 
-        /** root */
-        $this->renameStubFile($path . '/views/edit.blade.stub');
-        $this->renameStubFile($path . '/views/edit-field.blade.stub');
-        $this->renameStubFile($path . '/views/index.blade.stub');
-        $this->renameStubFile($path . '/views/show-field.blade.stub');
+        /** View Files */
+        $viewPaths = [sprintf('%s/views', $path)];
+
+        foreach ($viewPaths as $viewPath)
+        {
+            $files = $this->files->files($viewPath, false);
+
+            foreach ($files as $file) {
+                $this->renameStubFile($file->getPathname());
+            }
+        }
     }
 
     /**

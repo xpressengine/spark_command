@@ -82,30 +82,21 @@ final class UserAuthSkinMake extends SkinMake
         /** Info */
         $this->renameStubFile($path . '/info.stub');
 
-        /** root */
-        $this->renameStubFile($path . '/views/admin.blade.stub');
-        $this->renameStubFile($path . '/views/agreement.blade.stub');
-        $this->renameStubFile($path . '/views/confirm_email.blade.stub');
-        $this->renameStubFile($path . '/views/login.blade.stub');
-        $this->renameStubFile($path . '/views/password.blade.stub');
-        $this->renameStubFile($path . '/views/pending_admin.blade.stub');
-        $this->renameStubFile($path . '/views/pending_email.blade.stub');
-        $this->renameStubFile($path . '/views/privacy.blade.stub');
-        $this->renameStubFile($path . '/views/reset.blade.stub');
-        $this->renameStubFile($path . '/views/terms.blade.stub');
+        /** View Files */
+        $viewPaths = [
+            sprintf('%s/views', $path),
+            sprintf('%s/views/register', $path),
+            sprintf('%s/views/register/forms', $path)
+        ];
 
-        /** root/register */
-        $this->renameStubFile($path . '/views/register/add-info.blade.stub');
-        $this->renameStubFile($path . '/views/register/agreement.blade.stub');
-        $this->renameStubFile($path . '/views/register/create.blade.stub');
-        $this->renameStubFile($path . '/views/register/index.blade.stub');
+        foreach ($viewPaths as $viewPath)
+        {
+            $files = $this->files->files($viewPath, false);
 
-        /** root/register/forms */
-        $this->renameStubFile($path . '/views/register/forms/agreements.blade.stub');
-        $this->renameStubFile($path . '/views/register/forms/confirm.blade.stub');
-        $this->renameStubFile($path . '/views/register/forms/default.blade.stub');
-        $this->renameStubFile($path . '/views/register/forms/dfields.blade.stub');
-        $this->renameStubFile($path . '/views/register/forms/new_default.blade.stub');
+            foreach ($files as $file) {
+                $this->renameStubFile($file->getPathname());
+            }
+        }
     }
 
     /**

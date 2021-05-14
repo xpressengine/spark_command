@@ -3,6 +3,7 @@
 namespace SparkWeb\XePlugin\SparkCommand;
 
 use SparkWeb\XePlugin\SparkCommand\Commands\Error\ErrorSkinMake;
+use SparkWeb\XePlugin\SparkCommand\Commands\Session\SessionDatabaseMigrate;
 use SparkWeb\XePlugin\SparkCommand\Commands\User\UserAuthSkinMake;
 use SparkWeb\XePlugin\SparkCommand\Commands\User\UserProfileSkinMake;
 use SparkWeb\XePlugin\SparkCommand\Commands\User\UserSettingsSkinMake;
@@ -26,5 +27,8 @@ final class Plugin extends AbstractPlugin
 
         /** Errors */
         ErrorSkinMake::register();
+
+        /** Migrate */
+        SessionDatabaseMigrate::register();
     }
 }

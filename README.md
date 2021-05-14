@@ -91,4 +91,13 @@ return [
 ];
 
 ```
+### database에 session 관리하기
+
+```
+php artisan migrate:session-database
+```
+
+세션을 데이터베이스에 저장하기 위해 필요한 Table, Config를 프로젝트에 추가 시킵니다.
+
+
 

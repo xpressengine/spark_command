@@ -47,6 +47,8 @@ final class SessionDatabaseMigrate extends Command
     }
 
     /**
+     * 세션을 저장할 테이블을 추가합니다.
+     *
      * @throws Exception
      */
     public function migrateTable()
@@ -77,7 +79,7 @@ final class SessionDatabaseMigrate extends Command
     private function makeConfigFile()
     {
         $configFile = sprintf("%s/session.php", config_path('production'));
-        $configStubFile = sprintf("%s/stubs/session.stub", __DIR__);
+        $configStubFile = sprintf("%s/stubs/database.stub", __DIR__);
 
         if (app(Filesystem::class)->isFile($configFile)) {
             throw new Exception("Destination path [$configFile] already exists.");

@@ -21,6 +21,7 @@
     ],
     "extra": {
         "xpressengine": {
+            "icon": "icon.png",
             "title": "스파크웹 커맨드",
             "component": {}
         }

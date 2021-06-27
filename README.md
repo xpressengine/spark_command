@@ -1,13 +1,23 @@
-# spark_command
+![로고](https://github.com/Xharpen/spark_command/blob/master/icon.png?raw=true)
+# 스파크 커맨드
 
-# Install
+## 설치방법
+XpressEngine3이(가) 설치된 `privates` 디렉토리에 들어가서 아래 명령어를 통해 플러그인을 cli 환경에서 설치합니다.
+```
+cd privates
+git clone https://github.com/Xharpen/spark_command.git
+```
+
+스파크 커맨드 Repository가 복제되었다면 XpressEngine3이(가) 설치된 루트로 이동하여 아래 명령어를 실행합니다.
+```
 php artisan plugin:private_install spark_command
+```
 
-# XE3
-/settings 페이지에 접속해서 플러그인을 활성화 시켜야합니다.
+이후 XpressEngine3가 설치된 웹 `/settings` 페이지에 접속하여 플러그인을 활성화 하면 모든 설치가 완료됩니다.
 
-# Coomand
-해당 플러그인에서 제공하는 Php Artisan Command 목록에 대한 소개를 진행합니다.
+
+## 기능
+해당 플러그인에서 제공하는 PHP Artisan Command 목록에 대한 소개를 진행합니다.
 
 
 ### 위젯 생성
@@ -99,5 +109,11 @@ php artisan migrate:session-database
 
 세션을 데이터베이스에 저장하기 위해 필요한 Table, Config를 프로젝트에 추가 시킵니다.
 
+### database애 queue 관리하기
 
+```
+php artisan migrate:queue-database
+```
+
+큐를 데이터베이스에 저장하기 위해 필요한 Table, Config를 프로젝트에 추가 시킵니다.
 

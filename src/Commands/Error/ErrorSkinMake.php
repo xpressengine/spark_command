@@ -7,11 +7,10 @@ use Illuminate\Support\Fluent;
 use Throwable;
 use App\Console\Commands\SkinMake;
 use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
-use SparkWeb\XePlugin\SparkCommand\Traits\RunChmodAws;
 
 final class ErrorSkinMake extends SkinMake
 {
-    use RegisterArtisan, RunChmodAws;
+    use RegisterArtisan;
 
     /**
      * 콘솔에 적히는 설명
@@ -98,7 +97,6 @@ final class ErrorSkinMake extends SkinMake
         }
 
         $this->info("Skin is created successfully.");
-        $this->chmodAws();
     }
 
     /**

@@ -5,7 +5,6 @@ namespace SparkWeb\XePlugin\SparkCommand\Commands\Widget;
 use App\Console\Commands\ComponentMakeCommand;
 use Illuminate\Support\Fluent;
 use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
-use SparkWeb\XePlugin\SparkCommand\Traits\RunChmodAws;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
 use Exception;
@@ -14,7 +13,7 @@ use Xpressengine\Plugin\PluginEntity;
 
 final class WidgetMake extends ComponentMakeCommand
 {
-    use RegisterArtisan, RunChmodAws;
+    use RegisterArtisan;
 
     /**
      * The name and signature of the console command.

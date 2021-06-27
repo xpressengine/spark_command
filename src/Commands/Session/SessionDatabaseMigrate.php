@@ -6,13 +6,12 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
-use SparkWeb\XePlugin\SparkCommand\Traits\RunChmodAws;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 final class SessionDatabaseMigrate extends Command
 {
-    use RegisterArtisan, RunChmodAws;
+    use RegisterArtisan;
 
     protected $signature = 'migrate:session-database';
 
@@ -88,7 +87,5 @@ final class SessionDatabaseMigrate extends Command
         if (!app(Filesystem::class)->copy($configStubFile, $configFile)) {
             throw new Exception("Unable to create file[$configFile]. please check permission.");
         }
-
-        $this->chmodAws();
     }
 }

@@ -8,11 +8,10 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
 use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
-use SparkWeb\XePlugin\SparkCommand\Traits\RunChmodAws;
 
 final class QueueDatabaseMigrate extends Command
 {
-    use RegisterArtisan, RunChmodAws;
+    use RegisterArtisan;
 
     protected $signature = 'migrate:queue-database';
 
@@ -77,7 +76,7 @@ final class QueueDatabaseMigrate extends Command
 
     /**
      * 실패한 `Job`을 저장할 테이블을 추가합니다.
-     * 
+     *
      * @throws Exception
      */
     public function migrateFailedJobsTable()
@@ -117,7 +116,5 @@ final class QueueDatabaseMigrate extends Command
         if (!app(Filesystem::class)->copy($configStubFile, $configFile)) {
             throw new Exception("Unable to create file[$configFile]. please check permission.");
         }
-
-        $this->chmodAws();
     }
 }

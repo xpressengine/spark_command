@@ -2,14 +2,13 @@
 
 namespace SparkWeb\XePlugin\SparkCommand\Commands\User;
 
-use SparkWeb\XePlugin\SparkCommand\Traits\RunChmodAws;
 use Throwable;
 use App\Console\Commands\SkinMake;
 use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
 
 final class UserSettingsSkinMake extends SkinMake
 {
-    use RegisterArtisan, RunChmodAws;
+    use RegisterArtisan;
 
     /**3
      * 콘솔에서 사용하는 코멘드
@@ -51,19 +50,19 @@ final class UserSettingsSkinMake extends SkinMake
         return __DIR__ . '/stubs/settings';
     }
 
-    /**
-     * 코멘드를 통해서 새로운 유저 프로필 스킨을 생성합니다.
-     *
-     * @return bool|null
-     * @throws Throwable
-     */
-    public function handle()
-    {
-        $result = parent::handle();
-        $this->chmodAws();
-
-        return $result;
-    }
+//    /**
+//     * 코멘드를 통해서 새로운 유저 프로필 스킨을 생성합니다.
+//     *
+//     * @return bool|null
+//     * @throws Throwable
+//     */
+//    public function handle()
+//    {
+//        $result = parent::handle();
+//        $this->chmodAws();
+//
+//        return $result;
+//    }
 
     /**
      * 베이스(Stub) 파일을 바탕으로 플로그인에서 사용할 파일을 생성합니다.

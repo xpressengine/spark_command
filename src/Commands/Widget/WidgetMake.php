@@ -113,7 +113,6 @@ final class WidgetMake extends ComponentMakeCommand
             throw $e;
         }
 
-        $this->chmodAws();
         $this->confirmSkin($id);
 
         return true;
@@ -298,8 +297,6 @@ final class WidgetMake extends ComponentMakeCommand
             $arguments['--path'] = $path;
 
             $this->call('make:skin', $arguments);
-            $this->chmodAws();
-
             continue;
         }
 

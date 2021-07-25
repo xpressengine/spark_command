@@ -1,4 +1,4 @@
-![로고](https://github.com/xpressengine/xe_cli/blob/master/icon.png?raw=true)
+![로고](https://github.com/xpressengine/xe_cli/blob/master/logo.png?raw=true)
 # XE CLI
 
 ## 설치방법

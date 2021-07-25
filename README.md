@@ -5,12 +5,12 @@
 XpressEngine3이(가) 설치된 `privates` 디렉토리에 들어가서 아래 명령어를 통해 플러그인을 cli 환경에서 설치합니다.
 ```
 cd privates
-git clone https://github.com/Xharpen/spark_command.git
+git clone https://github.com/xpressengine/xe_cli.git
 ```
 
-스파크 커맨드 Repository가 복제되었다면 XpressEngine3이(가) 설치된 루트로 이동하여 아래 명령어를 실행합니다.
+XE CLI Repository가 복제되었다면 XpressEngine3이(가) 설치된 루트로 이동하여 아래 명령어를 실행합니다.
 ```
-php artisan plugin:private_install spark_command
+php artisan plugin:private_install xe_cli
 ```
 
 이후 XpressEngine3가 설치된 웹 `/settings` 페이지에 접속하여 플러그인을 활성화 하면 모든 설치가 완료됩니다.

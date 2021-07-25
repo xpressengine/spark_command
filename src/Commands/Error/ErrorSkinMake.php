@@ -1,12 +1,12 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Commands\Error;
+namespace XeHub\XePlugin\XeCli\Commands\Error;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Fluent;
 use Throwable;
 use App\Console\Commands\SkinMake;
-use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
+use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 
 final class ErrorSkinMake extends SkinMake
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Commands\Queue;
+namespace XeHub\XePlugin\XeCli\Commands\Queue;
 
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Schema;
-use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
+use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 
 final class QueueDatabaseMigrate extends Command
 {

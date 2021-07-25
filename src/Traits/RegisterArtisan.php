@@ -1,6 +1,6 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Traits;
+namespace XeHub\XePlugin\XeCli\Traits;
 
 use Illuminate\Console\Application as Artisan;
 

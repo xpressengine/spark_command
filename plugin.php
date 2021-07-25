@@ -1,14 +1,14 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand;
+namespace XeHub\XePlugin\XeCli;
 
-use SparkWeb\XePlugin\SparkCommand\Commands\Error\ErrorSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\Queue\QueueDatabaseMigrate;
-use SparkWeb\XePlugin\SparkCommand\Commands\Session\SessionDatabaseMigrate;
-use SparkWeb\XePlugin\SparkCommand\Commands\User\UserAuthSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\User\UserProfileSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\User\UserSettingsSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\Widget\WidgetMake;
+use XeHub\XePlugin\XeCli\Commands\Error\ErrorSkinMake;
+use XeHub\XePlugin\XeCli\Commands\Queue\QueueDatabaseMigrate;
+use XeHub\XePlugin\XeCli\Commands\Session\SessionDatabaseMigrate;
+use XeHub\XePlugin\XeCli\Commands\User\UserAuthSkinMake;
+use XeHub\XePlugin\XeCli\Commands\User\UserProfileSkinMake;
+use XeHub\XePlugin\XeCli\Commands\User\UserSettingsSkinMake;
+use XeHub\XePlugin\XeCli\Commands\Widget\WidgetMake;
 use Xpressengine\Plugin\AbstractPlugin;
 
 final class Plugin extends AbstractPlugin

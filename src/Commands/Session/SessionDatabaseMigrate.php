@@ -1,11 +1,11 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Commands\Session;
+namespace XeHub\XePlugin\XeCli\Commands\Session;
 
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
+use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 

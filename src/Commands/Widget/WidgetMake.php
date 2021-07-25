@@ -1,10 +1,10 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Commands\Widget;
+namespace XeHub\XePlugin\XeCli\Commands\Widget;
 
 use App\Console\Commands\ComponentMakeCommand;
 use Illuminate\Support\Fluent;
-use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
+use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
 use Exception;

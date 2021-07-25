@@ -1,10 +1,10 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Commands\User;
+namespace XeHub\XePlugin\XeCli\Commands\User;
 
 use Throwable;
 use App\Console\Commands\SkinMake;
-use SparkWeb\XePlugin\SparkCommand\Traits\RegisterArtisan;
+use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 
 final class UserSettingsSkinMake extends SkinMake
 {

@@ -1,5 +1,5 @@
-![로고](https://github.com/Xharpen/spark_command/blob/master/icon.png?raw=true)
-# 스파크 커맨드
+![로고](https://github.com/xpressengine/xe_cli/blob/master/icon.png?raw=true)
+# XE CLI
 
 ## 설치방법
 XpressEngine3이(가) 설치된 `privates` 디렉토리에 들어가서 아래 명령어를 통해 플러그인을 cli 환경에서 설치합니다.

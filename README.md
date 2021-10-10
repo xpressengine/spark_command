@@ -33,7 +33,7 @@ php artisan make:widget {plugin_name} {widget_name}
 ### 회원 가입/로그인 스킨 생성
 
 ```
-php artisan make:make:user-auth-skin {plugin_name} {widget_name}
+php artisan make:user-auth-skin {plugin_name} {widget_name}
 ```
 
 - plugin_name : 새로운 회원 가입/로그인 스킨을 생성할 플러그인 이름
@@ -43,7 +43,7 @@ php artisan make:make:user-auth-skin {plugin_name} {widget_name}
 ### 마이페이지 스킨 생성
 
 ```
-php artisan make:make:user-settings-skin {plugin_name} {widget_name}
+php artisan make:user-settings-skin {plugin_name} {widget_name}
 ```
 
 - plugin_name : 새로운 마이페이지 스킨을 생성할 플러그인 이름
@@ -53,7 +53,7 @@ php artisan make:make:user-settings-skin {plugin_name} {widget_name}
 ### 프로필 스킨 생성
 
 ```
-php artisan make:make:user-profile-skin {plugin_name} {widget_name}
+php artisan make:user-profile-skin {plugin_name} {widget_name}
 ```
 
 - plugin_name : 새로운 프로필 스킨을 생성할 플러그인 이름
@@ -63,7 +63,7 @@ php artisan make:make:user-profile-skin {plugin_name} {widget_name}
 ### 에러 스킨 생성
 
 ```
-php artisan make:make:error-skin {plugin_name} {widget_name}
+php artisan make:error-skin {plugin_name} {widget_name}
 ```
 
 - plugin_name : 새로운 에러 스킨을 생성할 플러그인 이름

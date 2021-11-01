@@ -60,6 +60,25 @@ php artisan make:user-profile-skin {plugin_name} {widget_name}
 - widget_name : 새롭게 생성할 프로필 스킨의 이름
 
 
+### 게시판 스킨 생성
+
+```
+php artisan make:board_skin {plugin_name} {skin_name}
+```
+
+- plugin_name : 새로운 게시판 스킨을 생성할 플러그인 이름
+- skin_name : 새롭게 생성할 게시판 스킨의 이름
+
+### 갤러리 스킨 생성
+
+```
+php artisan make:gallery_board_skin {plugin_name} {skin_name}
+```
+
+- plugin_name : 새로운 갤러리 게시판 스킨을 생성할 플러그인 이름
+- skin_name : 새롭게 생성할 갤러리 게시판 스킨의 이름
+
+
 ### 에러 스킨 생성
 
 ```

@@ -26,7 +26,7 @@ class MoveMenuItemCommand extends Command
     protected $signature = 'xe_cli:move:menuItem
         {menu}
         {menuItem*}
-        {--ordering=}';
+        {--position=}';
 
     /**
      * @var string
@@ -59,7 +59,7 @@ class MoveMenuItemCommand extends Command
 
         $menuId = $this->argument('menu');
         $menuItemIds = $this->argument('menuItem');
-        $ordering = $this->option('ordering');
+        $position = $this->option('position');
 
         foreach ($menuItemIds as $menuItemId) {
             try {
@@ -67,7 +67,7 @@ class MoveMenuItemCommand extends Command
                 $menuItem = $this->menuService->findMenuItemOrFail($menuItemId);
 
                 $this->menuService->moveMenuItem(
-                    $menu, $menuItem, $ordering
+                    $menu, $menuItem, $position
                 );
 
                 /**

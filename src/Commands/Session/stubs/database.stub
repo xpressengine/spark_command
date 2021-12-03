@@ -1,7 +1,0 @@
-<?php
-
-return [
-    'driver' => 'database', // 세션 처리 방식 정의
-    'lifetime' => 35791394, // 세션 유지 시간
-    'expire_on_close' => false, // 창 닫을 때 세션 삭제 (false 는 세션 유지)
-];

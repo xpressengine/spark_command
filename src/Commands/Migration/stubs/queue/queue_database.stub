@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'default' => 'database', // 세션 처리 방식 정의
+];

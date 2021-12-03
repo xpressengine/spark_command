@@ -23,70 +23,50 @@ php artisan plugin:private_install xe_cli
 ### 위젯 생성
 
 ```
-php artisan make:widget {plugin_name} {widget_name}
+php artisan xe_cli:make:widget {plugin_name} {widget_name}
 ```
 
 - plugin_name : 위젯을 생성할 플러그인 이름
-- widget_name : 새롭게 생성할 위젯 이름
+- widget_name : 생성할 위젯 이름 
 
 
 ### 회원 가입/로그인 스킨 생성
 
 ```
-php artisan make:user-auth-skin {plugin_name} {widget_name}
+php artisan xe_cli:make:userAuthSkin  {plugin_name} {skin_name}
 ```
 
-- plugin_name : 새로운 회원 가입/로그인 스킨을 생성할 플러그인 이름
-- widget_name : 새롭게 생성할 회원 가입/로그인 스킨의 이름
+- plugin_name : 스킨을 생성할 플러그인 이름
+- skin_name : 생설할 스킨 이름
 
 
 ### 마이페이지 스킨 생성
 
 ```
-php artisan make:user-settings-skin {plugin_name} {widget_name}
+php artisan xe_cli:make:userSettingsSkin {plugin_name} {skin_name}
 ```
 
-- plugin_name : 새로운 마이페이지 스킨을 생성할 플러그인 이름
-- widget_name : 새롭게 생성할 마이페이지 스킨의 이름
+- plugin_name : 스킨을 생성할 플러그인 이름
+- skin_name : 생성할 스킨 이름
 
 
 ### 프로필 스킨 생성
 
 ```
-php artisan make:user-profile-skin {plugin_name} {widget_name}
+php artisan xe_cli:make:userProfileSkin {plugin_name} {skin_name}
 ```
 
-- plugin_name : 새로운 프로필 스킨을 생성할 플러그인 이름
-- widget_name : 새롭게 생성할 프로필 스킨의 이름
-
-
-### 게시판 스킨 생성
-
-```
-php artisan make:board_skin {plugin_name} {skin_name}
-```
-
-- plugin_name : 새로운 게시판 스킨을 생성할 플러그인 이름
-- skin_name : 새롭게 생성할 게시판 스킨의 이름
-
-### 갤러리 스킨 생성
-
-```
-php artisan make:gallery_board_skin {plugin_name} {skin_name}
-```
-
-- plugin_name : 새로운 갤러리 게시판 스킨을 생성할 플러그인 이름
-- skin_name : 새롭게 생성할 갤러리 게시판 스킨의 이름
-
+- plugin_name : 스킨을 생성할 플러그인 이름
+- skin_name : 생성할 스킨 이름
 
 ### 에러 스킨 생성
 
 ```
-php artisan make:error-skin {plugin_name} {widget_name}
+php artisan xe_cli:make:errorSkin {plugin_name} {skin_name}
 ```
 
 - plugin_name : 새로운 에러 스킨을 생성할 플러그인 이름
-- widget_name : 새롭게 생성할 에러 스킨의 이름
+- skin_name : 새롭게 생성할 에러 스킨의 이름
 
 에러 스킨을 적용하기 위해선 `/config/production/view.php`에 아래 코드를 수정해야 합니다.
 
@@ -120,18 +100,18 @@ return [
 ];
 
 ```
-### database에 session 관리하기
+### Session - Database Table 마이그레이션
 
 ```
-php artisan migrate:session-database
+php artisan xe_cli:migrate:sessionDatabase
 ```
 
 세션을 데이터베이스에 저장하기 위해 필요한 Table, Config를 프로젝트에 추가 시킵니다.
 
-### database애 queue 관리하기
+### Queue - Database Table 마이그레이션
 
 ```
-php artisan migrate:queue-database
+php artisan xe_cli:migrate:queueDatabase
 ```
 
 큐를 데이터베이스에 저장하기 위해 필요한 Table, Config를 프로젝트에 추가 시킵니다.

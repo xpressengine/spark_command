@@ -2,15 +2,15 @@
 
 namespace XeHub\XePlugin\XeCli;
 
-use XeHub\XePlugin\XeCli\Commands\Error\ErrorSkinMake;
-use XeHub\XePlugin\XeCli\Commands\Queue\QueueDatabaseMigrate;
-use XeHub\XePlugin\XeCli\Commands\Session\SessionDatabaseMigrate;
-use XeHub\XePlugin\XeCli\Commands\User\UserAuthSkinMake;
-use XeHub\XePlugin\XeCli\Commands\User\UserProfileSkinMake;
-use XeHub\XePlugin\XeCli\Commands\User\UserSettingsSkinMake;
-use XeHub\XePlugin\XeCli\Commands\Widget\WidgetMake;
 use Xpressengine\Plugin\AbstractPlugin;
 
+/**
+ * Class Plugin
+ *
+ * Xe Cli Plugin
+ *
+ * @package XeHub\XePlugin\XeCli
+ */
 final class Plugin extends AbstractPlugin
 {
     /**
@@ -18,19 +18,23 @@ final class Plugin extends AbstractPlugin
      */
     public function boot()
     {
-        /** Widgets */
-        WidgetMake::register();
+        Services\MenuService::singleton();
 
-        /** Users */
-        UserAuthSkinMake::register();
-        UserProfileSkinMake::register();
-        UserSettingsSkinMake::register();
+        // Widget Commands
+        Commands\Widget\MakeWidget::register();
 
-        /** Errors */
-        ErrorSkinMake::register();
+        // Skin Commands
+        Commands\Skin\MakeErrorSkinCommand::register();
+        Commands\Skin\MakeUserAuthSkinCommand::register();
+        Commands\Skin\MakeUserProfileSkin::register();
+        Commands\Skin\MakeUserSettingsSkin::register();
 
-        /** Migrate */
-        SessionDatabaseMigrate::register();
-        QueueDatabaseMigrate::register();
+        // Migration Commands
+        Commands\Migration\MigrateQueueDatabaseCommand::register();
+        Commands\Migration\MigrateSessionDatabaseCommend::register();
+
+        // Helper Commands
+        Commands\Helper\MoveMenuItemCommand::register();
+        Commands\Helper\SetOrderMenuItemCommand::register();
     }
 }

@@ -1,0 +1,25 @@
+<?php
+
+namespace DummyNamespace;
+
+use Exception;
+use Xpressengine\Plugin\SupportInfoTrait;
+use Xpressengine\Widget\AbstractWidget;
+
+class DummyClass extends AbstractWidget
+{
+    use SupportInfoTrait;
+
+    protected static $path = 'DummyPath';
+
+   /**
+     * 그려줄 내용 반환.
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $widgetConfig = $this->setting();
+        return $this->renderSkin(compact('widgetConfig'));
+    }
+}

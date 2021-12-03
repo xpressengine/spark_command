@@ -1,0 +1,62 @@
+<?php
+namespace DummyNamespace;
+
+use Xpressengine\Skin\GenericSkin;
+
+class DummyClass extends GenericSkin
+{
+    protected static $path = 'DummyPluginId/DummySkinDirname';
+
+    /**
+     * Get the evaluated contents of the object.
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function render()
+    {
+        $this->loadAssets();
+
+        $user = $this->data['user'];
+
+        if ($this->data['grant']['modify'])
+        {
+            $this->data['profileImageHtml'] = uio('xpressengine@profileImage', [
+                    'name' => 'profile_img_file',
+                    'image' => $user->getProfileImage(),
+                    'width' => 120,
+                    'height' => 120
+            ]);
+
+            $this->data['bgImageHtml'] = uio('xpressengine@profileBgImage', [
+                    'name' => 'bgImgFile',
+                    'image' => $user->getProfileImage(),
+                    'width' => 2048,
+                    'height' => 2048
+            ]);
+        }
+
+        return parent::render();
+    }
+
+    /**
+     * Load assets
+     *
+     * @return void
+     */
+    private function loadAssets()
+    {
+        $frontend = app('xe.frontend');
+
+        if ($this->data['grant']['modify']) {
+            $frontend->js('assets/core/user/profile.js')->load();
+        }
+
+        $cssFiles =  [
+            'assets/core/xe-ui-component/xe-ui-component.css',
+            'assets/core/user/profile.css'
+        ];
+
+        $frontend->css($cssFiles)->load();
+    }
+}

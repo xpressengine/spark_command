@@ -4,6 +4,11 @@ namespace XeHub\XePlugin\XeCli\Traits;
 
 use Illuminate\Console\Application as Artisan;
 
+/**
+ * Trait RegisterArtisan
+ *
+ * @package XeHub\XePlugin\XeCli\Traits
+ */
 trait RegisterArtisan
 {
     /**

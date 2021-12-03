@@ -171,6 +171,8 @@ php artisan xe_cli:migrate:queueDatabase
 php artisan xe_cli:move:menuItem {menu} {menuItem*} {--position=}
 ```
 
+### Set Menu Item's Order
+
 ```
 php artisan xe_cli:setOrder:menuItem {menuItem} {position}
 ```

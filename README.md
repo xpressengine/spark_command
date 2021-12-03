@@ -4,7 +4,7 @@
 ## 설치방법
 
 <details>
-<summary>CLICK ME</summary>
+<summary>설치방법</summary>
 
 <p>
 	
@@ -35,7 +35,7 @@ php artisan plugin:private_install xe_cli
 ## 명령어
 
 <details>
-<summary>위젯 명령어 CLICK ME</summary>
+<summary>위젯 명령어</summary>
 
 <p>
 
@@ -54,7 +54,7 @@ php artisan xe_cli:make:widget {plugin_name} {widget_name}
 ---
 
 <details>
-<summary>스킨 명령어 CLICK ME</summary>
+<summary>스킨 명령어</summary>
 
 <p>
 	
@@ -137,8 +137,9 @@ return [
 ---
 
 <details>
-<summary>마이그레이션 CLICK ME</summary>
+<summary>마이그레이션 명령어</summary>
 
+<p>
 ### Session - Database Table 마이그레이션
 
 ```
@@ -154,7 +155,25 @@ php artisan xe_cli:migrate:queueDatabase
 ```
 
 큐를 데이터베이스에서 관리하기 위한 Table, Config 를 추가해줍니다.
+</p>
+</details>
+
+---
+
+<details>
+<summary>헬퍼 명렬어</summary>
 
 <p>
-</p<
+
+### Move MenuItem
+
+```
+php artisan xe_cli:move:menuItem {menu} {menuItem*} {--position=}
+```
+
+```
+php artisan xe_cli:setOrder:menuItem {menuItem} {position}
+```
+
+</p
 </details>

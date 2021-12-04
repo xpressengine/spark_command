@@ -19,7 +19,7 @@ trait RegisterArtisan
     public static function register()
     {
         Artisan::starting(function ($artisan) {
-            $artisan->resolveCommands(self::class);
+            $artisan->resolveCommands(static::class);
         });
     }
 }

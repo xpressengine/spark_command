@@ -162,7 +162,7 @@ php artisan xe_cli:migrate:queueDatabase
 ---
 
 <details>
-<summary>헬퍼 명렬어</summary>
+<summary>헬퍼 명령어</summary>
 
 <p>
 
@@ -178,5 +178,61 @@ php artisan xe_cli:move:menuItem {menu} {menuItem*} {--position=}
 php artisan xe_cli:setOrder:menuItem {menuItem} {position}
 ```
 
-</p
+</p>
+</details>
+
+---
+
+<details>
+<summary>컨트롤러 명령어</summary>
+
+<p>
+
+### Make Controller
+
+```
+php artisan xe_cli:make:controller {plugin} {name}
+```
+
+### Make BackOffice Controller
+
+```
+php artisan xe_cli:make:backOfficeController {plugin} {name}
+```
+
+### Make Client Controller
+
+```
+php artisan xe_cli:make:clientController {plugin} {name}
+```
+
+</p>
+</details>
+
+---
+
+<details>
+<summary>핸들러 명령어</summary>
+
+<p>
+
+### Make Handler
+
+```
+php artisan xe_cli:make:handler {plugin} {name}
+```
+
+### Make Message Handler
+
+```
+php artisan xe_cli:make:messageHandler {plugin} {name}
+```
+
+### Make Validation Handler
+
+```
+php artisan xe_cli:make:validationHandler {plugin} {name}
+```
+
+</p>
 </details>

@@ -1,0 +1,200 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Xpressengine\Http\Request;
+use Throwable;
+use XeFrontend;
+use XePresenter;
+
+/**
+ * Class DummyClass
+ *
+ * @package DummyNamespace
+ */
+class DummyClass extends Controller
+{
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function index(
+        Request            $request
+    )
+    {
+        $pageTitle = '';
+        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.index';
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function create(
+    )
+    {
+        $pageTitle = '';
+        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.create';
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function store(
+        Request               $request
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = $request->all();
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        $redirectUrl = route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.index');
+        return redirect()->to($redirectUrl);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function show()
+    {
+        $pageTitle = '';
+        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.show';
+
+        $redirectUrl = redirect()->back()->getTargetUrl();
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle,
+            'redirectUrl' => $redirectUrl,
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function edit()
+    {
+        $pageTitle = '';
+        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.edit';
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function update(
+        Request               $request
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = array_filter($request->all());
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * @return mixed
+     * @throws Throwable
+     */
+    public function delete()
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return XePresenter::makeApi([]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function deleteBatch(
+        Request            $request
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * @return mixed
+     * @throws Throwable
+     */
+    public function replicate()
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return XePresenter::makeApi([]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function replicateBatch(
+        Request            $request
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->back();
+    }
+}

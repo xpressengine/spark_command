@@ -10,9 +10,9 @@ use Xpressengine\Permission\PermissionHandler;
 
 /**
  * Class MenuService
- * 
+ *
  * 메뉴 서비스
- * 
+ *
  * @package XeHub\XePlugin\XeCli\Services
  */
 class MenuService
@@ -58,7 +58,7 @@ class MenuService
      */
     public function __construct(
         PermissionHandler $permissionHandler,
-        MenuHandler $menuHandler
+        MenuHandler       $menuHandler
     )
     {
         $this->permissionHandler = $permissionHandler;
@@ -80,7 +80,9 @@ class MenuService
      * @return Menu
      * @throws ModelNotFoundException
      */
-    public function findMenuOrFail(string $menu)
+    public function findMenuOrFail(
+        string $menu
+    )
     {
         return $this->menuHandler->menus()->findOrFail($menu);
     }
@@ -92,7 +94,9 @@ class MenuService
      * @return MenuItem
      * @throws ModelNotFoundException
      */
-    public function findMenuItemOrFail(string $menuItem)
+    public function findMenuItemOrFail(
+        string $menuItem
+    )
     {
         return $this->menuHandler->items()->findOrFail($menuItem);
     }
@@ -105,9 +109,9 @@ class MenuService
      * @param int $ordering
      */
     public function moveMenuItem(
-        Menu $menu,
+        Menu     $menu,
         MenuItem $menuItem,
-        int $ordering
+        int      $ordering
     )
     {
         $oldMenuItem = clone $menuItem;

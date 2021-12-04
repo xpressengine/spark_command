@@ -1,0 +1,266 @@
+<?php
+
+namespace DummyNamespace;
+
+use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Xpressengine\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
+use Xpressengine\Keygen\Keygen;
+use DummyBaseNamespace\Models\DummyArgumentStudlyCaseName;
+
+/**
+ * Class DummyClass
+ *
+ * @package DummyNamespace
+ */
+class DummyClass
+{
+    /**
+     * 싱글톤 등록
+     *
+     * @return void
+     */
+    public static function singleton()
+    {
+        app()->singleton(__CLASS__, function () {
+            return new static();
+        });
+    }
+
+    /**
+     * 서비스 핸들러에 등록된 값을 반환
+     *
+     * @return DummyClass
+     */
+    public static function make(): DummyClass
+    {
+        return app(__CLASS__);
+    }
+
+    /**
+     * Admin Search Subject Options
+     *
+     * @return array[]
+     */
+    public function adminSearchSubjectOptions()
+    {
+        return [
+            'title' => [
+                'text' => '이름',
+                'value' => 'title',
+            ]
+        ];
+    }
+
+    /**
+     * 조건에 해당하는 문제 반환합니다.
+     *
+     * @param array $inputs
+     * @param array $columns
+     * @param callable|null $additionalQuery
+     * @return mixed
+     */
+    public function get(
+        array    $inputs = [],
+        array    $columns = ['*'],
+        callable $additionalQuery = null
+    )
+    {
+        $query = $this->makeWhere(
+            DummyArgumentStudlyCaseName::query(), $inputs
+        );
+
+        $query->when(
+            is_callable($additionalQuery) === true,
+            function (Builder $query) use ($additionalQuery) {
+                call_user_func($additionalQuery, $query);
+            }
+        );
+
+        return $query->get($columns);
+    }
+
+    /**
+     * 조건에 속하는 질문을 페이지 형태로 반환합니다.
+     *
+     * @param array $inputs
+     * @param array $columns
+     * @param callable|null $additionalQuery
+     * @return LengthAwarePaginator
+     */
+    public function paginate(
+        array    $inputs = [],
+        array    $columns = ['*'],
+        callable $additionalQuery = null
+    )
+    {
+        $perPage = Arr::get($inputs, 'perPage', 10);
+
+        $query = $this->makeWhere(
+            DummyArgumentStudlyCaseName::query(), $inputs
+        );
+
+        $query->when(
+            is_callable($additionalQuery) === true,
+            function (Builder $query) use ($additionalQuery) {
+                call_user_func($additionalQuery, $query);
+            }
+        );
+
+        return $query
+            ->paginate($perPage, $columns, 'page')
+            ->appends(array_except(request()->all(), 'page'));
+    }
+
+    /**
+     * @param string $id
+     * @param array $columns
+     * @return DummyArgumentStudlyCaseName|null
+     */
+    public function find(
+        string $id,
+        array  $columns = ['*']
+    )
+    {
+        return DummyArgumentStudlyCaseName::find($id, $columns);
+    }
+
+    /**
+     * @param string $id
+     * @param array $columns
+     * @return DummyArgumentStudlyCaseName
+     * @thorws ModelNotFoundException
+     */
+    public function findOrFail(
+        string $id,
+        array  $columns = ['*']
+    )
+    {
+        return DummyArgumentStudlyCaseName::findOrFail($id, $columns);
+    }
+
+    /**
+     * 특정 아이디 목록에 해당하는 문제 반환
+     *
+     * @param array $ids
+     * @param array|string[] $columns
+     * @return Collection
+     */
+    public function findMany(
+        array $ids,
+        array $columns = ['*']
+    )
+    {
+        return DummyArgumentStudlyCaseName::findMany($ids, $columns);
+    }
+
+    /**
+     * @param array $inputs
+     * @return DummyArgumentStudlyCaseName
+     */
+    public function store(
+        array $inputs
+    )
+    {
+        $inputs = Arr::only($inputs, []);
+
+        $inputs = array_merge($inputs, [
+            'ip_address' => request()->ip(),
+            'user_id' => auth()->id(),
+        ]);
+
+        return tap(new DummyArgumentStudlyCaseName($inputs))->save();
+    }
+
+    /**
+     * @param DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+     * @param array $inputs
+     * @return DummyArgumentStudlyCaseName
+     */
+    public function update(
+        DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName,
+        array    $inputs
+    )
+    {
+        $inputs = Arr::only($inputs, []);
+        return tap($DummyArgumentCamelCaseName)->update($inputs);
+    }
+
+    /**
+     * (관계는 포함시키지 않습니다.)
+     *
+     * @param DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+     * @return DummyArgumentStudlyCaseName
+     */
+    public function replicateWithoutRelations(
+        DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+    )
+    {
+        $now = now();
+        $newDummyArgumentStudlyCaseName = $DummyArgumentCamelCaseName->replicate(['id'])->setRelations([]);
+
+        $values = [
+        ];
+
+        foreach ($values as $key => $value) {
+            $newDummyArgumentStudlyCaseName->setAttribute($key, $value);
+        }
+
+        return tap($newDummyArgumentStudlyCaseName)->save();
+    }
+
+    /**
+     * @param DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+     * @return void
+     * @throws Exception
+     */
+    public function delete(
+        DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+    )
+    {
+        $DummyArgumentCamelCaseName->delete();
+    }
+
+    /**
+     * @param array $ids
+     * @return void
+     */
+    public function deleteBatch(
+        array $ids
+    )
+    {
+        DummyArgumentStudlyCaseName::whereIn('id', $ids)->delete();
+    }
+
+    /**
+     * Make Where
+     *
+     * @param Builder $query
+     * @param array $inputs
+     * @return Builder
+     */
+    protected function makeWhere(
+        Builder $query,
+        array   $inputs
+    )
+    {
+        $word = Arr::get($inputs, 'word');
+        $wordSubject = Arr::get($inputs, 'word_subject');
+
+        // word, word_subject
+        $query->where(function ($query) use ($word, $wordSubject) {
+            $query->when(
+                empty($word) === false && is_string($word) === true,
+                function ($query) use ($word, $wordSubject) {
+                    $likeWord = "%$word%";
+                }
+            );
+        });
+
+        return $query;
+    }
+}

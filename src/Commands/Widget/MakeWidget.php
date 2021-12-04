@@ -20,7 +20,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Widget
  */
-final class MakeWidget extends ComponentMakeCommand
+class MakeWidget extends ComponentMakeCommand
 {
     use RegisterArtisan;
 

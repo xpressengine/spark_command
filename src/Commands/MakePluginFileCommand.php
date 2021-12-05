@@ -151,16 +151,21 @@ abstract class MakePluginFileCommand extends MakeCommand
         $madeControllerClassName = $this->getPluginFileClass();
 
         $madeControllerNamespace = $this->getPluginNamespace($pluginEntity);
-        $baseNamespace = $this->getPluginNamespace($pluginEntity, '');
+        $baseNamespace = $this->pluginService->getPluginNamespace($pluginEntity, '');;
 
-        return [
-            'DummyArgumentCamelCaseName' => camel_case($this->argument('name')),
-            'DummyArgumentStudlyCaseName' => studly_case($this->argument('name')),
+        $replaceData = [
             'DummyClass' => $madeControllerClassName,
             'DummyNamespace' => $madeControllerNamespace,
             'DummyPluginId' => $pluginEntity->getId(),
             'DummyBaseNamespace' => $baseNamespace
         ];
+
+        if ($this->hasArgument('name') === true) {
+            $replaceData['DummyArgumentCamelCaseName'] =  camel_case($this->argument('name'));
+            $replaceData['DummyArgumentStudlyCaseName'] =  studly_case($this->argument('name'));
+        }
+
+        return $replaceData;
     }
 
     /**

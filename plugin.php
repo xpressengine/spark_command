@@ -34,6 +34,8 @@ final class Plugin extends AbstractPlugin
         // Migration Commands
         Commands\Migration\MigrateQueueDatabaseCommand::register();
         Commands\Migration\MigrateSessionDatabaseCommend::register();
+        Commands\Migration\MakeMigrationTableCommand::register();
+        Commands\Migration\MakeMigrationResourceCommand::register();
 
         // Helper Commands
         Commands\Helper\MoveMenuItemCommand::register();

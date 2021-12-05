@@ -156,6 +156,20 @@ php artisan xe_cli:migrate:queueDatabase
 ```
 
 큐를 데이터베이스에서 관리하기 위한 Table, Config 를 추가해줍니다.
+
+### Make Migration Table
+
+```
+xe_cli:make:migrationTable {plugin} {name}
+```
+
+### Make Migration Resource
+
+```
+xe_cli:make:migrationResource {plugin}
+```
+
+
 </p>
 </details>
 

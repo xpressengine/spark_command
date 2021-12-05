@@ -1,0 +1,81 @@
+<?php
+
+namespace DummyNamespace;
+
+/**
+ * Class MigrationResource
+ *
+ * @package DummyNamespace
+ */
+class MigrationResource
+{
+    /**
+     * Make
+     * 서비스 컨테이너에 저장된 마이그레이션 리소스를 반환합니다.
+     *
+     * @return MigrationResource
+     */
+    public static function make(): MigrationResource
+    {
+        return app(__CLASS__);
+    }
+
+    /**
+     * Singleton
+     * 서비스 컨테이너에 마이그레이션 리소스를 저장합니다.
+     *
+     * @return void
+     */
+    public static function singleton()
+    {
+        app()->singleton(__CLASS__, function () {
+            return new MigrationResource();
+        });
+    }
+
+    /**
+     * Check Exists New Migrates
+     * 새로운 마이그레이션 파일이 존재하는지 확인합니다.
+     *
+     * @return bool
+     */
+    public function checkNewMigrates(): bool
+    {
+        $migrations = $this->all();
+
+        foreach ($migrations as $migration) {
+            if ($migration instanceof Migration && $migration->checkNotExist() === true) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Migrates
+     * 새로운 마이그레이션 작업을 진행합니다.
+     */
+    public function migrates()
+    {
+        $migrations = $this->all();
+
+        foreach ($migrations as $migration) {
+            if ($migration instanceof Migration && $migration->checkNotExist() === true) {
+                $migration->up();
+            }
+        }
+    }
+
+    /**
+     * All
+     * 마이그레이션 작업 목록을 반환합니다.
+     *
+     * @return array
+     */
+    protected function all(): array
+    {
+        return [
+        ];
+    }
+}

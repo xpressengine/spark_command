@@ -1,0 +1,34 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use DummyBaseNamespace\Migrations\Migration;
+use DummyBaseNamespace\Models\DummyArgumentStudlyCaseName;
+
+/**
+ * Class DummyClass
+ *
+ * @package DummyNamespace
+ */
+class DummyClass implements Migration
+{
+    /**
+     * @return bool
+     */
+    public function checkNotExist(): bool
+    {
+        return Schema::hasTable(DummyArgumentStudlyCaseName::TABLE_NAME) === false;
+    }
+
+    /**
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create(DummyArgumentStudlyCaseName::TABLE_NAME, function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+        });
+    }
+}

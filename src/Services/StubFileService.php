@@ -66,19 +66,17 @@ class StubFileService
         array $replaceData
     )
     {
-        $this->fileSystem->copy(
-            $originStubFilePath,
-            $copiedStubHandlerFilePath
-        );
-
         /**
          * @TODO File System 사용하는 방법에 대한 가이드 문서 추가.
          */
         if ($this->fileSystem->isFile($madeFilePath) === true) {
-            throw new Exception(
-                "file [$madeFilePath] already exists."
-            );
+            return;
         }
+
+        $this->fileSystem->copy(
+            $originStubFilePath,
+            $copiedStubHandlerFilePath
+        );
 
         $this->buildFile(
             $copiedStubHandlerFilePath,

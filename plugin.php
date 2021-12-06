@@ -18,6 +18,7 @@ final class Plugin extends AbstractPlugin
      */
     public function boot()
     {
+        // Service singletons
         Services\MenuService::singleton();
         Services\PluginService::singleton();
         Services\StubFileService::singleton();
@@ -42,13 +43,16 @@ final class Plugin extends AbstractPlugin
         Commands\Helper\SetOrderMenuItemCommand::register();
 
         // Controller Commands
-        Commands\Controller\MackControllerCommand::register();
+        Commands\Controller\MakeControllerCommand::register();
         Commands\Controller\MakeBackOfficeControllerCommand::register();
         Commands\Controller\MakeClientControllerCommand::register();
 
         // Handler Commands
         Commands\Handler\MakeHandlerCommand::register();
-        Commands\Handler\MakeValidationHandler::register();
+        Commands\Handler\MakeValidationHandlerCommand::register();
         Commands\Handler\MakeMessageHandlerCommand::register();
+
+        // Model Commands
+        Commands\Model\MakeModelCommand::register();
     }
 }

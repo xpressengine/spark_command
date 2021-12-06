@@ -1,0 +1,90 @@
+<?php
+
+namespace DummyNamespace;
+
+use Eloquent;
+use Illuminate\Database\Eloquent\Relations;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Xpressengine\Database\Eloquent\Builder;
+use Xpressengine\Database\Eloquent\DynamicModel;
+
+/**
+ * Class DummyClass
+ *
+ * 자격증 (Certificate)
+ *
+ * @package DummyNamespace
+ * @method static Builder|DummyClass newModelQuery()
+ * @method static Builder|DummyClass newQuery()
+ * @method static Builder|DummyClass query()
+ * @mixin Eloquent
+ */
+class DummyClass extends DynamicModel
+{
+    /**
+     * 모델과 연결된 테이블 명
+     *
+     * @var string
+     */
+    const TABLE_NAME = 'DummyTableName';
+
+    /**
+     * 모델과 연결된 테이블 명
+     *
+     * @var string
+     */
+    protected $table = DummyClass::TABLE_NAME;
+
+    /**
+     * Primary Key
+     *
+     * @var null
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Auto Increment 사용 여부
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * Timestamps 사용 여부
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
+     * Guarded
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
+     * Dates
+     *
+     * @var string[]
+     */
+    protected $dates = [];
+
+    /**
+     * Boot 처리
+     */
+    public static function boot()
+    {
+        parent::boot();
+    }
+
+    /**
+     * Id를 반환합니다.
+     *
+     * @return string|null
+     */
+    public function getId()
+    {
+        return $this->getAttribute('id');
+    }
+}

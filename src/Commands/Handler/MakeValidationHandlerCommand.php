@@ -9,12 +9,12 @@ namespace XeHub\XePlugin\XeCli\Commands\Handler;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeValidationHandler extends MakeHandlerCommand
+class MakeValidationHandlerCommand extends MakeHandlerCommand
 {
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:validationHandler {plugin} {name}';
+    protected $signature = 'xe_cli:make:validationHandler {plugin} {name} {--empty}';
 
     /**
      * @var string
@@ -47,5 +47,13 @@ class MakeValidationHandler extends MakeHandlerCommand
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')). 'ValidationHandler';
+    }
+
+    /**
+     * @return string
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:validationHandler';
     }
 }

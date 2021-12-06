@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Xpressengine\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use InvalidArgumentException;
-use Xpressengine\Keygen\Keygen;
-use DummyBaseNamespace\Models\DummyArgumentStudlyCaseName;
+use DummyBaseNamespace\Models\DummyArgumentStudlyCaseNameModel;
 
 /**
  * Class DummyClass
@@ -71,7 +69,7 @@ class DummyClass
     )
     {
         $query = $this->makeWhere(
-            DummyArgumentStudlyCaseName::query(), $inputs
+            DummyArgumentStudlyCaseNameModel::query(), $inputs
         );
 
         $query->when(
@@ -101,7 +99,7 @@ class DummyClass
         $perPage = Arr::get($inputs, 'perPage', 10);
 
         $query = $this->makeWhere(
-            DummyArgumentStudlyCaseName::query(), $inputs
+            DummyArgumentStudlyCaseNameModel::query(), $inputs
         );
 
         $query->when(
@@ -119,28 +117,28 @@ class DummyClass
     /**
      * @param string $id
      * @param array $columns
-     * @return DummyArgumentStudlyCaseName|null
+     * @return DummyArgumentStudlyCaseNameModel|null
      */
     public function find(
         string $id,
         array  $columns = ['*']
     )
     {
-        return DummyArgumentStudlyCaseName::find($id, $columns);
+        return DummyArgumentStudlyCaseNameModel::find($id, $columns);
     }
 
     /**
      * @param string $id
      * @param array $columns
-     * @return DummyArgumentStudlyCaseName
-     * @thorws ModelNotFoundException
+     * @return DummyArgumentStudlyCaseNameModel
+     * @throws ModelNotFoundException
      */
     public function findOrFail(
         string $id,
         array  $columns = ['*']
     )
     {
-        return DummyArgumentStudlyCaseName::findOrFail($id, $columns);
+        return DummyArgumentStudlyCaseNameModel::findOrFail($id, $columns);
     }
 
     /**
@@ -155,12 +153,12 @@ class DummyClass
         array $columns = ['*']
     )
     {
-        return DummyArgumentStudlyCaseName::findMany($ids, $columns);
+        return DummyArgumentStudlyCaseNameModel::findMany($ids, $columns);
     }
 
     /**
      * @param array $inputs
-     * @return DummyArgumentStudlyCaseName
+     * @return DummyArgumentStudlyCaseNameModel
      */
     public function store(
         array $inputs
@@ -173,16 +171,16 @@ class DummyClass
             'user_id' => auth()->id(),
         ]);
 
-        return tap(new DummyArgumentStudlyCaseName($inputs))->save();
+        return tap(new DummyArgumentStudlyCaseNameModel($inputs))->save();
     }
 
     /**
-     * @param DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
      * @param array $inputs
-     * @return DummyArgumentStudlyCaseName
+     * @return DummyArgumentStudlyCaseNameModel
      */
     public function update(
-        DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName,
+        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName,
         array    $inputs
     )
     {
@@ -193,17 +191,66 @@ class DummyClass
     /**
      * (관계는 포함시키지 않습니다.)
      *
-     * @param DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
-     * @return DummyArgumentStudlyCaseName
+     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+     * @return DummyArgumentStudlyCaseNameModel
+     */
+    public function replicate(
+        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+    )
+    {
+        $now = now();
+
+        $newDummyArgumentStudlyCaseName = $DummyArgumentCamelCaseName->replicate(['id']);
+        $newDummyArgumentStudlyCaseName->push();
+
+        $inputs = [
+            'ip_address' => request()->ip(),
+            'user_id' => auth()->id(),
+            'created_at' => $now,
+            'updated_at' => $now,
+        ];
+
+        foreach ($inputs as $key => $value) {
+            $newDummyArgumentStudlyCaseName->setAttribute($key, $value);
+        }
+
+        return tap($newDummyArgumentStudlyCaseName)->save();
+    }
+
+    /**
+     * @param array $DummyArgumentCamelCaseNameIds
+     * @return Collection
+     */
+    public function replicateBatch(array $DummyArgumentCamelCaseNameIds)
+    {
+        $newDummyArgumentStudlyCaseName = [];
+        $DummyArgumentPluralName = $this->findMany($DummyArgumentCamelCaseNameIds);
+
+        $DummyArgumentPluralName->each(function (DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName) use (&$newDummyArgumentStudlyCaseName) {
+            $newDummyArgumentStudlyCaseName[] = $this->replicate($DummyArgumentCamelCaseName);
+        });
+
+        return collect($newDummyArgumentStudlyCaseName);
+    }
+
+    /**
+     * (관계는 포함시키지 않습니다.)
+     *
+     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+     * @return DummyArgumentStudlyCaseNameModel
      */
     public function replicateWithoutRelations(
-        DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
     )
     {
         $now = now();
         $newDummyArgumentStudlyCaseName = $DummyArgumentCamelCaseName->replicate(['id'])->setRelations([]);
 
         $values = [
+            'ip_address' => request()->ip(),
+            'user_id' => auth()->id(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ];
 
         foreach ($values as $key => $value) {
@@ -214,12 +261,12 @@ class DummyClass
     }
 
     /**
-     * @param DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
      * @return void
      * @throws Exception
      */
     public function delete(
-        DummyArgumentStudlyCaseName $DummyArgumentCamelCaseName
+        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
     )
     {
         $DummyArgumentCamelCaseName->delete();
@@ -233,7 +280,7 @@ class DummyClass
         array $ids
     )
     {
-        DummyArgumentStudlyCaseName::whereIn('id', $ids)->delete();
+        DummyArgumentStudlyCaseNameModel::whereIn('id', $ids)->delete();
     }
 
     /**

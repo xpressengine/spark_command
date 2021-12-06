@@ -6,6 +6,7 @@ use App\Console\Commands\MakeCommand;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use ReflectionException;
 use Throwable;
 use XeHub\XePlugin\XeCli\Services\PluginService;
@@ -77,7 +78,10 @@ abstract class MakePluginFileCommand extends MakeCommand
             }
 
             $this->makePluginFile($pluginEntity);
-        } catch (Exception | Throwable $e) {
+        } catch (Exception $e) {
+            $this->cleanPluginFile($pluginEntity);
+            throw $e;
+        } catch (Throwable $e) {
             $this->cleanPluginFile($pluginEntity);
             throw $e;
         }
@@ -95,7 +99,6 @@ abstract class MakePluginFileCommand extends MakeCommand
      * Make Plugin File
      *
      * @param PluginEntity $pluginEntity
-     * @return mixed
      * @throws FileNotFoundException|ReflectionException
      */
     public function makePluginFile(PluginEntity $pluginEntity)
@@ -161,8 +164,11 @@ abstract class MakePluginFileCommand extends MakeCommand
         ];
 
         if ($this->hasArgument('name') === true) {
-            $replaceData['DummyArgumentCamelCaseName'] =  camel_case($this->argument('name'));
-            $replaceData['DummyArgumentStudlyCaseName'] =  studly_case($this->argument('name'));
+            $replaceData['DummyArgumentCamelCaseName'] = Str::camel($this->argument('name'));
+            $replaceData['DummyArgumentStudlyCaseName'] = Str::studly($this->argument('name'));
+            $replaceData['DummyArgumentPluralName'] = Str::plural(
+                Str::camel($this->argument('name'))
+            );
         }
 
         return $replaceData;
@@ -170,6 +176,7 @@ abstract class MakePluginFileCommand extends MakeCommand
 
     /**
      * Plugin's Name
+     * (상속으로 재정의)
      *
      * @return string
      */
@@ -219,4 +226,12 @@ abstract class MakePluginFileCommand extends MakeCommand
      * @return string
      */
     abstract protected function getStubFileName(): string;
+
+    /**
+     * Get Artisan Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    abstract public function getArtisanCommandName(): string;
 }

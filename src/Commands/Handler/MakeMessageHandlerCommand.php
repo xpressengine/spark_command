@@ -14,7 +14,7 @@ class MakeMessageHandlerCommand extends MakeHandlerCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:messageHandler {plugin} {name}';
+    protected $signature = 'xe_cli:make:messageHandler {plugin} {name} {--empty}';
 
     /**
      * @var string
@@ -47,5 +47,13 @@ class MakeMessageHandlerCommand extends MakeHandlerCommand
     protected function outputSuccessMessage()
     {
         $this->output->success('Generate The Message Handler');
+    }
+
+    /**
+     * @return string
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:messageHandler';
     }
 }

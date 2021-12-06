@@ -9,6 +9,7 @@ use XeHub\XePlugin\XeCli\Commands\Handler\MakeMessageHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeValidationHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
 use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommand;
+
 use Xpressengine\Plugin\PluginEntity;
 
 /**
@@ -76,7 +77,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
         ]);
 
         $this->call(app(MakeModelCommand::class)->getArtisanCommandName(), [
-            'plugin' => $this->getPluginName(),
+            'plugin' => $this->argument('plugin'),
             'name' => $this->argument('name'),
         ]);
     }

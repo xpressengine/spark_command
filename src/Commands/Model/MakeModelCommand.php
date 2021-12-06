@@ -3,6 +3,7 @@
 namespace XeHub\XePlugin\XeCli\Commands\Model;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+
 use Illuminate\Support\Str;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;

@@ -3,18 +3,18 @@
 namespace XeHub\XePlugin\XeCli\Commands\Model;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-
 use Illuminate\Support\Str;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;
+use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
 /**
  * Class MakeModelCommand
- * 
+ *
  * 모델을 생성하는 코멘드
- * 
+ *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
 class MakeModelCommand extends MakePluginFileCommand
@@ -24,7 +24,7 @@ class MakeModelCommand extends MakePluginFileCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:model {plugin} {name} {--tableName=}';
+    protected $signature = 'xe_cli:make:model {plugin} {name} {--tableName=} {--migration}';
 
     /**
      * @var string
@@ -43,6 +43,27 @@ class MakeModelCommand extends MakePluginFileCommand
     }
 
     /**
+     * Make Plugin File
+     *
+     * @param PluginEntity $pluginEntity
+     * @throws FileNotFoundException
+     * @throws ReflectionException
+     */
+    public function makePluginFile(
+        PluginEntity $pluginEntity
+    )
+    {
+        parent::makePluginFile($pluginEntity);
+
+        if ($this->option('migration') == true) {
+            $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
+                'plugin' =>  $this->getPluginName(),
+                'name' => $this->argument('name'),
+            ]);
+        }
+    }
+
+    /**
      * Get Replace Data
      *
      * @param PluginEntity $pluginEntity
@@ -50,7 +71,9 @@ class MakeModelCommand extends MakePluginFileCommand
      * @throws FileNotFoundException
      * @throws ReflectionException
      */
-    protected function getReplaceData(PluginEntity $pluginEntity): array
+    protected function getReplaceData(
+        PluginEntity $pluginEntity
+    ): array
     {
         $replaceData = parent::getReplaceData($pluginEntity);
 
@@ -106,7 +129,9 @@ class MakeModelCommand extends MakePluginFileCommand
      * @throws FileNotFoundException
      * @throws ReflectionException
      */
-    protected function getPluginNamespace(PluginEntity $pluginEntity): string
+    protected function getPluginNamespace(
+        PluginEntity $pluginEntity
+    ): string
     {
         return $this->pluginService->getPluginNamespace(
             $pluginEntity, 'Models'
@@ -121,7 +146,9 @@ class MakeModelCommand extends MakePluginFileCommand
      * @return string
      * @throws FileNotFoundException
      */
-    protected function getPluginDirectoryPath(PluginEntity $pluginEntity): string
+    protected function getPluginDirectoryPath(
+        PluginEntity $pluginEntity
+    ): string
     {
         return $this->pluginService->getPluginPath(
             $pluginEntity, 'Models'
@@ -135,7 +162,7 @@ class MakeModelCommand extends MakePluginFileCommand
      */
     protected function getPluginFileClass(): string
     {
-        return studly_case($this->argument('name')). 'Model';
+        return studly_case($this->argument('name')) . 'Model';
     }
 
     /**

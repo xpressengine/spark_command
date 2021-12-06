@@ -160,15 +160,26 @@ php artisan xe_cli:migrate:queueDatabase
 ### Make Migration Table
 
 ```
-xe_cli:make:migrationTable {plugin} {name}
+xe_cli:make:migrationTable {plugin} {name} {--model}
 ```
+
+#### 예시
+
+```
+php artisan xe_cli:make:migrationTable xe_cli exam --model
+php artisan xe_cli:make:migrationTable xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --model : 테이블 마이그레이션에 대한 모델 파일 생성
+
 
 ### Make Migration Resource
 
 ```
 xe_cli:make:migrationResource {plugin}
 ```
-
 
 </p>
 </details>
@@ -214,6 +225,9 @@ php artisan xe_cli:make:controller {plugin} {name}
 php artisan xe_cli:make:backOfficeController {plugin} {name}
 ```
 
+- 옵션
+    - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
+
 ### Make Client Controller
 
 ```
@@ -233,20 +247,79 @@ php artisan xe_cli:make:clientController {plugin} {name}
 ### Make Handler
 
 ```
-php artisan xe_cli:make:handler {plugin} {name}
+php artisan xe_cli:make:handler {plugin} {name} {--empty}
 ```
+#### 예시
+
+```
+php artisan xe_cli:make:handler xe_cli exam --empty
+php artisan xe_cli:make:handler xe_cli exam
+```
+
+#### 설명
+- 옵션
+  - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
 
 ### Make Message Handler
 
 ```
-php artisan xe_cli:make:messageHandler {plugin} {name}
+php artisan xe_cli:make:messageHandler {plugin} {name} {--empty}
 ```
+
+#### 예시
+
+```
+php artisan xe_cli:make:messageHandler xe_cli exam --empty
+php artisan xe_cli:make:messageHandler xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
 
 ### Make Validation Handler
 
 ```
-php artisan xe_cli:make:validationHandler {plugin} {name}
+php artisan xe_cli:make:validationHandler {plugin} {name} {--empty}
 ```
+
+#### 예시
+
+```
+php artisan xe_cli:make:validationHandler xe_cli exam --empty
+php artisan xe_cli:make:validationHandler xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
+
+</p>
+</details>
+
+---
+
+<details>
+<summary>모델 명령어</summary>
+
+<p>
+
+### Make Model
+
+```
+php artisan xe_cli:make:model {plugin} {name} {--migration}
+```
+
+#### 예시
+
+```
+php artisan xe_cli:make:model xe_cli exam --migration
+php artisan xe_cli:make:model xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --migration : 모델에 대한 테이블 마이그레이션 파일 생성
 
 </p>
 </details>

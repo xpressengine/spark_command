@@ -5,6 +5,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Migration;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;
+use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommand;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -19,7 +20,7 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:migrationTable {plugin} {name}';
+    protected $signature = 'xe_cli:make:migrationTable {plugin} {name} {--model}';
 
     /**
      * @var string
@@ -34,20 +35,42 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
      * @throws FileNotFoundException
      * @throws ReflectionException
      */
-    public function makePluginFile(PluginEntity $pluginEntity)
+    public function makePluginFile(
+        PluginEntity $pluginEntity
+    )
     {
         parent::makePluginFile($pluginEntity);
+        $this->makeMigrationInterfaceFile($pluginEntity);
 
+        if ($this->option('model') == true) {
+            $this->call(app(MakeModelCommand::class)->getArtisanCommandName(), [
+                'plugin' => $this->getPluginName(),
+                'name' => $this->argument('name')
+            ]);
+        }
+    }
+
+    /**
+     * Mak Migration Interface File
+     *
+     * @param PluginEntity $pluginEntity
+     * @throws FileNotFoundException
+     * @throws ReflectionException
+     */
+    protected function makeMigrationInterfaceFile(
+        PluginEntity $pluginEntity
+    )
+    {
         $stubFileName = 'migrationInterface.stub';
-        $controllerDirectoryPath =  $this->pluginService->getPluginPath(
+        $controllerDirectoryPath = $this->pluginService->getPluginPath(
             $pluginEntity, 'Migrations'
         );
 
-        // Stub 복사
+        // Migration Interface Migration Stub 복사
         $originControllerStubFilePath = $this->getStubPath() . '/' . $stubFileName;
         $stubControllerFilePath = $controllerDirectoryPath . '/' . $stubFileName;
 
-        // Made Controller
+        // Made Interface Migration
         $madeControllerFilePath = $controllerDirectoryPath . '/Migration.php';
 
         $this->stubFileService->makeFileByStub(
@@ -88,7 +111,9 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
      * @return string
      * @throws FileNotFoundException
      */
-    protected function getPluginDirectoryPath(PluginEntity $pluginEntity): string
+    protected function getPluginDirectoryPath(
+        PluginEntity $pluginEntity
+    ): string
     {
         return $this->pluginService->getPluginPath(
             $pluginEntity, 'Migrations/Table'
@@ -104,7 +129,9 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
      * @throws FileNotFoundException
      * @throws ReflectionException
      */
-    protected function getPluginNamespace(PluginEntity $pluginEntity): string
+    protected function getPluginNamespace(
+        PluginEntity $pluginEntity
+    ): string
     {
         return $this->pluginService->getPluginNamespace(
             $pluginEntity, 'Migrations/Table'

@@ -58,7 +58,6 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
         );
     }
 
-
     /**
      * Get Plugin's Name
      * (상속으로 재정의)
@@ -137,5 +136,13 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')) . 'Table';
+    }
+
+    /**
+     * @return string
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:migrationTable';
     }
 }

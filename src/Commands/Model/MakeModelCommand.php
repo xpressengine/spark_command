@@ -1,6 +1,6 @@
 <?php
 
-namespace XeHub\XePlugin\XeCli\Commands\Migration;
+namespace XeHub\XePlugin\XeCli\Commands\Model;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
@@ -9,66 +9,56 @@ use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
 /**
- * Class MakeMigrationResourceCommand
- *
- * @package XeHub\XePlugin\XeCli\Commands\Migration
+ * Class MakeModelCommand
+ * 
+ * 모델을 생성하는 코멘드
+ * 
+ * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeMigrationResourceCommand extends MakePluginFileCommand
+class MakeModelCommand extends MakePluginFileCommand
 {
     use RegisterArtisan;
 
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:migrationResource {plugin}';
+    protected $signature = 'xe_cli:make:model {plugin} {name} {tableName}';
 
     /**
      * @var string
      */
-    protected $description = 'Make Migration Resource';
-
-    /**
-     * Make Plugin File
-     *
-     * @param PluginEntity $pluginEntity
-     * @return mixed|void
-     * @throws FileNotFoundException
-     * @throws ReflectionException
-     */
-    public function makePluginFile(PluginEntity $pluginEntity)
-    {
-        parent::makePluginFile($pluginEntity);
-
-        $stubFileName = 'migrationInterface.stub';
-        $controllerDirectoryPath =  $this->pluginService->getPluginPath(
-            $pluginEntity, 'Migrations'
-        );
-
-        // Stub 복사
-        $originControllerStubFilePath = $this->getStubPath() . '/' . $stubFileName;
-        $stubControllerFilePath = $controllerDirectoryPath . '/' . $stubFileName;
-
-        // Made Controller
-        $madeControllerFilePath = $controllerDirectoryPath . '/Migration.php';
-
-        $this->stubFileService->makeFileByStub(
-            $originControllerStubFilePath,
-            $stubControllerFilePath,
-            $madeControllerFilePath,
-            $this->getReplaceData($pluginEntity)
-        );
-    }
+    protected $description = 'Make Model Command';
 
     /**
      * Output Success Message
+     * (상속으로 재정의)
+     *
+     * @return void
      */
     protected function outputSuccessMessage()
     {
-        $this->output->success('Generate The Migration Resource');
+        $this->output->success('Generate The Model');
     }
 
     /**
-     * Get Plugin's Name
+     * Get Replace Data
+     *
+     * @param PluginEntity $pluginEntity
+     * @return array
+     * @throws FileNotFoundException
+     * @throws ReflectionException
+     */
+    protected function getReplaceData(PluginEntity $pluginEntity): array
+    {
+        $replaceData = parent::getReplaceData($pluginEntity);
+
+        return array_merge($replaceData, [
+            'DummyTableName' => $this->argument('tableName')
+        ]);
+    }
+
+    /**
+     * Get Plugin Name
      * (상속으로 재정의)
      *
      * @return string
@@ -101,7 +91,7 @@ class MakeMigrationResourceCommand extends MakePluginFileCommand
     protected function getPluginNamespace(PluginEntity $pluginEntity): string
     {
         return $this->pluginService->getPluginNamespace(
-            $pluginEntity, 'Migrations'
+            $pluginEntity, 'Models'
         );
     }
 
@@ -116,36 +106,38 @@ class MakeMigrationResourceCommand extends MakePluginFileCommand
     protected function getPluginDirectoryPath(PluginEntity $pluginEntity): string
     {
         return $this->pluginService->getPluginPath(
-            $pluginEntity, 'Migrations'
+            $pluginEntity, 'Models'
         );
     }
 
     /**
-     * Get Plugin File Class
+     * Get Plugin File
      *
      * @return string
      */
     protected function getPluginFileClass(): string
     {
-        return 'MigrationResource';
+        return studly_case($this->argument('name')). 'Model';
     }
 
     /**
-     * Get Controller Stub File Name
+     * Get Handler Stub File Name
      * (상속으로 재정의)
      *
      * @return string
      */
     protected function getStubFileName(): string
     {
-        return 'migrationResource.stub';
+        return 'model.stub';
     }
 
     /**
+     * Get Artisan Command Name
+     *
      * @return string
      */
     public function getArtisanCommandName()
     {
-        return 'xe_cli:make:migrationResource';
+        return 'xe_cli:make:model';
     }
 }

@@ -102,10 +102,21 @@ class MakeHandlerCommand extends MakePluginFileCommand
     }
 
     /**
+     * Get Plugin File Class
+     * (상속으로 재정의)
+     *
      * @return string
      */
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')). 'Handler';
+    }
+
+    /**
+     * @return string
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:handler';
     }
 }

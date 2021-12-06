@@ -48,4 +48,12 @@ class MakeMessageHandlerCommand extends MakeHandlerCommand
     {
         $this->output->success('Generate The Message Handler');
     }
+
+    /**
+     * @return string
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:messageHandler';
+    }
 }

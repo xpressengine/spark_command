@@ -4,6 +4,10 @@ namespace XeHub\XePlugin\XeCli\Commands\Controller;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
+use XeHub\XePlugin\XeCli\Commands\Handler\MakeHandlerCommand;
+use XeHub\XePlugin\XeCli\Commands\Handler\MakeMessageHandlerCommand;
+use XeHub\XePlugin\XeCli\Commands\Handler\MakeValidationHandlerCommand;
+use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
 use Xpressengine\Plugin\PluginEntity;
 
 /**
@@ -13,7 +17,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Controller
  */
-class MakeBackOfficeControllerCommand extends MackControllerCommand
+class MakeBackOfficeControllerCommand extends MakeControllerCommand
 {
     /**
      * @var string
@@ -24,6 +28,52 @@ class MakeBackOfficeControllerCommand extends MackControllerCommand
      * @var string
      */
     protected $description = 'Make Back Office Controller Command';
+
+    /**
+     * Make Plugin File
+     *
+     * @param PluginEntity $pluginEntity
+     * @throws FileNotFoundException|ReflectionException
+     */
+    public function makePluginFile(PluginEntity $pluginEntity)
+    {
+        parent::makePluginFile($pluginEntity);
+
+        $this->makeMigrations();
+        $this->makeHandlers();
+    }
+
+    /**
+     * Make Handlers
+     */
+    protected function makeHandlers()
+    {
+        $this->call(app(MakeHandlerCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->argument('plugin'),
+            'name' => $this->argument('name'),
+        ]);
+
+        $this->call(app(MakeMessageHandlerCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->argument('plugin'),
+            'name' => $this->argument('name'),
+        ]);
+
+        $this->call(app(MakeValidationHandlerCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->argument('plugin'),
+            'name' => $this->argument('name'),
+        ]);
+    }
+
+    /**
+     * Make Migrations
+     */
+    protected function makeMigrations()
+    {
+        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->argument('plugin'),
+            'name' => $this->argument('name'),
+        ]);
+    }
 
     /**
      * Get Controller Directory Path
@@ -74,5 +124,13 @@ class MakeBackOfficeControllerCommand extends MackControllerCommand
     protected function outputSuccessMessage()
     {
         $this->output->success('Generate The Back Office Controller');
+    }
+
+    /**
+     * Get Artisan Name
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:backOfficeController';
     }
 }

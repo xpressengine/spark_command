@@ -95,7 +95,6 @@ abstract class MakePluginFileCommand extends MakeCommand
      * Make Plugin File
      *
      * @param PluginEntity $pluginEntity
-     * @return mixed
      * @throws FileNotFoundException|ReflectionException
      */
     public function makePluginFile(PluginEntity $pluginEntity)
@@ -170,6 +169,7 @@ abstract class MakePluginFileCommand extends MakeCommand
 
     /**
      * Plugin's Name
+     * (상속으로 재정의)
      *
      * @return string
      */
@@ -219,4 +219,12 @@ abstract class MakePluginFileCommand extends MakeCommand
      * @return string
      */
     abstract protected function getStubFileName(): string;
+
+    /**
+     * Get Artisan Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    abstract public function getArtisanCommandName(): string;
 }

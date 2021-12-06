@@ -9,13 +9,13 @@ use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
 /**
- * Class MackControllerCommand
+ * Class MakeControllerCommand
  *
  * Controller 를 생성하는 커멘드
  *
  * @package XeHub\XePlugin\XeCli\Commands\Controller
  */
-class MackControllerCommand extends MakePluginFileCommand
+class MakeControllerCommand extends MakePluginFileCommand
 {
     use RegisterArtisan;
 
@@ -110,5 +110,13 @@ class MackControllerCommand extends MakePluginFileCommand
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')) . 'Controller';
+    }
+
+    /**
+     * Get Artisan Name
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:controller';
     }
 }

@@ -13,7 +13,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Controller
  */
-class MakeClientControllerCommand extends MackControllerCommand
+class MakeClientControllerCommand extends MakeControllerCommand
 {
     /**
      * @var string
@@ -74,5 +74,13 @@ class MakeClientControllerCommand extends MackControllerCommand
     protected function outputSuccessMessage()
     {
         $this->output->success('Generate The Client Controller');
+    }
+
+    /**
+     * Get Artisan Name
+     */
+    public function getArtisanCommandName(): string
+    {
+        return 'xe_cli:make:clientController';
     }
 }

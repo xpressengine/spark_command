@@ -4,12 +4,12 @@ namespace XeHub\XePlugin\XeCli\Commands\Controller;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
+use Symfony\Component\Console\Input\InputOption;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeMessageHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeValidationHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
 use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommand;
-
 use Xpressengine\Plugin\PluginEntity;
 
 /**
@@ -24,7 +24,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:backOfficeController {plugin} {name} {--empty}';
+    protected $signature = 'xe_cli:make:backOfficeController {plugin} {name} {--structure}';
 
     /**
      * @var string
@@ -44,51 +44,73 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
     {
         parent::makePluginFile($pluginEntity);
 
-        if ($this->isActivateEmptyOption() === false) {
-            $this->callPluginFileCommands();
+        if ($this->option('structure') == false) {
+            $this->makeHandlerFile();
+            $this->makeMessageHandlerFile();
+            $this->makeValidationHandlerFile();
+            $this->makeMigrationTableFile();
+            $this->makeModelFile();
         }
     }
 
     /**
-     * Make Class Plugins File
-     *
+     * Make Handler File
      * @return void
      */
-    public function callPluginFileCommands()
+    protected function makeHandlerFile()
     {
         $this->call(app(MakeHandlerCommand::class)->getArtisanCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
+    }
 
+    /**
+     * Make Message Handler File
+     * @return void
+     */
+    protected function makeMessageHandlerFile()
+    {
         $this->call(app(MakeMessageHandlerCommand::class)->getArtisanCommandName(), [
-            'plugin' =>  $this->getPluginName(),
-            'name' => $this->argument('name'),
-        ]);
-
-        $this->call(app(MakeValidationHandlerCommand::class)->getArtisanCommandName(), [
-            'plugin' =>  $this->getPluginName(),
-            'name' => $this->argument('name'),
-        ]);
-
-        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
-            'plugin' =>  $this->getPluginName(),
-            'name' => $this->argument('name'),
-        ]);
-
-        $this->call(app(MakeModelCommand::class)->getArtisanCommandName(), [
-            'plugin' => $this->argument('plugin'),
+            'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
     }
 
     /**
-     * Is Activate Empty Option
-     * @return bool
+     * Make Validation Handler File
+     * @return void
      */
-    protected function isActivateEmptyOption(): bool
+    protected function makeValidationHandlerFile()
     {
-        return $this->option('empty') == true;
+        $this->call(app(MakeValidationHandlerCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
+    }
+
+    /**
+     * Make Migration Table File
+     * @return void
+     */
+    protected function makeMigrationTableFile()
+    {
+        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
+    }
+
+    /**
+     * Make Model File
+     * @return void
+     */
+    protected function makeModelFile()
+    {
+        $this->call(app(MakeModelCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
     }
 
     /**
@@ -145,8 +167,8 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
      */
     protected function getStubPath(): string
     {
-        if ($this->isActivateEmptyOption() === true) {
-            return __DIR__ . '/stubs/empty';
+        if ($this->option('structure') == true) {
+            return __DIR__ . '/stubs/structure';
         }
 
         return __DIR__ . '/stubs';

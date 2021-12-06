@@ -14,7 +14,7 @@ class MakeMessageHandlerCommand extends MakeHandlerCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:messageHandler {plugin} {name} {--empty}';
+    protected $signature = 'xe_cli:make:messageHandler {plugin} {name} {--structure}';
 
     /**
      * @var string

@@ -226,7 +226,7 @@ php artisan xe_cli:make:backOfficeController {plugin} {name}
 ```
 
 - 옵션
-    - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
+    - --structure : 상세한 내용 없이 형태만 가져와 생성해줍니다.
 
 ### Make Client Controller
 
@@ -247,52 +247,52 @@ php artisan xe_cli:make:clientController {plugin} {name}
 ### Make Handler
 
 ```
-php artisan xe_cli:make:handler {plugin} {name} {--empty}
+php artisan xe_cli:make:handler {plugin} {name} {--structure}
 ```
 #### 예시
 
 ```
-php artisan xe_cli:make:handler xe_cli exam --empty
+php artisan xe_cli:make:handler xe_cli exam --structure
 php artisan xe_cli:make:handler xe_cli exam
 ```
 
 #### 설명
 - 옵션
-  - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
+  - --structure : 상세한 내용 없이 클래스 형태만 가져와 생성해줍니다.
 
 ### Make Message Handler
 
 ```
-php artisan xe_cli:make:messageHandler {plugin} {name} {--empty}
+php artisan xe_cli:make:messageHandler {plugin} {name} {--structure}
 ```
 
 #### 예시
 
 ```
-php artisan xe_cli:make:messageHandler xe_cli exam --empty
+php artisan xe_cli:make:messageHandler xe_cli exam --structure
 php artisan xe_cli:make:messageHandler xe_cli exam
 ```
 
 #### 설명
 - 옵션
-    - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
+    - --structure : 상세한 내용 없이 클래스 형태만 가져와 생성해줍니다.
 
 ### Make Validation Handler
 
 ```
-php artisan xe_cli:make:validationHandler {plugin} {name} {--empty}
+php artisan xe_cli:make:validationHandler {plugin} {name} {--structure}
 ```
 
 #### 예시
 
 ```
-php artisan xe_cli:make:validationHandler xe_cli exam --empty
+php artisan xe_cli:make:validationHandler xe_cli exam --structure
 php artisan xe_cli:make:validationHandler xe_cli exam
 ```
 
 #### 설명
 - 옵션
-    - --empty : 상세한 내용 없이 클래스 형태만 가져옵니다.
+    - --structure : 상세한 내용 없이 클래스 형태만 가져와 생성해줍니다.
 
 </p>
 </details>

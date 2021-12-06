@@ -22,7 +22,7 @@ class MakeHandlerCommand extends MakePluginFileCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:handler {plugin} {name} {--empty}';
+    protected $signature = 'xe_cli:make:handler {plugin} {name} {--structure}';
 
     /**
      * @var string
@@ -55,15 +55,6 @@ class MakeHandlerCommand extends MakePluginFileCommand
     }
 
     /**
-     * Is Activate Empty Option
-     * @return bool
-     */
-    protected function isActivateEmptyOption(): bool
-    {
-        return $this->option('empty') == true;
-    }
-
-    /**
      * Plugin's Name
      *
      * @return string
@@ -81,8 +72,8 @@ class MakeHandlerCommand extends MakePluginFileCommand
      */
     protected function getStubPath(): string
     {
-        if ($this->isActivateEmptyOption() === true) {
-            return __DIR__ . '/stubs/empty';
+        if ($this->option('structure') == true) {
+            return __DIR__ . '/stubs/structure';
         }
 
         return __DIR__ . '/stubs';

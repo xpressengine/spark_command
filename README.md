@@ -323,3 +323,81 @@ php artisan xe_cli:make:model xe_cli exam
 
 </p>
 </details>
+
+---
+
+<details>
+<summary>뷰 명령어</summary>
+
+<p>
+
+### Make BackOffice Index View
+
+```
+php artisan xe_cli:make:backOfficeIndexView {plugin} {name} {--structure}
+```
+
+#### 예시
+
+```
+php artisan xe_cli:make:backOfficeIndexView xe_cli exam --structure
+php artisan xe_cli:make:backOfficeIndexView xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --structure : 상세한 내용 없이 클래스 형태만 가져와 생성해줍니다.
+
+### Make BackOffice Show View
+
+```
+php artisan xe_cli:make:backOfficeShowView {plugin} {name} {--structure}
+```
+
+#### 예시
+
+```
+php artisan xe_cli:make:backOfficeShowView xe_cli exam --structure
+php artisan xe_cli:make:backOfficeShowView xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --structure : 상세한 내용 없이 클래스 형태만 가져와 생성해줍니다.
+
+### Make BackOffice Create View
+
+```
+php artisan xe_cli:make:backOfficeCreateView {plugin} {name} {--structure}
+```
+
+#### 예시
+
+```
+php artisan xe_cli:make:backOfficeCreateView xe_cli exam --structure
+php artisan xe_cli:make:backOfficeCreateView xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --structure : 상세한 내용 없이 클래스 형태만 가져와 생성해줍니다.
+
+### Make BackOffice Edit View
+
+```
+php artisan xe_cli:make:backOfficeEditView {plugin} {name} {--structure}
+```
+
+#### 예시
+
+```
+php artisan xe_cli:make:backOfficeEditView xe_cli exam --structure
+php artisan xe_cli:make:backOfficeEditView xe_cli exam
+```
+
+#### 설명
+- 옵션
+    - --structure : 상세한 내용 없이 클래스 형태만 가져와 생성해줍니다.
+
+</p>
+</details>

@@ -4,7 +4,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Controller;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
-use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;
+use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -15,7 +15,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Controller
  */
-class MakeControllerCommand extends MakePluginFileCommand
+class MakeControllerCommandClass extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
 
@@ -110,6 +110,17 @@ class MakeControllerCommand extends MakePluginFileCommand
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')) . 'Controller';
+    }
+
+    /**
+     * Get Plugin File Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return studly_case($this->argument('name')) . 'Controller.php';
     }
 
     /**

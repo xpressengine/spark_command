@@ -19,6 +19,8 @@ use Xpressengine\Plugin\PluginProvider;
 /**
  * Class MakePluginFileCommand
  *
+ * 플러그인 내 파일을 생성하는 코멘드
+ *
  * @package XeHub\XePlugin\XeCli\Commands
  */
 abstract class MakePluginFileCommand extends MakeCommand
@@ -60,7 +62,7 @@ abstract class MakePluginFileCommand extends MakeCommand
      * Make Controller Command
      *
      * @throws FileNotFoundException
-     * @throws Exception|Throwable
+     * @throws Exception|Throwable|ReflectionException
      */
     public function handle()
     {
@@ -68,13 +70,13 @@ abstract class MakePluginFileCommand extends MakeCommand
             $this->getPluginName()
         );
 
-        $controllerDirectoryPath = $this->getPluginDirectoryPath(
+        $pluginDirectoryPath = $this->getPluginDirectoryPath(
             $pluginEntity
         );
 
         try {
-            if ($this->files->isDirectory($controllerDirectoryPath) === false) {
-                $this->files->makeDirectory($controllerDirectoryPath, 0777, true);
+            if ($this->files->isDirectory($pluginDirectoryPath) === false) {
+                $this->files->makeDirectory($pluginDirectoryPath, 0777, true);
             }
 
             $this->makePluginFile($pluginEntity);
@@ -101,7 +103,9 @@ abstract class MakePluginFileCommand extends MakeCommand
      * @param PluginEntity $pluginEntity
      * @throws FileNotFoundException|ReflectionException
      */
-    public function makePluginFile(PluginEntity $pluginEntity)
+    public function makePluginFile(
+        PluginEntity $pluginEntity
+    )
     {
         $stubFileName = $this->getStubFileName();
         $controllerDirectoryPath = $this->getPluginDirectoryPath($pluginEntity);
@@ -111,7 +115,7 @@ abstract class MakePluginFileCommand extends MakeCommand
         $stubControllerFilePath = $controllerDirectoryPath . '/' . $stubFileName;
 
         // Made Controller
-        $madeControllerFilePath = $controllerDirectoryPath . '/' . $this->getPluginFileClass() . '.php';
+        $madeControllerFilePath = $controllerDirectoryPath . '/' . $this->getPluginFileName();
 
         $this->stubFileService->makeFileByStub(
             $originControllerStubFilePath,
@@ -126,7 +130,9 @@ abstract class MakePluginFileCommand extends MakeCommand
      *
      * @param PluginEntity $pluginEntity
      */
-    public function cleanPluginFile(PluginEntity $pluginEntity)
+    public function cleanPluginFile(
+        PluginEntity $pluginEntity
+    )
     {
         $stubFileName = $this->getStubFileName();
         $controllerDirectoryPath = $this->getPluginDirectoryPath($pluginEntity);
@@ -151,14 +157,9 @@ abstract class MakePluginFileCommand extends MakeCommand
         PluginEntity $pluginEntity
     ): array
     {
-        $madeControllerClassName = $this->getPluginFileClass();
-
-        $madeControllerNamespace = $this->getPluginNamespace($pluginEntity);
         $baseNamespace = $this->pluginService->getPluginNamespace($pluginEntity, '');;
 
         $replaceData = [
-            'DummyClass' => $madeControllerClassName,
-            'DummyNamespace' => $madeControllerNamespace,
             'DummyPluginId' => $pluginEntity->getId(),
             'DummyBaseNamespace' => $baseNamespace
         ];
@@ -191,17 +192,6 @@ abstract class MakePluginFileCommand extends MakeCommand
     abstract protected function getStubPath(): string;
 
     /**
-     * Get Plugin Namespace
-     * (상속으로 재정의)
-     *
-     * @param PluginEntity $pluginEntity
-     * @return string
-     * @throws FileNotFoundException
-     * @throws ReflectionException
-     */
-    abstract protected function getPluginNamespace(PluginEntity $pluginEntity): string;
-
-    /**
      * Get Plugin Directory Path
      * (상속으로 재정의)
      *
@@ -211,13 +201,12 @@ abstract class MakePluginFileCommand extends MakeCommand
     abstract protected function getPluginDirectoryPath(PluginEntity $pluginEntity): string;
 
     /**
-     * Get Plugin Directory Path
+     * Get Plugin File Name
      * (상속으로 재정의)
      *
      * @return string
      */
-    abstract protected function getPluginFileClass(): string;
-
+    abstract protected function getPluginFileName(): string;
 
     /**
      * Get Controller Stub File Name

@@ -13,7 +13,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Controller
  */
-class MakeClientControllerCommand extends MakeControllerCommand
+class MakeClientControllerCommand extends MakeControllerCommandClass
 {
     /**
      * @var string

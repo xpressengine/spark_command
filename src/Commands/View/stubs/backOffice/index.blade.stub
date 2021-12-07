@@ -1,0 +1,279 @@
+@php
+    app('xe.frontend')->js('assets/core/xe-ui-component/js/xe-page.js')->load();
+    app('xe.frontend')->js('/assets/vendor/jqueryui/jquery-ui.min.js')->load();
+    app('xe.frontend')->css('/assets/vendor/jqueryui/jquery-ui.min.css')->load();
+
+   \XeFrontend::title($pageTitle);
+@endphp
+
+@section('page_title')
+    <div class="xepage-admin clearfix">
+        <h2 class="pull-left">
+            <strong>Page Title</strong>
+        </h2>
+
+        <a
+            href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.create') }}"
+            class="btn btn-primary bg-b500 pull-right"
+            style="padding: 10px 50px"
+        >
+            <strong>
+                <em class="xi-pen"></em>
+                신규 등록하기
+            </strong>
+        </a>
+    </div>
+@endsection
+
+<div class="xepage-admin">
+    <form method="get" action="{{ request()->fullUrlWithQuery([]) }}">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="xepage-admin-flat-box">
+                    <div class="xepage-admin-flat-box__title">
+                        <label class="">검색어</label>
+                    </div>
+                    <div class="xepage-admin-flat-box__contents">
+                        <div class="xu-form-group d-inline-block" style="margin-bottom: 10px">
+                            <div class="xu-form-group__box xu-form-group__box--icon-right">
+                                <select class="form-control" name="word_subject">
+                                    @foreach($searchSubjectOptions as $searchSubjectOption)
+                                        <option value="{{ $searchSubjectOption['value'] }}">
+                                            {{ $searchSubjectOption['text'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="xu-form-group d-inline-block">
+                            <div class="xu-form-group__box">
+                                {{
+                                    uio('formText', [
+                                        'name'=> 'word',
+                                        'placeholder' => '검색어를 입력하세요',
+                                        'value'=> request('word'),
+                                        'autocomplete ' => 'off'
+                                    ])
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer pt-4 pb-5 text-center" style="padding: 15px 0">
+                <button type="submit" class="btn btn-primary bg-b400" style="padding: 10px 50px">
+                    <i class="xi-search"></i>
+                    <strong>검색</strong>
+                </button>
+
+                {{-- @TODO 특정 페이지에 대한 쿼리 파라미터를 초기화 시키는 방법에 대한 문서화 --}}
+                <a href="{{ request()->fullUrlWithQuery(['word' => null, 'word_subject' => null]) }}" class="btn btn-default bg-b400" style="padding: 10px 50px">
+                    <i class="xi-refresh"></i>
+                    <strong>초기화</strong>
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <div class="panel-group">
+
+        <!-- 테이블 -->
+        <div class="panel">
+            <form id="question-form" method="POST">
+                {{ csrf_field()  }}
+                {{ method_field('delete') }}
+
+                <div class="panel-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table--default">
+                            <caption>
+                                <div class="pull-left">
+                                    아이템 목록을 확인할 수 있는 테이블입니다.
+                                </div>
+
+                                <div class="pull-right">
+                                    <span>{{ number_format($totalCount) }} 개</span>
+                                    <span>({{ $currentPage }}/{{ $lastPage }})</span>
+                                </div>
+                            </caption>
+                            <thead>
+                            <tr>
+                                <th scope="col" class="text-center">
+                                    <label>
+                                        <input id="check-all-input" type="checkbox">
+                                    </label>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($DummyArgumentPluralName as $DummyArgumentCamelCaseName)
+                                <tr class="__section-item">
+                                    <td class="text-center">
+                                        <label>
+                                            <input type="checkbox" value="{{ $DummyArgumentCamelCaseName->getId() }}" name="DummyArgumentCamelCaseName[]">
+                                        </label>
+                                    </td>
+                                    <td class="text-center">
+                                        <div>
+                                            <a
+                                                href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.edit', [$DummyArgumentCamelCaseName->getId()]) }}"
+                                                class="btn btn-default"
+                                                style="padding-left: 50px; padding-right: 50px"
+                                            >
+                                                <strong>수정</strong>
+                                            </a>
+                                        </div>
+
+                                        <div style="margin-top: 5px">
+                                            <button
+                                                data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.delete', [$DummyArgumentCamelCaseName->getId()]) }}"
+                                                class="xe-btn xe-btn-danger-outline __delete-DummyArgumentCamelCaseName"
+                                                style="padding: 6px 50px"
+                                                type="button"
+                                            >
+                                                <strong>삭제</strong>
+                                            </button>
+                                        </div>
+
+                                        <div style="margin-top: 5px">
+                                            <a
+                                                href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.manage_questions', [$DummyArgumentCamelCaseName->getId()]) }}"
+                                                class="xe-btn xe-btn-danger-outline"
+                                                style="padding-left: 36px; padding-right: 36px"
+                                                type="button"
+                                            >
+                                                <strong>문제관리</strong>
+                                            </a>
+                                        </div>
+
+                                        <div style="margin-top: 5px">
+                                            <button
+                                                data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.replicate', [$DummyArgumentCamelCaseName->getId()]) }}"
+                                                class="xe-btn xe-btn-danger-outline __replicate-DummyArgumentCamelCaseName"
+                                                style="padding-left: 50px; padding-right: 50px"
+                                                type="button"
+                                            >
+                                                <strong>복사</strong>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-footer pt-4 pb-5">
+                    <div class="pull-left">
+                        <button
+                            type="submit"
+                            class="btn btn-primary bg-b400 __delete-form-button"
+                            data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.deleteBatch') }}"
+                            style="padding: 10px 50px"
+                        >
+                            <strong>
+                                <em class="xi-trash"></em>
+                                시험 삭제
+                            </strong>
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary bg-b400 __replicate-form-button"
+                            data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.replicateBatch') }}"
+                            style="padding: 10px 50px"
+                        >
+                            <strong>
+                                <em class="xi-library-add"></em>
+                                시험 복사
+                            </strong>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 페이징 -->
+        @if ($hasPages === true)
+            <div class="text-center mt-4" style="margin-top: 20px">
+                {{ $DummyArgumentPluralName->render() }}
+            </div>
+        @endif
+    </div>
+</div>
+
+<script>
+jQuery(function ($) {
+    // 체크박스 전체 선택/취소
+    $('#check-all-input').change(function () {
+        $('input[name="DummyArgumentCamelCaseName[]"]').prop('checked', $(this).is(':checked'));
+    });
+
+    // 체크박스 수정 시 체크박스 전체 부분 업데이트
+    $('input[name="DummyArgumentCamelCaseName[]"]').click(function () {
+        if ($(this).prop('checked') === false) {
+            $('#check-all-input').prop('checked', false);
+        }
+
+        else {
+            var isAllCheck = true;
+
+            $('input[name="DummyArgumentCamelCaseName[]"]').each(function (index, item) {
+                if ($(item).prop('checked') === false) {
+                  isAllCheck = false;
+                }
+            });
+
+            $('#check-all-input').prop('checked', isAllCheck);
+        }
+    });
+
+    // 시험을 삭제합니다.
+    $('.__delete-DummyArgumentCamelCaseName').on('click', function() {
+        if (confirm('{{ $deletedConfirm }}') === false) {
+            return false;
+        }
+
+        var url = $(this).data('url');
+
+        XE.delete(url, {}).then(function (response) {
+            location.reload();
+        });
+    });
+
+    // 시험을 복사힙니다.
+    $('.__replicate-DummyArgumentCamelCaseName').on('click', function() {
+        if (confirm('{{ $replicatedConfirm }}') === false) {
+            return false;
+        }
+
+        var url = $(this).data('url');
+
+        XE.post(url, {}).then(function (response) {
+            location.reload();
+        });
+    });
+
+    // 시험 전체 삭제에 대한 URL 선택.
+    $('.__delete-form-button').on('click', function() {
+        var url = $(this).data('url');
+
+        if (confirm('{{ $deletedConfirm }}') === false) {
+            return false;
+        }
+
+        $('#question-form').attr('action', url);
+    });
+
+    // 시험 전체 복사에 대한 URL 선택.
+    $('.__replicate-form-button').on('click', function() {
+        var url = $(this).data('url');
+
+        if (confirm('{{ $replicatedConfirm }}') === false) {
+            return false;
+        }
+
+        $('#question-form').attr('action', url);
+    });
+});
+</script>

@@ -5,11 +5,15 @@ namespace XeHub\XePlugin\XeCli\Commands\Controller;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
 use Symfony\Component\Console\Input\InputOption;
-use XeHub\XePlugin\XeCli\Commands\Handler\MakeHandlerCommand;
+use XeHub\XePlugin\XeCli\Commands\Handler\MakeHandlerCommandClass;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeMessageHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeValidationHandlerCommand;
-use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
-use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommand;
+use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommandClass;
+use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommandClass;
+use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeCreateViewCommand;
+use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeEditViewCommand;
+use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeIndexViewCommand;
+use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeShowViewCommand;
 use Xpressengine\Plugin\PluginEntity;
 
 /**
@@ -19,7 +23,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Controller
  */
-class MakeBackOfficeControllerCommand extends MakeControllerCommand
+class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
 {
     /**
      * @var string
@@ -50,16 +54,22 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
             $this->makeValidationHandlerFile();
             $this->makeMigrationTableFile();
             $this->makeModelFile();
+
+            $this->makeIndexViewFile();
+            $this->makeShowViewFile();
+            $this->makeEditViewFile();
+            $this->makeCreateViewFile();
         }
     }
 
     /**
      * Make Handler File
+     *
      * @return void
      */
     protected function makeHandlerFile()
     {
-        $this->call(app(MakeHandlerCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeHandlerCommandClass::class)->getArtisanCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -67,6 +77,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
 
     /**
      * Make Message Handler File
+     *
      * @return void
      */
     protected function makeMessageHandlerFile()
@@ -79,6 +90,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
 
     /**
      * Make Validation Handler File
+     *
      * @return void
      */
     protected function makeValidationHandlerFile()
@@ -91,11 +103,12 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
 
     /**
      * Make Migration Table File
+     *
      * @return void
      */
     protected function makeMigrationTableFile()
     {
-        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeMigrationTableCommandClass::class)->getArtisanCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -103,11 +116,64 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommand
 
     /**
      * Make Model File
+     *
      * @return void
      */
     protected function makeModelFile()
     {
-        $this->call(app(MakeModelCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeModelCommandClass::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
+    }
+
+    /**
+     * Make Index View File
+     *
+     * @return void
+     */
+    protected function makeIndexViewFile()
+    {
+        $this->call(app(MakeBackOfficeIndexViewCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
+    }
+
+    /**
+     * Make Index View File
+     *
+     * @return void
+     */
+    protected function makeShowViewFile()
+    {
+        $this->call(app(MakeBackOfficeShowViewCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
+    }
+
+    /**
+     * Make Index View File
+     *
+     * @return void
+     */
+    protected function makeEditViewFile()
+    {
+        $this->call(app(MakeBackOfficeEditViewCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
+    }
+
+    /**
+     * Make Create View File
+     *
+     * @return void
+     */
+    protected function makeCreateViewFile()
+    {
+        $this->call(app(MakeBackOfficeCreateViewCommand::class)->getArtisanCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);

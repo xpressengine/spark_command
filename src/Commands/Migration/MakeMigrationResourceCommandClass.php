@@ -4,7 +4,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Migration;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
-use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;
+use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -13,7 +13,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Migration
  */
-class MakeMigrationResourceCommand extends MakePluginFileCommand
+class MakeMigrationResourceCommandClass extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
 
@@ -128,6 +128,16 @@ class MakeMigrationResourceCommand extends MakePluginFileCommand
     protected function getPluginFileClass(): string
     {
         return 'MigrationResource';
+    }
+
+    /**
+     * Get Plugin File Name
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return 'MigrationResource.php';
     }
 
     /**

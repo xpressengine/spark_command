@@ -5,8 +5,8 @@ namespace XeHub\XePlugin\XeCli\Commands\Model;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 use ReflectionException;
-use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;
-use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
+use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
+use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommandClass;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -17,7 +17,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeModelCommand extends MakePluginFileCommand
+class MakeModelCommandClass extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
 
@@ -56,8 +56,8 @@ class MakeModelCommand extends MakePluginFileCommand
         parent::makePluginFile($pluginEntity);
 
         if ($this->option('migration') == true) {
-            $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
-                'plugin' =>  $this->getPluginName(),
+            $this->call(app(MakeMigrationTableCommandClass::class)->getArtisanCommandName(), [
+                'plugin' => $this->getPluginName(),
                 'name' => $this->argument('name'),
             ]);
         }
@@ -157,12 +157,23 @@ class MakeModelCommand extends MakePluginFileCommand
 
     /**
      * Get Plugin File
+     * (상속으로 재정의)
      *
      * @return string
      */
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')) . 'Model';
+    }
+
+    /**
+     * Get Plugin File Name
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return studly_case($this->argument('name')) . 'Model.php';
     }
 
     /**

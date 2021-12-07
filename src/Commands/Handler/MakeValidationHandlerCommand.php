@@ -9,7 +9,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Handler;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeValidationHandlerCommand extends MakeHandlerCommand
+class MakeValidationHandlerCommand extends MakeHandlerCommandClass
 {
     /**
      * @var string
@@ -42,11 +42,25 @@ class MakeValidationHandlerCommand extends MakeHandlerCommand
     }
 
     /**
+     * Get Plugin File Class
+     * (상속으로 재정의)
+     *
      * @return string
      */
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')). 'ValidationHandler';
+    }
+
+    /**
+     * Get Plugin File Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return studly_case($this->argument('name')). 'ValidationHandler.php';
     }
 
     /**

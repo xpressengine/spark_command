@@ -4,7 +4,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Handler;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
-use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;
+use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;;
 
@@ -15,7 +15,7 @@ use Xpressengine\Plugin\PluginEntity;;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeHandlerCommand extends MakePluginFileCommand
+class MakeHandlerCommandClass extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
 
@@ -117,10 +117,24 @@ class MakeHandlerCommand extends MakePluginFileCommand
     }
 
     /**
+     * Get Artisan Name
+     * (상속으로 재정의)
+     *
      * @return string
      */
     public function getArtisanCommandName(): string
     {
         return 'xe_cli:make:handler';
+    }
+
+    /**
+     * Get Plugin File Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return studly_case($this->argument('name')). 'Handler.php';
     }
 }

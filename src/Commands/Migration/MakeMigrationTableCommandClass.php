@@ -4,8 +4,8 @@ namespace XeHub\XePlugin\XeCli\Commands\Migration;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
-use XeHub\XePlugin\XeCli\Commands\MakePluginFileCommand;
-use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommand;
+use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
+use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommandClass;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -13,7 +13,7 @@ use Xpressengine\Plugin\PluginEntity;
  * Class MakeMigrationTableCommand
  * @package XeHub\XePlugin\XeCli\Commands\Migration
  */
-class MakeMigrationTableCommand extends MakePluginFileCommand
+class MakeMigrationTableCommandClass extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
 
@@ -43,10 +43,7 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
         $this->makeMigrationInterfaceFile($pluginEntity);
 
         if ($this->option('model') == true) {
-            $this->call(app(MakeModelCommand::class)->getArtisanCommandName(), [
-                'plugin' => $this->getPluginName(),
-                'name' => $this->argument('name')
-            ]);
+            $this->makeModelFile();
         }
     }
 
@@ -79,6 +76,18 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
             $madeControllerFilePath,
             $this->getReplaceData($pluginEntity)
         );
+    }
+
+    /**
+     * Make Model File
+     * @return void
+     */
+    protected function makeModelFile()
+    {
+        $this->call(app(MakeModelCommandClass::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name')
+        ]);
     }
 
     /**
@@ -158,11 +167,23 @@ class MakeMigrationTableCommand extends MakePluginFileCommand
     }
 
     /**
+     * Get Plugin File Class
+     *
      * @return string
      */
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')) . 'Table';
+    }
+
+    /**
+     * Get Plugin File Name
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return studly_case($this->argument('name')) . 'Table.php';
     }
 
     /**

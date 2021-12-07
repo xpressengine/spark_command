@@ -9,7 +9,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Handler;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeMessageHandlerCommand extends MakeHandlerCommand
+class MakeMessageHandlerCommand extends MakeHandlerCommandClass
 {
     /**
      * @var string
@@ -22,11 +22,25 @@ class MakeMessageHandlerCommand extends MakeHandlerCommand
     protected $description = 'Make Message Handler Command';
 
     /**
+     * Get Plugin File Class
+     * (상속으로 재정의)
+     *
      * @return string
      */
     protected function getPluginFileClass(): string
     {
         return studly_case($this->argument('name')). 'MessageHandler';
+    }
+
+    /**
+     * Get Plugin File Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return studly_case($this->argument('name')). 'MessageHandler.php';
     }
 
     /**

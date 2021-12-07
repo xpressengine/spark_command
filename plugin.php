@@ -35,24 +35,30 @@ final class Plugin extends AbstractPlugin
         // Migration Commands
         Commands\Migration\MigrateQueueDatabaseCommand::register();
         Commands\Migration\MigrateSessionDatabaseCommend::register();
-        Commands\Migration\MakeMigrationTableCommand::register();
-        Commands\Migration\MakeMigrationResourceCommand::register();
+        Commands\Migration\MakeMigrationTableCommandClass::register();
+        Commands\Migration\MakeMigrationResourceCommandClass::register();
 
         // Helper Commands
         Commands\Helper\MoveMenuItemCommand::register();
         Commands\Helper\SetOrderMenuItemCommand::register();
 
         // Controller Commands
-        Commands\Controller\MakeControllerCommand::register();
+        Commands\Controller\MakeControllerCommandClass::register();
         Commands\Controller\MakeBackOfficeControllerCommand::register();
         Commands\Controller\MakeClientControllerCommand::register();
 
         // Handler Commands
-        Commands\Handler\MakeHandlerCommand::register();
+        Commands\Handler\MakeHandlerCommandClass::register();
         Commands\Handler\MakeValidationHandlerCommand::register();
         Commands\Handler\MakeMessageHandlerCommand::register();
 
         // Model Commands
-        Commands\Model\MakeModelCommand::register();
+        Commands\Model\MakeModelCommandClass::register();
+
+        // View Commands
+        Commands\View\MakeBackOfficeIndexViewCommand::register();
+        Commands\View\MakeBackOfficeShowViewCommand::register();
+        Commands\View\MakeBackOfficeCreateViewCommand::register();
+        Commands\View\MakeBackOfficeEditViewCommand::register();
     }
 }

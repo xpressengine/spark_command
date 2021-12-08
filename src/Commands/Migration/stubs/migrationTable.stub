@@ -28,11 +28,10 @@ class {{targetClassName}} implements Migration
     public function up()
     {
         Schema::create({{studlyCaseName}}Model::TABLE_NAME, function (Blueprint $table) {
-            $table->string('id', 36);
+            {{primaryColumn}}
 
-            $table->primary(['id']);
             {{softDeletes}}
-            $table->timestamps();
+            {{primaryIndex}}
             $table->engine = 'InnoDB';
         });
     }

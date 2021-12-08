@@ -24,6 +24,8 @@ class MakeMigrationTableCommand extends MakePluginClassFileCommand
     protected $signature = 'xe_cli:make:migrationTable 
                                 {plugin}
                                 {name} 
+                                {--pk=id}
+                                {--incrementing}
                                 {--model}
                                 {--soft-deletes}';
 
@@ -89,10 +91,18 @@ class MakeMigrationTableCommand extends MakePluginClassFileCommand
      */
     protected function makeModelFile()
     {
-        $this->call(app(MakeModelCommandClass::class)->getArtisanCommandName(), [
+        $arguments = [
             'plugin' => $this->getPluginName(),
-            'name' => $this->argument('name')
-        ]);
+            'name' => $this->argument('name'),
+            '--pk' => $this->option('pk'),
+            '--soft-deletes' => $this->option('soft-deletes'),
+            '--incrementing' => $this->option('incrementing'),
+        ];
+
+        $this->call(
+            app(MakeModelCommandClass::class)->getCommandName(),
+            $arguments
+        );
     }
 
     /**
@@ -108,15 +118,25 @@ class MakeMigrationTableCommand extends MakePluginClassFileCommand
     {
         $replaceData = parent::getReplaceData($pluginEntity);
 
-        $migrationReplaceData = [];
+        $softDeletesOption = $this->option('soft-deletes');
+        $primaryKeyOption = $this->option('pk');
+        $incrementingOption = $this->option('incrementing');
 
-        if ($this->option('soft-deletes') == true) {
-            $migrationReplaceData['softDeletes'] = '$table->softDeletes();';
+        $migrationReplaceData = [
+            '{{primaryColumn}}' => "\$table->string('{$primaryKeyOption}', 36);",
+            '{{primaryIndex}}' => "\$table->primary(['{$primaryKeyOption}']);",
+            '{{softDeletes}}' => ''
+        ];
+
+        if ($softDeletesOption == true) {
+            $migrationReplaceData['{{softDeletes}}'] = '$table->softDeletes();';
         }
 
-        return array_merge($replaceData, [
-            '{{softDeletes}}' => Arr::get($migrationReplaceData, 'softDeletes', ''),
-        ]);
+        if ($incrementingOption == true) {
+            $migrationReplaceData['{{primaryColumn}}'] = "\$table->unsignedInteger('$primaryKeyOption');";
+        }
+
+        return  array_merge($replaceData, $migrationReplaceData);
     }
 
     /**
@@ -218,7 +238,7 @@ class MakeMigrationTableCommand extends MakePluginClassFileCommand
     /**
      * @return string
      */
-    public function getArtisanCommandName(): string
+    public function getCommandName(): string
     {
         return 'xe_cli:make:migrationTable';
     }

@@ -224,5 +224,5 @@ abstract class MakePluginFileCommand extends MakeCommand
      *
      * @return string
      */
-    abstract public function getArtisanCommandName(): string;
+    abstract public function getCommandName(): string;
 }

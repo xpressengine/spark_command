@@ -69,7 +69,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeHandlerFile()
     {
-        $this->call(app(MakeHandlerCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeHandlerCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -82,7 +82,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeMessageHandlerFile()
     {
-        $this->call(app(MakeMessageHandlerCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeMessageHandlerCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -95,7 +95,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeValidationHandlerFile()
     {
-        $this->call(app(MakeValidationHandlerCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeValidationHandlerCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -108,7 +108,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeMigrationTableFile()
     {
-        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeMigrationTableCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -121,7 +121,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeModelFile()
     {
-        $this->call(app(MakeModelCommandClass::class)->getArtisanCommandName(), [
+        $this->call(app(MakeModelCommandClass::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -134,7 +134,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeIndexViewFile()
     {
-        $this->call(app(MakeBackOfficeIndexViewCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeBackOfficeIndexViewCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -147,7 +147,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeShowViewFile()
     {
-        $this->call(app(MakeBackOfficeShowViewCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeBackOfficeShowViewCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -160,7 +160,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeEditViewFile()
     {
-        $this->call(app(MakeBackOfficeEditViewCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeBackOfficeEditViewCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -173,7 +173,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeCreateViewFile()
     {
-        $this->call(app(MakeBackOfficeCreateViewCommand::class)->getArtisanCommandName(), [
+        $this->call(app(MakeBackOfficeCreateViewCommand::class)->getCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -252,7 +252,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
     /**
      * Get Artisan Name
      */
-    public function getArtisanCommandName(): string
+    public function getCommandName(): string
     {
         return 'xe_cli:make:backOfficeController';
     }

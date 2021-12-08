@@ -79,7 +79,7 @@ class MakeClientControllerCommand extends MakeControllerCommandClass
     /**
      * Get Artisan Name
      */
-    public function getArtisanCommandName(): string
+    public function getCommandName(): string
     {
         return 'xe_cli:make:clientController';
     }

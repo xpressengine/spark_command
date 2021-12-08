@@ -23,8 +23,17 @@ class {{targetClassName}} extends DynamicModel
      */
     public const TABLE_NAME = '{{tableName}}';
 
+    {{primaryKey}}
+
+    {{incrementing}}
+
     /**
      * @var string
      */
     protected $table = {{targetClassName}}::TABLE_NAME;
+
+    /**
+     * @var array
+     */
+    protected $guarded = [];
 }

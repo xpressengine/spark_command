@@ -3,11 +3,11 @@
 namespace XeHub\XePlugin\XeCli\Commands\Model;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
 use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
+use XeHub\XePlugin\XeCli\Traits\DeclarationTrait;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -21,6 +21,7 @@ use Xpressengine\Plugin\PluginEntity;
 class MakeModelCommandClass extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
+    use DeclarationTrait;
 
     /**
      * @var string
@@ -30,7 +31,9 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
                             {name}
                             {--tableName=}
                             {--migration} 
-                            {--soft-deletes}';
+                            {--pk=id}
+                            {--soft-deletes}
+                            {--incrementing}';
 
     /**
      * @var string
@@ -62,7 +65,7 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
         parent::makePluginFile($pluginEntity);
 
         if ($this->option('migration') == true) {
-           $this->makeMigrationFile();
+            $this->makeMigrationFile();
         }
     }
 
@@ -73,17 +76,18 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
      */
     protected function makeMigrationFile()
     {
+        $commentName = app(MakeMigrationTableCommand::class)->getCommandName();
+
         $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
+            '--pk' => $this->option('pk'),
+            '--incrementing' => $this->option('incrementing'),
+            '--soft-deletes' => $this->option('soft-deletes'),
         ];
 
-        if ($this->option('soft-deletes') == true) {
-            $arguments['--soft-deletes'] = true;
-        }
-
         $this->call(
-            app(MakeMigrationTableCommand::class)->getArtisanCommandName(),
+            $commentName,
             $arguments
         );
     }
@@ -102,20 +106,32 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
     {
         $replaceData = parent::getReplaceData($pluginEntity);
 
+        $softDeletesOption = $this->option('soft-deletes');
+        $primaryKeyOption = $this->option('pk');
+        $incrementingOption = $this->option('incrementing');
+
+        $incrementingPropertyDeclaration = $this->getPropertyDeclaration(
+            'public', 'incrementing', 'bool', $incrementingOption == true ? 'true' : 'false'
+        );
+
+        $primaryKeyPropertyDeclaration = $this->getPropertyDeclaration(
+            'protected', 'primaryKey', 'string', $primaryKeyOption
+        );
+
         $modelReplaceData = [
-            'tableName' => $this->getTableName(),
+            '{{tableName}}' => $this->getTableName(),
+            '{{useSoftDeletes}}' => '',
+            '{{useSoftDeletesNamespace}}' => '',
+            '{{incrementing}}' => $incrementingPropertyDeclaration,
+            '{{primaryKey}}' => $primaryKeyPropertyDeclaration
         ];
 
-        if ($this->option('soft-deletes') == true) {
-            $modelReplaceData['useSoftDeletes'] = "use SoftDeletes;\n";
-            $modelReplaceData['useSoftDeletesNamespace'] = "use Illuminate\Database\Eloquent\SoftDeletes;\n";
+        if ($softDeletesOption == true) {
+            $modelReplaceData['{{useSoftDeletes}}'] = "use SoftDeletes;\n";
+            $modelReplaceData['{{useSoftDeletesNamespace}}'] = "use Illuminate\Database\Eloquent\SoftDeletes;\n";
         }
 
-        return array_merge($replaceData, [
-            '{{tableName}}' => Arr::get($modelReplaceData, 'tableName'),
-            '{{useSoftDeletes}}' => Arr::get($modelReplaceData, 'useSoftDeletes', ''),
-            '{{useSoftDeletesNamespace}}' => Arr::get($modelReplaceData, 'useSoftDeletesNamespace', ''),
-        ]);
+        return array_merge($replaceData, $modelReplaceData);
     }
 
     /**
@@ -228,7 +244,7 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
      *
      * @return string
      */
-    public function getArtisanCommandName(): string
+    public function getCommandName(): string
     {
         return 'xe_cli:make:model';
     }

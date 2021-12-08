@@ -122,7 +122,7 @@ class MakeHandlerCommand extends MakePluginClassFileCommand
      *
      * @return string
      */
-    public function getArtisanCommandName(): string
+    public function getCommandName(): string
     {
         return 'xe_cli:make:handler';
     }

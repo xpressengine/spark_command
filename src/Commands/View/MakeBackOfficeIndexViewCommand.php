@@ -95,7 +95,7 @@ class MakeBackOfficeIndexViewCommand extends MakePluginFileCommand
      *
      * @return string
      */
-    public function getArtisanCommandName(): string
+    public function getCommandName(): string
     {
         return 'xe_cli:make:backOfficeIndexView';
     }

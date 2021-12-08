@@ -12,7 +12,7 @@
 
         <div class="pull-right">
             <a
-                href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.index') }}"
+                href="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.index') }}"
                 class="btn btn-default"
                 style="padding: 10px 50px"
             >

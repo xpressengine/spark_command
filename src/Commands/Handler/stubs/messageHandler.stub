@@ -1,13 +1,13 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
-class DummyClass
+class {{targetClassName}}
 {
     /**
      * 싱글톤을 등록합니다.
@@ -24,9 +24,9 @@ class DummyClass
     /**
      * 서비스 핸들러에 등록된 값을 반환합니다.
      *
-     * @return DummyClass
+     * @return {{targetClassName}}
      */
-    public static function make(): DummyClass
+    public static function make(): {{targetClassName}}
     {
         return app(__CLASS__);
     }
@@ -38,7 +38,7 @@ class DummyClass
      */
     public function storedConfirm(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameStoredConfirmMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}StoredConfirmMessage');
     }
 
     /**
@@ -49,7 +49,7 @@ class DummyClass
      */
     public function storedSuccess(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameStoredSuccessMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}StoredSuccessMessage');
     }
     
     /**
@@ -60,7 +60,7 @@ class DummyClass
      */
     public function updatedConfirm(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameUpdatedConfirmMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}UpdatedConfirmMessage');
     }
 
     /**
@@ -71,7 +71,7 @@ class DummyClass
      */
     public function updatedSuccess(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameUpdatedSuccessMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}UpdatedSuccessMessage');
     }
 
     /**
@@ -82,7 +82,7 @@ class DummyClass
      */
     public function deletedConfirm(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameDeletedConfirmMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}DeletedConfirmMessage');
     }
 
     /**
@@ -93,7 +93,7 @@ class DummyClass
      */
     public function deletedSuccess(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameDeletedSuccessMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}DeletedSuccessMessage');
     }
 
     /**
@@ -104,7 +104,7 @@ class DummyClass
      */
     public function replicatedSuccess(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameReplicatedSuccessMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ReplicatedSuccessMessage');
     }
 
     /**
@@ -115,7 +115,7 @@ class DummyClass
      */
     public function replicatedConfirm(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameReplicatedConfirmMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ReplicatedConfirmMessage');
     }
 
     /**
@@ -125,7 +125,7 @@ class DummyClass
      */
     public function importConfirm(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameImportConfirmMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ImportConfirmMessage');
     }
 
     /**
@@ -135,6 +135,6 @@ class DummyClass
      */
     public function importSuccess(): string
     {
-        return xe_trans('DummyPluginId::DummyArgumentCamelCaseNameImportSuccessMessage');
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ImportSuccessMessage');
     }
 }

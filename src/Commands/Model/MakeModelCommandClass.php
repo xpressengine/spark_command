@@ -6,7 +6,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
-use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommandClass;
+use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -56,7 +56,7 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
         parent::makePluginFile($pluginEntity);
 
         if ($this->option('migration') == true) {
-            $this->call(app(MakeMigrationTableCommandClass::class)->getArtisanCommandName(), [
+            $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
                 'plugin' => $this->getPluginName(),
                 'name' => $this->argument('name'),
             ]);

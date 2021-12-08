@@ -14,7 +14,7 @@
 
         <div class="pull-right">
             <a
-                href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.index') }}"
+                href="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.index') }}"
                 class="btn btn-default"
                 style="padding: 10px 50px"
             >
@@ -33,7 +33,7 @@
 @endsection
 
 <div class="row" style="max-width: 1000px">
-    <form id="DummyArgumentCamelCaseName_form" action="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.update', $DummyArgumentCamelCaseName->getId()) }}" method="post" enctype="multipart/form-data">
+    <form id="{{camelCaseName}}_form" action="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.update', ${{camelCaseName}}->getId()) }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         {{ method_field('PUT') }}
 
@@ -61,7 +61,7 @@
             {{-- 관리버튼 --}}
             <div class="pull-right">
                 <a
-                    href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.index') }}"
+                    href="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.index') }}"
                     class="btn btn-default"
                     style="padding: 10px 50px"
                 >
@@ -85,7 +85,7 @@
     // 사이트 나가는 걸 방지합니다.
     var dirty = false;
 
-    $("#DummyArgumentCamelCaseName_form :input").change(function() {
+    $("#{{camelCaseName}}_form :input").change(function() {
         dirty = true;
     });
 
@@ -102,7 +102,7 @@
         }
 
         dirty = false;
-        $('#DummyArgumentCamelCaseName_form').submit();
+        $('#{{camelCaseName}}_form').submit();
 
         return true;
     });

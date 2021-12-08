@@ -157,19 +157,21 @@ abstract class MakePluginFileCommand extends MakeCommand
         PluginEntity $pluginEntity
     ): array
     {
-        $baseNamespace = $this->pluginService->getPluginNamespace($pluginEntity, '');;
+        $pluginNamespace = $this->pluginService->getPluginNamespace($pluginEntity, '');;
 
         $replaceData = [
-            'DummyPluginId' => $pluginEntity->getId(),
-            'DummyBaseNamespace' => $baseNamespace
+            '{{pluginId}}' => $pluginEntity->getId(),
+            '{{pluginNamespace}}' => $pluginNamespace
         ];
 
         if ($this->hasArgument('name') === true) {
-            $replaceData['DummyArgumentCamelCaseName'] = Str::camel($this->argument('name'));
-            $replaceData['DummyArgumentStudlyCaseName'] = Str::studly($this->argument('name'));
-            $replaceData['DummyArgumentPluralName'] = Str::plural(
-                Str::camel($this->argument('name'))
-            );
+            $name = $this->argument('name');
+
+            $replaceData = array_merge($replaceData, [
+                '{{camelCaseName}}' =>  Str::camel($name),
+                '{{studlyCaseName}}' =>  Str::studly($name),
+                '{{pluralCaseName}}' =>  Str::plural(Str::camel($name))
+            ]);
         }
 
         return $replaceData;

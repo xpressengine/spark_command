@@ -15,7 +15,7 @@ use Xpressengine\Plugin\PluginEntity;;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeHandlerCommandClass extends MakePluginClassFileCommand
+class MakeHandlerCommand extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
 

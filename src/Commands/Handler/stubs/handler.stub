@@ -1,6 +1,6 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Xpressengine\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use DummyBaseNamespace\Models\DummyArgumentStudlyCaseNameModel;
+use {{pluginNamespace}}\Models\{{studlyCaseName}}Model;
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
-class DummyClass
+class {{targetClassName}}
 {
     /**
      * 싱글톤 등록
@@ -32,9 +32,9 @@ class DummyClass
     /**
      * 서비스 핸들러에 등록된 값을 반환
      *
-     * @return DummyClass
+     * @return {{targetClassName}}
      */
-    public static function make(): DummyClass
+    public static function make(): {{targetClassName}}
     {
         return app(__CLASS__);
     }
@@ -69,7 +69,7 @@ class DummyClass
     )
     {
         $query = $this->makeWhere(
-            DummyArgumentStudlyCaseNameModel::query(), $inputs
+            {{studlyCaseName}}Model::query(), $inputs
         );
 
         $query->when(
@@ -99,7 +99,7 @@ class DummyClass
         $perPage = Arr::get($inputs, 'perPage', 10);
 
         $query = $this->makeWhere(
-            DummyArgumentStudlyCaseNameModel::query(), $inputs
+            {{studlyCaseName}}Model::query(), $inputs
         );
 
         $query->when(
@@ -117,20 +117,20 @@ class DummyClass
     /**
      * @param string $id
      * @param array $columns
-     * @return DummyArgumentStudlyCaseNameModel|null
+     * @return {{studlyCaseName}}Model|null
      */
     public function find(
         string $id,
         array  $columns = ['*']
     )
     {
-        return DummyArgumentStudlyCaseNameModel::find($id, $columns);
+        return {{studlyCaseName}}Model::find($id, $columns);
     }
 
     /**
      * @param string $id
      * @param array $columns
-     * @return DummyArgumentStudlyCaseNameModel
+     * @return {{studlyCaseName}}Model
      * @throws ModelNotFoundException
      */
     public function findOrFail(
@@ -138,7 +138,7 @@ class DummyClass
         array  $columns = ['*']
     )
     {
-        return DummyArgumentStudlyCaseNameModel::findOrFail($id, $columns);
+        return {{studlyCaseName}}Model::findOrFail($id, $columns);
     }
 
     /**
@@ -153,12 +153,12 @@ class DummyClass
         array $columns = ['*']
     )
     {
-        return DummyArgumentStudlyCaseNameModel::findMany($ids, $columns);
+        return {{studlyCaseName}}Model::findMany($ids, $columns);
     }
 
     /**
      * @param array $inputs
-     * @return DummyArgumentStudlyCaseNameModel
+     * @return {{studlyCaseName}}Model
      */
     public function store(
         array $inputs
@@ -166,110 +166,110 @@ class DummyClass
     {
         $inputs = Arr::only($inputs, []);
 
-        $inputs = array_merge($inputs, [
-            'ip_address' => request()->ip(),
-            'user_id' => auth()->id(),
-        ]);
+//        $inputs = array_merge($inputs, [
+//            'ip_address' => request()->ip(),
+//            'user_id' => auth()->id(),
+//        ]);
 
-        return tap(new DummyArgumentStudlyCaseNameModel($inputs))->save();
+        return tap(new {{studlyCaseName}}Model($inputs))->save();
     }
 
     /**
-     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
      * @param array $inputs
-     * @return DummyArgumentStudlyCaseNameModel
+     * @return {{studlyCaseName}}Model
      */
     public function update(
-        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName,
+        {{studlyCaseName}}Model ${{camelCaseName}},
         array    $inputs
     )
     {
         $inputs = Arr::only($inputs, []);
-        return tap($DummyArgumentCamelCaseName)->update($inputs);
+        return tap(${{camelCaseName}})->update($inputs);
     }
 
     /**
      * (관계는 포함시키지 않습니다.)
      *
-     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
-     * @return DummyArgumentStudlyCaseNameModel
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
+     * @return {{studlyCaseName}}Model
      */
     public function replicate(
-        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+        {{studlyCaseName}}Model ${{camelCaseName}}
     )
     {
         $now = now();
 
-        $newDummyArgumentStudlyCaseName = $DummyArgumentCamelCaseName->replicate(['id']);
-        $newDummyArgumentStudlyCaseName->push();
+        $new{{studlyCaseName}} = ${{camelCaseName}}->replicate(['id']);
+        $new{{studlyCaseName}}->push();
 
-        $inputs = [
-            'ip_address' => request()->ip(),
-            'user_id' => auth()->id(),
-            'created_at' => $now,
-            'updated_at' => $now,
-        ];
+//        $inputs = [
+//            'ip_address' => request()->ip(),
+//            'user_id' => auth()->id(),
+//            'created_at' => $now,
+//            'updated_at' => $now,
+//        ];
 
         foreach ($inputs as $key => $value) {
-            $newDummyArgumentStudlyCaseName->setAttribute($key, $value);
+            $new{{studlyCaseName}}->setAttribute($key, $value);
         }
 
-        return tap($newDummyArgumentStudlyCaseName)->save();
+        return tap($new{{studlyCaseName}})->save();
     }
 
     /**
-     * @param array $DummyArgumentCamelCaseNameIds
+     * @param array ${{camelCaseName}}Ids
      * @return Collection
      */
-    public function replicateBatch(array $DummyArgumentCamelCaseNameIds)
+    public function replicateBatch(array ${{camelCaseName}}Ids)
     {
-        $newDummyArgumentStudlyCaseName = [];
-        $DummyArgumentPluralName = $this->findMany($DummyArgumentCamelCaseNameIds);
+        $new{{studlyCaseName}} = [];
+        ${{pluralCaseName}} = $this->findMany(${{camelCaseName}}Ids);
 
-        $DummyArgumentPluralName->each(function (DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName) use (&$newDummyArgumentStudlyCaseName) {
-            $newDummyArgumentStudlyCaseName[] = $this->replicate($DummyArgumentCamelCaseName);
+        ${{pluralCaseName}}->each(function ({{studlyCaseName}}Model ${{camelCaseName}}) use (&$new{{studlyCaseName}}) {
+            $new{{studlyCaseName}}[] = $this->replicate(${{camelCaseName}});
         });
 
-        return collect($newDummyArgumentStudlyCaseName);
+        return collect($new{{studlyCaseName}});
     }
 
     /**
      * (관계는 포함시키지 않습니다.)
      *
-     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
-     * @return DummyArgumentStudlyCaseNameModel
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
+     * @return {{studlyCaseName}}Model
      */
     public function replicateWithoutRelations(
-        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+        {{studlyCaseName}}Model ${{camelCaseName}}
     )
     {
         $now = now();
-        $newDummyArgumentStudlyCaseName = $DummyArgumentCamelCaseName->replicate(['id'])->setRelations([]);
+        $new{{studlyCaseName}} = ${{camelCaseName}}->replicate(['id'])->setRelations([]);
 
-        $values = [
-            'ip_address' => request()->ip(),
-            'user_id' => auth()->id(),
-            'created_at' => $now,
-            'updated_at' => $now,
-        ];
+//        $inputs = [
+//            'ip_address' => request()->ip(),
+//            'user_id' => auth()->id(),
+//            'created_at' => $now,
+//            'updated_at' => $now,
+//        ];
 
         foreach ($values as $key => $value) {
-            $newDummyArgumentStudlyCaseName->setAttribute($key, $value);
+            $new{{studlyCaseName}}->setAttribute($key, $value);
         }
 
-        return tap($newDummyArgumentStudlyCaseName)->save();
+        return tap($new{{studlyCaseName}})->save();
     }
 
     /**
-     * @param DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
      * @return void
      * @throws Exception
      */
     public function delete(
-        DummyArgumentStudlyCaseNameModel $DummyArgumentCamelCaseName
+        {{studlyCaseName}}Model ${{camelCaseName}}
     )
     {
-        $DummyArgumentCamelCaseName->delete();
+        ${{camelCaseName}}->delete();
     }
 
     /**
@@ -280,7 +280,7 @@ class DummyClass
         array $ids
     )
     {
-        DummyArgumentStudlyCaseNameModel::whereIn('id', $ids)->delete();
+        {{studlyCaseName}}Model::whereIn('id', $ids)->delete();
     }
 
     /**

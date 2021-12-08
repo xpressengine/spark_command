@@ -13,7 +13,7 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Migration
  */
-class MakeMigrationResourceCommandClass extends MakePluginClassFileCommand
+class MakeMigrationResourceCommand extends MakePluginClassFileCommand
 {
     use RegisterArtisan;
 

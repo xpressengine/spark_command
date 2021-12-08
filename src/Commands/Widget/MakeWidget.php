@@ -3,13 +3,17 @@
 namespace XeHub\XePlugin\XeCli\Commands\Widget;
 
 use App\Console\Commands\ComponentMakeCommand;
-use Illuminate\Support\Fluent;
-use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use ReflectionException;
 use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
+use ReflectionException;
 use Throwable;
-use Xpressengine\Plugin\PluginEntity;
+use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
+use Xpressengine\Foundation\Operator;
+use Xpressengine\Plugin\PluginHandler;
+use Xpressengine\Plugin\PluginProvider;
+use Xpressengine\Widget\WidgetHandler;
 
 /**
  * Class MakeWidget
@@ -24,15 +28,9 @@ class MakeWidget extends ComponentMakeCommand
 {
     use RegisterArtisan;
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'xe_cli:make:widget
         {plugin : The plugin where the widget will be located}
         {name : The name of widget to create}
-
         {--id= : The identifier of widget. default "<plugin>@<name>"}
         {--path= : The path of widget. Enter the path to under the plugin. ex) SomeDir/WidgetDir}
         {--class= : The class name of widget. default "<name>Widget"}';
@@ -42,7 +40,7 @@ class MakeWidget extends ComponentMakeCommand
      *
      * @var string
      */
-    protected $description = 'Create a new widget of Sparkweb';
+    protected $description = 'Create a New Widget';
 
     /**
      * The type of component
@@ -52,93 +50,82 @@ class MakeWidget extends ComponentMakeCommand
     protected $componentType = 'widget';
 
     /**
+     * @var WidgetHandler
+     */
+    protected $widgetHandler;
+
+    /**
+     * Create a new component creator command instance.
+     *
+     * @param Filesystem $files Filesystem instance
+     * @param Operator $operator Operator instance
+     * @param PluginHandler $handler PluginHandler instance
+     * @param PluginProvider $provider PluginProvider instance
+     * @param WidgetHandler $widgetHandler
+     */
+    public function __construct(
+        Filesystem     $files,
+        Operator       $operator,
+        PluginHandler  $handler,
+        PluginProvider $provider,
+        WidgetHandler  $widgetHandler
+    )
+    {
+        $this->widgetHandler = $widgetHandler;
+        parent::__construct($files, $operator, $handler, $provider);
+    }
+
+    /**
      * @return false|null
      * @throws Throwable
      * @throws FileNotFoundException
-     * @throws ReflectionException
      */
     public function handle()
     {
-        // Get Plugin Info
+        $widgetId = $this->getWidgetId();
+
+        if ($this->widgetHandler->getClassName($widgetId) !== null) {
+            $this->info(" Widget [$widgetId] Already Exists. ");
+            $this->makeWidgetSkin($widgetId);
+
+            return true;
+        }
+
+        if ($this->confirmCreateWidget() === false) {
+            return false;
+        }
+
         $plugin = $this->getPlugin();
-
-        // Get Widget Info
-        $id             = $this->getWidgetId();
-        $widget         = app('xe.widget')->getClassName($id);
-
-        if ($widget !== null)
-        {
-            $this->error(" Widget [$id] already exists. ");
-            $this->confirmSkin($id);
-            return false;
-        }
-
-        $path           = $this->getPath($this->option('path'));
-        $namespace      = $this->getNamespace($path);
-        $className      = $this->option('class') ?: studly_case($this->getComponentName()) . 'Widget';
-        $file           = $this->getClassFile($path, $className);
-
-        $title          = $this->getTitleInput();
-        $description    = $this->getDescriptionInput();
-
-        $attr = new Fluent(compact(
-            'plugin',
-            'path',
-            'namespace',
-            'className',
-            'file',
-            'id',
-            'title',
-            'description'
-        ));
-
-        if ($this->confirmInfo($attr) === false) {
-            return false;
-        }
+        $path = $this->getPath($this->option('path'));
 
         $this->copyStubDirectory($plugin->getPath($path));
 
         try {
-            $this->makeUsable($attr);
-            $this->info('Generate the widget');
-
-            $className  = $namespace . '\\' . $className;
-            $info       = ['name' => $title, 'description' => $description];
-
-            if ($this->registerComponent($plugin, $id, $className, $file, $info) === false) {
-                throw new Exception('Writing to composer.json file was failed.');
-            }
-
-            $this->refresh($plugin);
-        }
-
-        catch (Exception $e) {
+            $this->registerWidget();
+        } catch (Exception $e) {
+            $this->clean($path);
+            throw $e;
+        } catch (Throwable $e) {
             $this->clean($path);
             throw $e;
         }
 
-        catch (Throwable $e) {
-            $this->clean($path);
-            throw $e;
-        }
-
-        $this->confirmSkin($id);
-
+        $this->makeWidgetSkin($widgetId);
         return true;
     }
 
     /**
-     * 생성할 위젯 정보를 보고 확인합니다.
+     * 위젯 생성 여부를 확인합니다.
      *
-     * @param $attr
+     * @throws ReflectionException
+     * @throws FileNotFoundException
      * @return bool
      */
-    private function confirmInfo($attr)
+    protected function confirmCreateWidget(): bool
     {
-        $this->showInfo($attr);
+        $this->showWidgetInfo();
 
-        while ($confirm = $this->ask('Do you want to add widget? [yes|no]'))
-        {
+        while ($confirm = $this->ask('Do you want to add widget? [yes|no]')) {
             if (strtolower($confirm) !== 'yes' && strtolower($confirm) !== 'no') {
                 continue;
             }
@@ -150,165 +137,255 @@ class MakeWidget extends ComponentMakeCommand
     }
 
     /**
-     * 생성할 위젯 정보를 보여줍니다.
+     * 생성할 위젯 정보를 출력합니다.
      *
-     * @param $attr
-     */
-    protected function showInfo($attr)
-    {
-        $this->info(
-            sprintf(
-                "[New %s info]
-  plugin:\t %s
-  path:\t\t %s
-  class file:\t %s
-  class name:\t %s
-  id:\t\t %s
-  title:\t %s
-  description:\t %s",
-                $this->componentType,
-                $attr['plugin']->getId(),
-                $attr['path'],
-                $attr['file'],
-                $attr['namespace'] . '\\' . $attr['className'],
-                $attr['id'],
-                $attr['title'],
-                $attr['description']
-            )
-        );
-    }
-
-    /**
-     * 생성할 컴포넌트 이름
-     *
-     * @return array|string
-     */
-    protected function getComponentName()
-    {
-        return $this->argument('name');
-    }
-
-    /**
-     * 대상이 되는 플러그인 이름
-     *
-     * @return array|string
-     */
-    protected function getPluginName()
-    {
-        return $this->argument('plugin');
-    }
-
-    /**
-     * stub 디렉토리 위치
-     *
-     * @return string
-     */
-    protected function getStubPath()
-    {
-        return __DIR__ . '/stubs';
-    }
-
-    /**
-     * 위젯이 생성될 기본 디렉토리 위치
-     *
-     * @return string
-     */
-    protected function getDefaultPath()
-    {
-        return 'Widgets/' . studly_case($this->argument('name'));
-    }
-
-    /**
-     * 위젯 아이디 반환. (widget/<plugin_name>@<pure_id>)
-     *
-     * @return array|string
+     * @return void
+     * @throws FileNotFoundException
+     * @throws ReflectionException
      * @throws Exception
      */
-    private function getWidgetId()
+    protected function showWidgetInfo()
     {
-        $id = $this->option('id');
         $plugin = $this->getPlugin();
+        $widgetId = $this->getWidgetId();
 
-        if (is_null($id)) {
-            $id = $plugin->getId() . '@' . strtolower($this->getComponentName());
+        $path = $this->getPath($this->option('path'));
+        $className = $this->getNamespace($path) . '\\' . $this->getClassName();
+        $file = $this->getClassFile($path, $className);
+
+        $title = $this->getTitleInput();
+        $description = $this->getDescriptionInput();
+
+        $this->info("[New {$this->componentType} Info]");
+        $this->info(" Plugin:\t {$plugin->getId()}");
+        $this->info(" Path:\t\t {$path}");
+        $this->info(" Class File:\t {$file}");
+        $this->info(" Class Name:\t {$className}");
+        $this->info(" Id:\t\t {$widgetId}");
+        $this->info(" Title:\t\t {$title}");
+        $this->info(" Description:\t {$description}");
+    }
+
+    /**
+     * 위젯을 등록합니다.
+     *
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
+    protected function registerWidget()
+    {
+        $plugin = $this->getPlugin();
+        $widgetId = $this->getWidgetId();
+
+        $path = $this->getPath($this->option('path'));
+        $namespace = $this->getNamespace($path);
+        $className = $this->getClassName();
+        $file = $this->getClassFile($path, $className);
+
+        $title = $this->getTitleInput();
+        $description = $this->getDescriptionInput();
+
+        $attr = [
+            'id' => $widgetId,
+            'plugin' => $plugin,
+            'title' => $title,
+            'description' => $description,
+            'path' => $path,
+            'namespace' => $namespace,
+            'className' => $className,
+            'file' => $file,
+        ];
+
+        $this->makeWidget($attr);
+        $this->info('Generate the widget');
+
+        $info = [
+            'name' => Arr::get($attr, 'title'),
+            'description' => Arr::get($attr, 'description')
+        ];
+
+        $isResult = $this->registerComponent(
+            $plugin,
+            Arr::get($attr, 'id'),
+            Arr::get($attr, 'namespace') . '\\' . Arr::get($attr, 'className'),
+            Arr::get($attr, 'file'),
+            $info
+        );
+
+        if ($isResult == false) {
+            throw new Exception(
+                'Writing to composer.json file was failed.'
+            );
         }
 
-        else
-        {
-            if (strpos('widget/', $id) === 0) {
-                $id = substr($id, 7);
-            }
-
-            if (strpos($id, '@') === false) {
-                $id = $plugin->getId() . '@' . $id;
-            }
-        }
-
-        return 'widget/' . $id;
+        $this->refresh($plugin);
     }
 
     /**
      * 위젯 컴포넌트를 생성합니다,
      *
-     * @param $attr
+     * @param array $attr
      * @return void
      * @throws Exception
      */
-    protected function makeUsable($attr)
+    protected function makeWidget(array $attr)
     {
-        /** @var PluginEntity $plugin */
-        $plugin = $attr['plugin'];
+        $plugin = $this->getPlugin();
         $path = $plugin->getPath($attr['path']);
 
-        $dummyPath = sprintf('%s/src/Widgets/%s', $plugin->getId(), studly_case($this->argument('name')));
+        $targetPath = $plugin->getId() . '/src/Widgets/' . studly_case($this->argument('name'));
 
-        $search = ['DummyNamespace', 'DummyClass', 'DummyPath'];
-        $replace = [$attr['namespace'], $attr['className'], $dummyPath];
+        $replaceData = [
+            '{{targetNamespace}}' => $attr['namespace'],
+            '{{targetClass}}' => $attr['className'],
+            '{{targetPath}}' => $targetPath
+        ];
 
         $this->info('widget make width class : ' . $path);
-        $this->buildFile(sprintf('%s/%s', $path, 'widget.stub'), $search, $replace, $plugin->getPath($attr['file']));
 
-        $this->renameStubFile(sprintf('%s/%s', $path, 'info.stub'));
-        $this->renameStubFile(sprintf('%s/views/%s', $path, 'setting.blade.stub'));
+        $this->buildFile(
+            $path . '/widget.stub',
+            array_keys($replaceData),
+            $replaceData,
+            $plugin->getPath($attr['file'])
+        );
+
+        $infoStubPath = $path . '/info.stub';
+        rename(
+            $infoStubPath,
+            str_replace('stub', 'php', $infoStubPath)
+        );
+
+        $settingsBladeStubPath = $path . '/views/setting.blade.stub';
+        rename(
+            $settingsBladeStubPath,
+            str_replace('stub', 'php', $settingsBladeStubPath)
+        );
     }
 
     /**
-     * rename Stub 파일
+     * 위젯 스킨을 생성합니다.
      *
-     * @param $fileName
-     */
-    private function renameStubFile($fileName)
-    {
-        $changedFile = str_replace('stub', 'php', $fileName);
-        rename($fileName, $changedFile);
-    }
-
-    /**
-     * 스킨 생성할지 확인합니다.
-     *
-     * @param string $target
+     * @param string $widgetId
      * @return bool
      */
-    protected function confirmSkin(string $target)
+    protected function makeWidgetSkin(string $widgetId)
     {
-        while ($confirm = $this->ask("Do you want to add widget's skin? [yes|no]"))
-        {
+        while ($confirm = $this->ask("Do you want to add widget's skin? [yes|no]")) {
             if (strtolower($confirm) === 'no') {
                 break;
             }
 
-            $plugin = $this->getPluginName();
-            $name = $this->ask('SkinName?', 'spark_default');
+            $pluginNam = $this->getPluginName();
+            $skinName = $this->askWidgetSkinName();
             $widgetName = studly_case($this->getComponentName()) . 'Widget';
-            $path = sprintf('src/Skins/%s/%s', $widgetName, studly_case($name));
+            $path = 'src/Skins/' . $widgetName . '/' . studly_case($skinName);
 
-            $arguments = compact('plugin', 'name', 'target');
-            $arguments['--path'] = $path;
-
-            $this->call('make:skin', $arguments);
-            continue;
+            $this->call('make:skin', [
+                'plugin' => $pluginNam,
+                'name' => $skinName,
+                'target' => $widgetId,
+                '--path' => $path
+            ]);
         }
 
         return strtolower($confirm) === 'yes';
+    }
+
+    /**
+     * Get Widget Component's Id
+     * (widget/<plugin_name>@<pure_id>)
+     *
+     * @return array|string
+     * @throws Exception
+     */
+    protected function getWidgetId(): string
+    {
+        $widgetId = $this->option('id');
+        $plugin = $this->getPlugin();
+
+        if (is_null($widgetId) === true) {
+            $widgetId = $plugin->getId() . '@' . strtolower($this->getComponentName());
+        } else {
+            if (strpos('widget/', $widgetId) === 0) {
+                $widgetId = substr($widgetId, 7);
+            }
+
+            if (strpos($widgetId, '@') === false) {
+                $widgetId = $plugin->getId() . '@' . $widgetId;
+            }
+        }
+
+        return 'widget/' . $widgetId;
+    }
+
+    /**
+     * Ask Widget's Skin Name
+     *
+     * @return string
+     */
+    protected function askWidgetSkinName(): string
+    {
+        return $this->ask('SkinName?', 'xehub_default');
+    }
+
+    /**
+     * Class Name
+     *
+     * @return string
+     */
+    protected function getClassName(): string
+    {
+        $class = $this->option('class');
+
+        if ($class !== null) {
+            return $class;
+        }
+
+        return studly_case($this->getComponentName()) . 'Widget';
+    }
+
+    /**
+     * Plugin's Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getPluginName(): string
+    {
+        return $this->argument('plugin');
+    }
+
+    /**
+     * 위젯이 생성될 기본 디렉토리 위치
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getDefaultPath(): string
+    {
+        return 'Widgets/' . studly_case($this->argument('name'));
+    }
+
+    /**
+     * Component's Name
+     * (상속으로 재정의)
+     *
+     * @return array|string
+     */
+    protected function getComponentName(): string
+    {
+        return $this->argument('name');
+    }
+
+    /**
+     * stub path
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getStubPath(): string
+    {
+        return __DIR__ . '/stubs';
     }
 }

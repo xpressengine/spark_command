@@ -9,7 +9,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Handler;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeValidationHandlerCommand extends MakeHandlerCommandClass
+class MakeValidationHandlerCommand extends MakeHandlerCommand
 {
     /**
      * @var string

@@ -13,7 +13,7 @@
         </h2>
 
         <a
-            href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.create') }}"
+            href="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.create') }}"
             class="btn btn-primary bg-b500 pull-right"
             style="padding: 10px 50px"
         >
@@ -79,7 +79,7 @@
 
         <!-- 테이블 -->
         <div class="panel">
-            <form id="question-form" method="POST">
+            <form id="{{camelCaseName}}-form" method="POST">
                 {{ csrf_field()  }}
                 {{ method_field('delete') }}
 
@@ -106,17 +106,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($DummyArgumentPluralName as $DummyArgumentCamelCaseName)
+                            @foreach (${{pluralCaseName}} as ${{camelCaseName}})
                                 <tr class="__section-item">
                                     <td class="text-center">
                                         <label>
-                                            <input type="checkbox" value="{{ $DummyArgumentCamelCaseName->getId() }}" name="DummyArgumentCamelCaseName[]">
+                                            <input type="checkbox" value="{{ ${{camelCaseName}}->getId() }}" name="{{camelCaseName}}[]">
                                         </label>
                                     </td>
                                     <td class="text-center">
                                         <div>
                                             <a
-                                                href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.edit', [$DummyArgumentCamelCaseName->getId()]) }}"
+                                                href="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.edit', [${{camelCaseName}}->getId()]) }}"
                                                 class="btn btn-default"
                                                 style="padding-left: 50px; padding-right: 50px"
                                             >
@@ -126,8 +126,8 @@
 
                                         <div style="margin-top: 5px">
                                             <button
-                                                data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.delete', [$DummyArgumentCamelCaseName->getId()]) }}"
-                                                class="xe-btn xe-btn-danger-outline __delete-DummyArgumentCamelCaseName"
+                                                data-url="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.delete', [${{camelCaseName}}->getId()]) }}"
+                                                class="xe-btn xe-btn-danger-outline __delete-{{camelCaseName}}"
                                                 style="padding: 6px 50px"
                                                 type="button"
                                             >
@@ -137,7 +137,7 @@
 
                                         <div style="margin-top: 5px">
                                             <a
-                                                href="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.manage_questions', [$DummyArgumentCamelCaseName->getId()]) }}"
+                                                href="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.manage_{{camelCaseName}}s', [${{camelCaseName}}->getId()]) }}"
                                                 class="xe-btn xe-btn-danger-outline"
                                                 style="padding-left: 36px; padding-right: 36px"
                                                 type="button"
@@ -148,8 +148,8 @@
 
                                         <div style="margin-top: 5px">
                                             <button
-                                                data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.replicate', [$DummyArgumentCamelCaseName->getId()]) }}"
-                                                class="xe-btn xe-btn-danger-outline __replicate-DummyArgumentCamelCaseName"
+                                                data-url="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.replicate', [${{camelCaseName}}->getId()]) }}"
+                                                class="xe-btn xe-btn-danger-outline __replicate-{{camelCaseName}}"
                                                 style="padding-left: 50px; padding-right: 50px"
                                                 type="button"
                                             >
@@ -168,24 +168,24 @@
                         <button
                             type="submit"
                             class="btn btn-primary bg-b400 __delete-form-button"
-                            data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.deleteBatch') }}"
+                            data-url="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.delete_batch') }}"
                             style="padding: 10px 50px"
                         >
                             <strong>
                                 <em class="xi-trash"></em>
-                                시험 삭제
+                                삭제
                             </strong>
                         </button>
 
                         <button
                             type="submit"
                             class="btn btn-primary bg-b400 __replicate-form-button"
-                            data-url="{{ route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.replicateBatch') }}"
+                            data-url="{{ route('{{pluginId}}::backOffice.{{camelCaseName}}.replicate_batch') }}"
                             style="padding: 10px 50px"
                         >
                             <strong>
                                 <em class="xi-library-add"></em>
-                                시험 복사
+                                복사
                             </strong>
                         </button>
                     </div>
@@ -196,7 +196,7 @@
         <!-- 페이징 -->
         @if ($hasPages === true)
             <div class="text-center mt-4" style="margin-top: 20px">
-                {{ $DummyArgumentPluralName->render() }}
+                {{ ${{pluralCaseName}}->render() }}
             </div>
         @endif
     </div>
@@ -206,11 +206,11 @@
 jQuery(function ($) {
     // 체크박스 전체 선택/취소
     $('#check-all-input').change(function () {
-        $('input[name="DummyArgumentCamelCaseName[]"]').prop('checked', $(this).is(':checked'));
+        $('input[name="{{camelCaseName}}[]"]').prop('checked', $(this).is(':checked'));
     });
 
     // 체크박스 수정 시 체크박스 전체 부분 업데이트
-    $('input[name="DummyArgumentCamelCaseName[]"]').click(function () {
+    $('input[name="{{camelCaseName}}[]"]').click(function () {
         if ($(this).prop('checked') === false) {
             $('#check-all-input').prop('checked', false);
         }
@@ -218,7 +218,7 @@ jQuery(function ($) {
         else {
             var isAllCheck = true;
 
-            $('input[name="DummyArgumentCamelCaseName[]"]').each(function (index, item) {
+            $('input[name="{{camelCaseName}}[]"]').each(function (index, item) {
                 if ($(item).prop('checked') === false) {
                   isAllCheck = false;
                 }
@@ -228,8 +228,8 @@ jQuery(function ($) {
         }
     });
 
-    // 시험을 삭제합니다.
-    $('.__delete-DummyArgumentCamelCaseName').on('click', function() {
+    // 아이템 삭제합니다.
+    $('.__delete-{{camelCaseName}}').on('click', function() {
         if (confirm('{{ $deletedConfirm }}') === false) {
             return false;
         }
@@ -241,8 +241,8 @@ jQuery(function ($) {
         });
     });
 
-    // 시험을 복사힙니다.
-    $('.__replicate-DummyArgumentCamelCaseName').on('click', function() {
+    // 아이템 복사힙니다.
+    $('.__replicate-{{camelCaseName}}').on('click', function() {
         if (confirm('{{ $replicatedConfirm }}') === false) {
             return false;
         }
@@ -254,7 +254,7 @@ jQuery(function ($) {
         });
     });
 
-    // 시험 전체 삭제에 대한 URL 선택.
+    // 아이템 전체 삭제에 대한 URL 선택.
     $('.__delete-form-button').on('click', function() {
         var url = $(this).data('url');
 
@@ -262,10 +262,11 @@ jQuery(function ($) {
             return false;
         }
 
-        $('#question-form').attr('action', url);
+        $('#{{camelCaseName}}-form').attr('action', url);
+        $('#{{camelCaseName}}-form [name=_method]').val('delete');
     });
 
-    // 시험 전체 복사에 대한 URL 선택.
+    // 아이템 전체 복사에 대한 URL 선택.
     $('.__replicate-form-button').on('click', function() {
         var url = $(this).data('url');
 
@@ -273,7 +274,8 @@ jQuery(function ($) {
             return false;
         }
 
-        $('#question-form').attr('action', url);
+        $('#{{camelCaseName}}-form').attr('action', url);
+        $('#{{camelCaseName}}-form [name=_method]').val('post');
     });
 });
 </script>

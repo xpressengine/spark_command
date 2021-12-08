@@ -5,10 +5,10 @@ namespace XeHub\XePlugin\XeCli\Commands\Controller;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
 use Symfony\Component\Console\Input\InputOption;
-use XeHub\XePlugin\XeCli\Commands\Handler\MakeHandlerCommandClass;
+use XeHub\XePlugin\XeCli\Commands\Handler\MakeHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeMessageHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeValidationHandlerCommand;
-use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommandClass;
+use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
 use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommandClass;
 use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeCreateViewCommand;
 use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeEditViewCommand;
@@ -69,7 +69,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeHandlerFile()
     {
-        $this->call(app(MakeHandlerCommandClass::class)->getArtisanCommandName(), [
+        $this->call(app(MakeHandlerCommand::class)->getArtisanCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);
@@ -108,7 +108,7 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeMigrationTableFile()
     {
-        $this->call(app(MakeMigrationTableCommandClass::class)->getArtisanCommandName(), [
+        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
         ]);

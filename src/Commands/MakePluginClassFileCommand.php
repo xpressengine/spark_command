@@ -30,12 +30,12 @@ abstract class MakePluginClassFileCommand extends MakePluginFileCommand
     {
         $replaceData = parent::getReplaceData($pluginEntity);
 
-        $madeControllerClassName = $this->getPluginFileClass();
-        $madeControllerNamespace = $this->getPluginNamespace($pluginEntity);
+        $className = $this->getPluginFileClass();
+        $namespace = $this->getPluginNamespace($pluginEntity);
 
         return array_merge($replaceData, [
-            'DummyClass' => $madeControllerClassName,
-            'DummyNamespace' => $madeControllerNamespace,
+            '{{targetClassName}}' => $className,
+            '{{targetNamespace}}' => $namespace,
         ]);
     }
 

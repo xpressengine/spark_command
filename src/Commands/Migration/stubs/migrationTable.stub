@@ -1,25 +1,25 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use DummyBaseNamespace\Migrations\Migration;
-use DummyBaseNamespace\Models\DummyArgumentStudlyCaseNameModel;
+use {{pluginNamespace}}\Migrations\Migration;
+use {{pluginNamespace}}\Models\{{studlyCaseName}}Model;
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
-class DummyClass implements Migration
+class {{targetClassName}} implements Migration
 {
     /**
      * @return bool
      */
     public function checkNotExist(): bool
     {
-        return Schema::hasTable(DummyArgumentStudlyCaseNameModel::TABLE_NAME) === false;
+        return Schema::hasTable({{studlyCaseName}}Model::TABLE_NAME) === false;
     }
 
     /**
@@ -27,7 +27,11 @@ class DummyClass implements Migration
      */
     public function up()
     {
-        Schema::create(DummyArgumentStudlyCaseNameModel::TABLE_NAME, function (Blueprint $table) {
+        Schema::create({{studlyCaseName}}Model::TABLE_NAME, function (Blueprint $table) {
+            $table->string('id', 36);
+
+            $table->primary(['id']);
+            $table->timestamps();
             $table->engine = 'InnoDB';
         });
     }

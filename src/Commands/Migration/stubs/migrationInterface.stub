@@ -1,11 +1,11 @@
 <?php
 
-namespace DummyBaseNamespace\Migrations;
+namespace {{pluginNamespace}}\Migrations;
 
 /**
  * Interface Migration
  *
- * @package DummyBaseNamespace\Migrations
+ * @package {{pluginNamespace}}\Migrations
  */
 interface Migration
 {

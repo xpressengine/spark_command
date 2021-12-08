@@ -1,15 +1,15 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use Xpressengine\Http\Request;
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
-class DummyClass
+class {{targetClassName}}
 {
     /**
      * 싱글톤을 등록합니다.
@@ -26,9 +26,9 @@ class DummyClass
     /**
      * 서비스 핸들러에 등록된 값을 반환합니다.
      *
-     * @return DummyClass
+     * @return {{targetClassName}}
      */
-    public static function make(): DummyClass
+    public static function make(): {{targetClassName}}
     {
         return app(__CLASS__);
     }

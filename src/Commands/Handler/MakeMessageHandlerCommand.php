@@ -9,7 +9,7 @@ namespace XeHub\XePlugin\XeCli\Commands\Handler;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Handler
  */
-class MakeMessageHandlerCommand extends MakeHandlerCommandClass
+class MakeMessageHandlerCommand extends MakeHandlerCommand
 {
     /**
      * @var string

@@ -1,16 +1,20 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use Exception;
 use Xpressengine\Plugin\SupportInfoTrait;
 use Xpressengine\Widget\AbstractWidget;
 
-class DummyClass extends AbstractWidget
+/**
+ * Class {{targetClass}}
+ * @package {{targetNamespace}}
+ */
+class {{targetClass}} extends AbstractWidget
 {
     use SupportInfoTrait;
 
-    protected static $path = 'DummyPath';
+    protected static $path = '{{targetPath}}';
 
    /**
      * 그려줄 내용 반환.

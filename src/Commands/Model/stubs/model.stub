@@ -1,6 +1,6 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Relations;
@@ -9,23 +9,23 @@ use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
- * @method static Builder|DummyClass newModelQuery()
- * @method static Builder|DummyClass newQuery()
- * @method static Builder|DummyClass query()
+ * @package {{targetNamespace}}
+ * @method static Builder|{{targetClassName}} newModelQuery()
+ * @method static Builder|{{targetClassName}} newQuery()
+ * @method static Builder|{{targetClassName}} query()
  * @mixin Eloquent
  */
-class DummyClass extends DynamicModel
+class {{targetClassName}} extends DynamicModel
 {
     /**
      * @var string
      */
-    public const TABLE_NAME = 'DummyTableName';
+    public const TABLE_NAME = '{{tableName}}';
 
     /**
      * @var string
      */
-    protected $table = DummyClass::TABLE_NAME;
+    protected $table = {{targetClassName}}::TABLE_NAME;
 }

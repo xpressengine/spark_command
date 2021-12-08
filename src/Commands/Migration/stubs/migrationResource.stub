@@ -1,11 +1,11 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 /**
  * Class MigrationResource
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
 class MigrationResource
 {

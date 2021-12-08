@@ -1,15 +1,15 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use App\Http\Controllers\Controller;
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
-class DummyClass extends Controller
+class {{targetClassName}} extends Controller
 {
 
 }

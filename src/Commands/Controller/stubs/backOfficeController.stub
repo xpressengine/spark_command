@@ -1,52 +1,52 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Xpressengine\Http\Request;
 use Throwable;
 use XePresenter;
-use DummyBaseNamespace\Handlers\DummyArgumentStudlyCaseName\DummyArgumentStudlyCaseNameHandler;
-use DummyBaseNamespace\Handlers\DummyArgumentStudlyCaseName\DummyArgumentStudlyCaseNameMessageHandler;
-use DummyBaseNamespace\Handlers\DummyArgumentStudlyCaseName\DummyArgumentStudlyCaseNameValidationHandler;
+use {{pluginNamespace}}\Handlers\{{studlyCaseName}}\{{studlyCaseName}}Handler;
+use {{pluginNamespace}}\Handlers\{{studlyCaseName}}\{{studlyCaseName}}MessageHandler;
+use {{pluginNamespace}}\Handlers\{{studlyCaseName}}\{{studlyCaseName}}ValidationHandler;
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
-class DummyClass extends Controller
+class {{targetClassName}} extends Controller
 {
     /**
      * @param Request $request
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
      * @return mixed
      */
     public function index(
         Request            $request,
-        DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+        {{studlyCaseName}}Handler ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
     )
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.index';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.index';
 
-        $DummyArgumentPluralName = $DummyArgumentCamelCaseNameHandler->paginate($request->all());
+        ${{pluralCaseName}} = ${{camelCaseName}}Handler->paginate($request->all());
 
-        $deletedConfirm = $DummyArgumentCamelCaseNameMessageHandler->deletedConfirm();
-        $replicatedConfirm = $DummyArgumentCamelCaseNameMessageHandler->replicatedConfirm();
+        $deletedConfirm = ${{camelCaseName}}MessageHandler->deletedConfirm();
+        $replicatedConfirm = ${{camelCaseName}}MessageHandler->replicatedConfirm();
 
-        $searchSubjectOptions = $DummyArgumentCamelCaseNameHandler->adminSearchSubjectOptions();
+        $searchSubjectOptions = ${{camelCaseName}}Handler->adminSearchSubjectOptions();
 
         return XePresenter::make($viewPath, [
-            'DummyArgumentPluralName' => $DummyArgumentPluralName,
+            '{{pluralCaseName}}' => ${{pluralCaseName}},
             'pageTitle' => $pageTitle,
-            'hasPages' => $DummyArgumentPluralName->hasPages(),
-            'currentPage' => $DummyArgumentPluralName->currentPage(),
-            'lastPage' => $DummyArgumentPluralName->lastPage(),
-            'totalCount' => $DummyArgumentPluralName->total(),
+            'hasPages' => ${{pluralCaseName}}->hasPages(),
+            'currentPage' => ${{pluralCaseName}}->currentPage(),
+            'lastPage' => ${{pluralCaseName}}->lastPage(),
+            'totalCount' => ${{pluralCaseName}}->total(),
             'deletedConfirm' => $deletedConfirm,
             'replicatedConfirm' => $replicatedConfirm,
             'searchSubjectOptions' => $searchSubjectOptions,
@@ -54,19 +54,19 @@ class DummyClass extends Controller
     }
 
     /**
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
      * @return mixed
      */
     public function create(
-        DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+        {{studlyCaseName}}Handler ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
     )
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.create';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.create';
 
-        $storedConfirm = $DummyArgumentCamelCaseNameMessageHandler->storedConfirm();
+        $storedConfirm = ${{camelCaseName}}MessageHandler->storedConfirm();
 
         return XePresenter::make($viewPath, [
             'pageTitle' => $pageTitle,
@@ -76,30 +76,30 @@ class DummyClass extends Controller
 
     /**
      * @param Request $request
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameValidationHandler $DummyArgumentCamelCaseNameValidationHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
      * @return RedirectResponse
      * @throws Throwable
      */
     public function store(
         Request               $request,
-        DummyArgumentStudlyCaseNameHandler           $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameValidationHandler $DummyArgumentCamelCaseNameValidationHandler,
-        DummyArgumentStudlyCaseNameMessageHandler    $DummyArgumentCamelCaseNameMessageHandler
+        {{studlyCaseName}}Handler           ${{camelCaseName}}Handler,
+        {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler,
+        {{studlyCaseName}}MessageHandler    ${{camelCaseName}}MessageHandler
     ): RedirectResponse
     {
         $this->validate(
             $request,
-            $DummyArgumentCamelCaseNameValidationHandler->storedRules($request),
-            $DummyArgumentCamelCaseNameValidationHandler->messages()
+            ${{camelCaseName}}ValidationHandler->storedRules($request),
+            ${{camelCaseName}}ValidationHandler->messages()
         );
 
         \XeDB::beginTransaction();
 
         try {
             $inputs = $request->all();
-            $DummyArgumentCamelCaseNameHandler->store($inputs);
+            ${{camelCaseName}}Handler->store($inputs);
 
             \XeDB::commit();
         } catch (Throwable $e) {
@@ -107,8 +107,8 @@ class DummyClass extends Controller
             throw $e;
         }
 
-        $storedSuccess = $DummyArgumentCamelCaseNameMessageHandler->storedSuccess();
-        $redirectUrl = route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.index');
+        $storedSuccess = ${{camelCaseName}}MessageHandler->storedSuccess();
+        $redirectUrl = route('{{pluginId}}::backOffice.{{camelCaseName}}.index');
 
         session()->flash('alert', [
             'type' => 'success',
@@ -119,28 +119,28 @@ class DummyClass extends Controller
     }
 
     /**
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
-     * @param string $DummyArgumentCamelCaseNameId
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
      * @return mixed
      */
     public function show(
-            DummyArgumentStudlyCaseNameHandler        $DummyArgumentCamelCaseNameHandler,
-            DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler,
-            string             $DummyArgumentCamelCaseNameId
+            {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+            {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+            string             ${{camelCaseName}}Id
     )
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.show';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.show';
 
-        $DummyArgumentCamelCaseName = $DummyArgumentCamelCaseNameHandler->findOrFail($DummyArgumentCamelCaseNameId);
+        ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
         $redirectUrl = redirect()->back()->getTargetUrl();
 
-        $deletedConfirm = $DummyArgumentCamelCaseNameMessageHandler->deletedConfirm();
-        $replicatedConfirm = $DummyArgumentCamelCaseNameMessageHandler->replicatedConfirm();
+        $deletedConfirm = ${{camelCaseName}}MessageHandler->deletedConfirm();
+        $replicatedConfirm = ${{camelCaseName}}MessageHandler->replicatedConfirm();
 
         return XePresenter::make($viewPath, [
-            'DummyArgumentCamelCaseName' => $DummyArgumentCamelCaseName,
+            '{{camelCaseName}}' => ${{camelCaseName}},
             'pageTitle' => $pageTitle,
             'redirectUrl' => $redirectUrl,
             'deletedConfirm' => $deletedConfirm,
@@ -149,27 +149,27 @@ class DummyClass extends Controller
     }
 
     /**
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
-     * @param string $DummyArgumentCamelCaseNameId
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
      * @return mixed
      */
     public function edit(
-        DummyArgumentStudlyCaseNameHandler        $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler,
-        string             $DummyArgumentCamelCaseNameId
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+        string             ${{camelCaseName}}Id
     )
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.edit';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.edit';
 
-        $DummyArgumentCamelCaseName = $DummyArgumentCamelCaseNameHandler->findOrFail($DummyArgumentCamelCaseNameId);
+        ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
 
-        $updatedConfirm = $DummyArgumentCamelCaseNameMessageHandler->updatedConfirm();
-        $deletedConfirm = $DummyArgumentCamelCaseNameMessageHandler->deletedConfirm();
+        $updatedConfirm = ${{camelCaseName}}MessageHandler->updatedConfirm();
+        $deletedConfirm = ${{camelCaseName}}MessageHandler->deletedConfirm();
 
         return XePresenter::make($viewPath, [
-            'DummyArgumentCamelCaseName' => $DummyArgumentCamelCaseName,
+            '{{camelCaseName}}' => ${{camelCaseName}},
             'pageTitle' => $pageTitle,
             'updatedConfirm' => $updatedConfirm,
             'deletedConfirm' => $deletedConfirm,
@@ -178,25 +178,25 @@ class DummyClass extends Controller
 
     /**
      * @param Request $request
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameValidationHandler $DummyArgumentCamelCaseNameValidationHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
-     * @param string $DummyArgumentCamelCaseNameId
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
      * @return RedirectResponse
      * @throws Throwable
      */
     public function update(
         Request               $request,
-        DummyArgumentStudlyCaseNameHandler           $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameValidationHandler $DummyArgumentCamelCaseNameValidationHandler,
-        DummyArgumentStudlyCaseNameMessageHandler    $DummyArgumentCamelCaseNameMessageHandler,
-        string                $DummyArgumentCamelCaseNameId
+        {{studlyCaseName}}Handler           ${{camelCaseName}}Handler,
+        {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler,
+        {{studlyCaseName}}MessageHandler    ${{camelCaseName}}MessageHandler,
+        string                ${{camelCaseName}}Id
     ): RedirectResponse
     {
         $this->validate(
             $request,
-            $DummyArgumentCamelCaseNameValidationHandler->updatedRules($request),
-            $DummyArgumentCamelCaseNameValidationHandler->messages()
+            ${{camelCaseName}}ValidationHandler->updatedRules($request),
+            ${{camelCaseName}}ValidationHandler->messages()
         );
 
         \XeDB::beginTransaction();
@@ -204,8 +204,8 @@ class DummyClass extends Controller
         try {
             $inputs = array_filter($request->all());
 
-            $DummyArgumentCamelCaseName = $DummyArgumentCamelCaseNameHandler->findOrFail($DummyArgumentCamelCaseNameId);
-            $DummyArgumentCamelCaseNameHandler->update($DummyArgumentCamelCaseName, $inputs);
+            ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+            ${{camelCaseName}}Handler->update(${{camelCaseName}}, $inputs);
 
             \XeDB::commit();
         } catch (Throwable $e) {
@@ -213,7 +213,7 @@ class DummyClass extends Controller
             throw $e;
         }
 
-        $updatedSuccess = $DummyArgumentCamelCaseNameMessageHandler->updatedSuccess();
+        $updatedSuccess = ${{camelCaseName}}MessageHandler->updatedSuccess();
 
         session()->flash('alert', [
             'type' => 'success',
@@ -224,23 +224,23 @@ class DummyClass extends Controller
     }
 
     /**
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
-     * @param string $DummyArgumentCamelCaseNameId
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
      * @return mixed
      * @throws Throwable
      */
     public function delete(
-        DummyArgumentStudlyCaseNameHandler        $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler,
-        string             $DummyArgumentCamelCaseNameId
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+        string             ${{camelCaseName}}Id
     )
     {
         \XeDB::beginTransaction();
 
         try {
-            $DummyArgumentCamelCaseName = $DummyArgumentCamelCaseNameHandler->findOrFail($DummyArgumentCamelCaseNameId);
-            $DummyArgumentCamelCaseNameHandler->delete($DummyArgumentCamelCaseName);
+            ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+            ${{camelCaseName}}Handler->delete(${{camelCaseName}});
 
             \XeDB::commit();
         } catch (Throwable $e) {
@@ -248,7 +248,7 @@ class DummyClass extends Controller
             throw $e;
         }
 
-        $deletedSuccess = $DummyArgumentCamelCaseNameMessageHandler->deletedSuccess();
+        $deletedSuccess = ${{camelCaseName}}MessageHandler->deletedSuccess();
 
         session()->flash('alert', [
             'type' => 'success',
@@ -256,28 +256,28 @@ class DummyClass extends Controller
         ]);
 
         return XePresenter::makeApi([
-            'id' => $DummyArgumentCamelCaseNameId
+            'id' => ${{camelCaseName}}Id
         ]);
     }
 
     /**
      * @param Request $request
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
      * @return RedirectResponse
      * @throws Throwable
      */
     public function deleteBatch(
         Request            $request,
-        DummyArgumentStudlyCaseNameHandler        $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
     ): RedirectResponse
     {
         \XeDB::beginTransaction();
 
         try {
-            $DummyArgumentCamelCaseNameIds = $request->get('DummyArgumentCamelCaseName', []);
-            $DummyArgumentCamelCaseNameHandler->deleteBatch($DummyArgumentCamelCaseNameIds);
+            ${{camelCaseName}}Ids = $request->get('{{camelCaseName}}', []);
+            ${{camelCaseName}}Handler->deleteBatch(${{camelCaseName}}Ids);
 
             \XeDB::commit();
         } catch (Throwable $e) {
@@ -285,7 +285,7 @@ class DummyClass extends Controller
             throw $e;
         }
 
-        $deletedSuccess = $DummyArgumentCamelCaseNameMessageHandler->deletedSuccess();
+        $deletedSuccess = ${{camelCaseName}}MessageHandler->deletedSuccess();
 
         session()->flash('alert', [
             'type' => 'success',
@@ -296,23 +296,23 @@ class DummyClass extends Controller
     }
 
     /**
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
-     * @param string $DummyArgumentCamelCaseNameId
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
      * @return mixed
      * @throws Throwable
      */
     public function replicate(
-        DummyArgumentStudlyCaseNameHandler        $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler,
-        string             $DummyArgumentCamelCaseNameId
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+        string             ${{camelCaseName}}Id
     )
     {
         \XeDB::beginTransaction();
 
         try {
-            $DummyArgumentCamelCaseName = $DummyArgumentCamelCaseNameHandler->findOrFail($DummyArgumentCamelCaseNameId);
-            $newDummyArgumentStudlyCaseName = $DummyArgumentCamelCaseNameHandler->replicate($DummyArgumentCamelCaseName);
+            ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+            $new{{studlyCaseName}} = ${{camelCaseName}}Handler->replicate(${{camelCaseName}});
 
             \XeDB::commit();
         } catch (Throwable $e) {
@@ -320,7 +320,7 @@ class DummyClass extends Controller
             throw $e;
         }
 
-       $replicatedSuccess = $DummyArgumentCamelCaseNameMessageHandler->replicatedSuccess();
+       $replicatedSuccess = ${{camelCaseName}}MessageHandler->replicatedSuccess();
 
         session()->flash('alert', [
             'type' => 'success',
@@ -328,28 +328,28 @@ class DummyClass extends Controller
         ]);
 
         return XePresenter::makeApi([
-            'id' => $newDummyArgumentStudlyCaseName->getId()
+            'id' => $new{{studlyCaseName}}->getId()
         ]);
     }
 
     /**
      * @param Request $request
-     * @param DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler
-     * @param DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
      * @return RedirectResponse
      * @throws Throwable
      */
     public function replicateBatch(
         Request            $request,
-        DummyArgumentStudlyCaseNameHandler $DummyArgumentCamelCaseNameHandler,
-        DummyArgumentStudlyCaseNameMessageHandler $DummyArgumentCamelCaseNameMessageHandler
+        {{studlyCaseName}}Handler ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
     ): RedirectResponse
     {
         \XeDB::beginTransaction();
 
         try {
-           $DummyArgumentCamelCaseNameIds = $request->get('DummyArgumentCamelCaseName', []);
-           $DummyArgumentCamelCaseNameHandler->replicateBatch($DummyArgumentCamelCaseNameIds);
+           ${{camelCaseName}}Ids = $request->get('{{camelCaseName}}', []);
+           ${{camelCaseName}}Handler->replicateBatch(${{camelCaseName}}Ids);
 
             \XeDB::commit();
         } catch (Throwable $e) {
@@ -357,7 +357,7 @@ class DummyClass extends Controller
             throw $e;
         }
 
-        $replicatedSuccess = $DummyArgumentCamelCaseNameMessageHandler->replicatedSuccess();
+        $replicatedSuccess = ${{camelCaseName}}MessageHandler->replicatedSuccess();
 
         session()->flash('alert', [
             'type' => 'success',

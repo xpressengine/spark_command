@@ -1,6 +1,6 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{targetNamespace}};
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -9,11 +9,11 @@ use Throwable;
 use XePresenter;
 
 /**
- * Class DummyClass
+ * Class {{targetClassName}}
  *
- * @package DummyNamespace
+ * @package {{targetNamespace}}
  */
-class DummyClass extends Controller
+class {{targetClassName}} extends Controller
 {
     /**
      * @param Request $request
@@ -24,7 +24,7 @@ class DummyClass extends Controller
     )
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.index';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.index';
 
         return XePresenter::make($viewPath, [
             'pageTitle' => $pageTitle
@@ -39,7 +39,7 @@ class DummyClass extends Controller
     )
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.create';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.create';
 
         return XePresenter::make($viewPath, [
             'pageTitle' => $pageTitle,
@@ -65,7 +65,7 @@ class DummyClass extends Controller
             throw $e;
         }
 
-        $redirectUrl = route('DummyPluginId::backOffice.DummyArgumentCamelCaseName.index');
+        $redirectUrl = route('{{pluginId}}::backOffice.{{camelCaseName}}.index');
         return redirect()->to($redirectUrl);
     }
 
@@ -75,7 +75,7 @@ class DummyClass extends Controller
     public function show()
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.show';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.show';
 
         $redirectUrl = redirect()->back()->getTargetUrl();
 
@@ -91,7 +91,7 @@ class DummyClass extends Controller
     public function edit()
     {
         $pageTitle = '';
-        $viewPath = 'DummyPluginId::views.backOffice.DummyArgumentCamelCaseName.edit';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.edit';
 
         return XePresenter::make($viewPath, [
             'pageTitle' => $pageTitle,

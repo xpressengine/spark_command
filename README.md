@@ -307,7 +307,10 @@ php artisan xe_cli:make:validationHandler xe_cli exam
 ### Make Model
 
 ```
-php artisan xe_cli:make:model {plugin} {name} {--migration}
+php artisan xe_cli:make:model {plugin} {name} 
+    {--migration}
+    {--table=}
+    {--soft-deletes}
 ```
 
 #### 예시
@@ -315,12 +318,16 @@ php artisan xe_cli:make:model {plugin} {name} {--migration}
 ```
 php artisan xe_cli:make:model xe_cli exam --migration
 php artisan xe_cli:make:model xe_cli exam
+php artisan xe_cli:make:model xe_cli exam --table=xe_hub_table
+php artisan xe_cli:make:model xe_cli exam --table=xe_hub_table --soft-deletes
+php artisan xe_cli:make:model xe_cli exam --soft-deletes
 ```
 
 #### 설명
 - 옵션
     - --migration : 모델에 대한 테이블 마이그레이션 파일 생성
-
+    - --table= : 모델에 사용할 테이블 이름을 설정합니다.
+    - --soft-deletes : 모델 soft-deletes 이 사용되도록 설정합니다.
 </p>
 </details>
 

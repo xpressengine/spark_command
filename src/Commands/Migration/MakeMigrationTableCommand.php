@@ -3,6 +3,7 @@
 namespace XeHub\XePlugin\XeCli\Commands\Migration;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Arr;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
 use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommandClass;
@@ -20,7 +21,11 @@ class MakeMigrationTableCommand extends MakePluginClassFileCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:migrationTable {plugin} {name} {--model}';
+    protected $signature = 'xe_cli:make:migrationTable 
+                                {plugin}
+                                {name} 
+                                {--model}
+                                {--soft-deletes}';
 
     /**
      * @var string
@@ -87,6 +92,30 @@ class MakeMigrationTableCommand extends MakePluginClassFileCommand
         $this->call(app(MakeModelCommandClass::class)->getArtisanCommandName(), [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name')
+        ]);
+    }
+
+    /**
+     * Get Replace Data
+     * (상속으로 재정의)
+     *
+     * @param PluginEntity $pluginEntity
+     * @return array
+     * @throws FileNotFoundException
+     * @throws ReflectionException
+     */
+    protected function getReplaceData(PluginEntity $pluginEntity): array
+    {
+        $replaceData = parent::getReplaceData($pluginEntity);
+
+        $migrationReplaceData = [];
+
+        if ($this->option('soft-deletes') == true) {
+            $migrationReplaceData['softDeletes'] = '$table->softDeletes();';
+        }
+
+        return array_merge($replaceData, [
+            '{{softDeletes}}' => Arr::get($migrationReplaceData, 'softDeletes', ''),
         ]);
     }
 

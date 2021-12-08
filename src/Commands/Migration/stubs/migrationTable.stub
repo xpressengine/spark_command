@@ -31,6 +31,7 @@ class {{targetClassName}} implements Migration
             $table->string('id', 36);
 
             $table->primary(['id']);
+            {{softDeletes}}
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

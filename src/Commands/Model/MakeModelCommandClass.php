@@ -73,10 +73,19 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
      */
     protected function makeMigrationFile()
     {
-        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        if ($this->option('soft-deletes') == true) {
+            $arguments['--soft-deletes'] = true;
+        }
+
+        $this->call(
+            app(MakeMigrationTableCommand::class)->getArtisanCommandName(),
+            $arguments
+        );
     }
 
     /**

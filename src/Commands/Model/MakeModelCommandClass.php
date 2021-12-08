@@ -3,6 +3,7 @@
 namespace XeHub\XePlugin\XeCli\Commands\Model;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
@@ -24,7 +25,12 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:model {plugin} {name} {--tableName=} {--migration}';
+    protected $signature = 'xe_cli:make:model
+                            {plugin}
+                            {name}
+                            {--tableName=}
+                            {--migration} 
+                            {--soft-deletes}';
 
     /**
      * @var string
@@ -56,11 +62,21 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
         parent::makePluginFile($pluginEntity);
 
         if ($this->option('migration') == true) {
-            $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
-                'plugin' => $this->getPluginName(),
-                'name' => $this->argument('name'),
-            ]);
+           $this->makeMigrationFile();
         }
+    }
+
+    /**
+     * Make Migration File
+     *
+     * @return void
+     */
+    protected function makeMigrationFile()
+    {
+        $this->call(app(MakeMigrationTableCommand::class)->getArtisanCommandName(), [
+            'plugin' => $this->getPluginName(),
+            'name' => $this->argument('name'),
+        ]);
     }
 
     /**
@@ -77,8 +93,19 @@ class MakeModelCommandClass extends MakePluginClassFileCommand
     {
         $replaceData = parent::getReplaceData($pluginEntity);
 
+        $modelReplaceData = [
+            'tableName' => $this->getTableName(),
+        ];
+
+        if ($this->option('soft-deletes') == true) {
+            $modelReplaceData['useSoftDeletes'] = "use SoftDeletes;\n";
+            $modelReplaceData['useSoftDeletesNamespace'] = "use Illuminate\Database\Eloquent\SoftDeletes;\n";
+        }
+
         return array_merge($replaceData, [
-            'DummyTableName' => $this->getTableName()
+            '{{tableName}}' => Arr::get($modelReplaceData, 'tableName'),
+            '{{useSoftDeletes}}' => Arr::get($modelReplaceData, 'useSoftDeletes', ''),
+            '{{useSoftDeletesNamespace}}' => Arr::get($modelReplaceData, 'useSoftDeletesNamespace', ''),
         ]);
     }
 

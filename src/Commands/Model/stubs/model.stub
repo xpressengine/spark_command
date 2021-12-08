@@ -3,11 +3,9 @@
 namespace {{targetNamespace}};
 
 use Eloquent;
-use Illuminate\Database\Eloquent\Relations;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Database\Eloquent\DynamicModel;
-
+{{useSoftDeletesNamespace}}
 /**
  * Class {{targetClassName}}
  *
@@ -19,6 +17,7 @@ use Xpressengine\Database\Eloquent\DynamicModel;
  */
 class {{targetClassName}} extends DynamicModel
 {
+    {{useSoftDeletes}}
     /**
      * @var string
      */

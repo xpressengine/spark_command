@@ -160,7 +160,9 @@ php artisan xe_cli:migrate:queueDatabase
 ### Make Migration Table
 
 ```
-xe_cli:make:migrationTable {plugin} {name} {--model}
+xe_cli:make:migrationTable {plugin} {name} 
+    {--model}
+    {--soft-deletes}
 ```
 
 #### 예시
@@ -168,11 +170,15 @@ xe_cli:make:migrationTable {plugin} {name} {--model}
 ```
 php artisan xe_cli:make:migrationTable xe_cli exam --model
 php artisan xe_cli:make:migrationTable xe_cli exam
+php artisan xe_cli:make:migrationTable xe_cli exam --soft-delets
+php artisan xe_cli:make:migrationTable xe_cli exam --model --soft-deletes
+
 ```
 
 #### 설명
 - 옵션
     - --model : 테이블 마이그레이션에 대한 모델 파일 생성
+    - --soft-deletes : soft-deletes 를 사용할 수 있게 설정합니다.
 
 
 ### Make Migration Resource

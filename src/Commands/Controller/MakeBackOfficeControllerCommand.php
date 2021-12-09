@@ -8,12 +8,14 @@ use Symfony\Component\Console\Input\InputOption;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeMessageHandlerCommand;
 use XeHub\XePlugin\XeCli\Commands\Handler\MakeValidationHandlerCommand;
+use XeHub\XePlugin\XeCli\Commands\MakePluginClassFileCommand;
 use XeHub\XePlugin\XeCli\Commands\Migration\MakeMigrationTableCommand;
 use XeHub\XePlugin\XeCli\Commands\Model\MakeModelCommandClass;
 use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeCreateViewCommand;
 use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeEditViewCommand;
 use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeIndexViewCommand;
 use XeHub\XePlugin\XeCli\Commands\View\MakeBackOfficeShowViewCommand;
+use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
 /**
@@ -23,8 +25,10 @@ use Xpressengine\Plugin\PluginEntity;
  *
  * @package XeHub\XePlugin\XeCli\Commands\Controller
  */
-class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
+class MakeBackOfficeControllerCommand extends MakePluginClassFileCommand
 {
+    use RegisterArtisan;
+
     /**
      * @var string
      */
@@ -69,10 +73,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeHandlerFile()
     {
-        $this->call(app(MakeHandlerCommand::class)->getCommandName(), [
+        $command = app(MakeHandlerCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -82,10 +90,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeMessageHandlerFile()
     {
-        $this->call(app(MakeMessageHandlerCommand::class)->getCommandName(), [
+        $command = app(MakeMessageHandlerCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -95,10 +107,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeValidationHandlerFile()
     {
-        $this->call(app(MakeValidationHandlerCommand::class)->getCommandName(), [
+        $command = app(MakeValidationHandlerCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -108,10 +124,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeMigrationTableFile()
     {
-        $this->call(app(MakeMigrationTableCommand::class)->getCommandName(), [
+        $command =app(MakeMigrationTableCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -121,10 +141,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeModelFile()
     {
-        $this->call(app(MakeModelCommandClass::class)->getCommandName(), [
+        $command = app(MakeModelCommandClass::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -134,10 +158,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeIndexViewFile()
     {
-        $this->call(app(MakeBackOfficeIndexViewCommand::class)->getCommandName(), [
+        $command = app(MakeBackOfficeIndexViewCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -147,10 +175,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeShowViewFile()
     {
-        $this->call(app(MakeBackOfficeShowViewCommand::class)->getCommandName(), [
+        $command = app(MakeBackOfficeShowViewCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -160,10 +192,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeEditViewFile()
     {
-        $this->call(app(MakeBackOfficeEditViewCommand::class)->getCommandName(), [
+        $command = app(MakeBackOfficeEditViewCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -173,10 +209,14 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
      */
     protected function makeCreateViewFile()
     {
-        $this->call(app(MakeBackOfficeCreateViewCommand::class)->getCommandName(), [
+        $command = app(MakeBackOfficeCreateViewCommand::class)->getCommandName();
+
+        $arguments = [
             'plugin' => $this->getPluginName(),
             'name' => $this->argument('name'),
-        ]);
+        ];
+
+        $this->call($command, $arguments);
     }
 
     /**
@@ -255,5 +295,37 @@ class MakeBackOfficeControllerCommand extends MakeControllerCommandClass
     public function getCommandName(): string
     {
         return 'xe_cli:make:backOfficeController';
+    }
+
+    /**
+     * Get Plugin File
+     *
+     * @return string
+     */
+    protected function getPluginFileClass(): string
+    {
+        return studly_case($this->argument('name')) . 'Controller';
+    }
+
+    /**
+     * Get Plugin Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getPluginName(): string
+    {
+        return $this->argument('plugin');
+    }
+
+    /**
+     * Get Plugin File Name
+     * (상속으로 재정의)
+     *
+     * @return string
+     */
+    protected function getPluginFileName(): string
+    {
+        return studly_case($this->argument('name')) . 'Controller.php';
     }
 }

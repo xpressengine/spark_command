@@ -222,13 +222,33 @@ php artisan xe_cli:setOrder:menuItem {menuItem} {position}
 ### Make Controller
 
 ```
-php artisan xe_cli:make:controller {plugin} {name}
+php artisan xe_cli:make:controller {plugin} {name} 
+    {--resource}
 ```
 
+#### 예시
+
+```
+php artisan xe_cli:make:controller xe_cli exam
+php artisan xe_cli:make:controller xe_cli exam --resource
+```
+
+#### 설명
+- 옵션
+    - --resource : laravel resource 형태에 맞춰줍니다.
+    
 ### Make BackOffice Controller
 
 ```
 php artisan xe_cli:make:backOfficeController {plugin} {name}
+    {--structure}
+```
+
+#### 예시
+
+```
+php artisan xe_cli:make:backOfficeController xe_cli exam
+php artisan xe_cli:make:backOfficeController xe_cli exam --structure
 ```
 
 - 옵션
@@ -238,7 +258,19 @@ php artisan xe_cli:make:backOfficeController {plugin} {name}
 
 ```
 php artisan xe_cli:make:clientController {plugin} {name}
+    {--resource}
 ```
+
+#### 예시
+
+```
+php artisan xe_cli:make:clientController xe_cli exam
+php artisan xe_cli:make:clientController xe_cli exam --resource
+```
+
+#### 설명
+- 옵션
+    - --resource : laravel resource 형태에 맞춰줍니다.
 
 </p>
 </details>
@@ -316,7 +348,9 @@ php artisan xe_cli:make:validationHandler xe_cli exam
 php artisan xe_cli:make:model {plugin} {name} 
     {--migration}
     {--table=}
+    {--pk=id}
     {--soft-deletes}
+    {--incrementing}
 ```
 
 #### 예시
@@ -333,7 +367,9 @@ php artisan xe_cli:make:model xe_cli exam --soft-deletes
 - 옵션
     - --migration : 모델에 대한 테이블 마이그레이션 파일 생성
     - --table= : 모델에 사용할 테이블 이름을 설정합니다.
-    - --soft-deletes : 모델 soft-deletes 이 사용되도록 설정합니다.
+    - --pk=id : 모델에서 사용할 프라이머키 칼럼을 설정합니다.
+    - --soft-deletes : soft-deletes 기능이 사용되도록 설정합니다.
+    - --incrementing : incrementing 기능이 사용되도록 설정합니다.
 </p>
 </details>
 

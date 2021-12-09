@@ -18,7 +18,7 @@ class MakeClientControllerCommand extends MakeControllerCommandClass
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:clientController {plugin} {name}';
+    protected $signature = 'xe_cli:make:clientController {plugin} {name} {--resource}';
 
     /**
      * @var string

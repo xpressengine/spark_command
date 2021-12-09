@@ -22,7 +22,7 @@ class MakeControllerCommandClass extends MakePluginClassFileCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:controller {plugin} {name}';
+    protected $signature = 'xe_cli:make:controller {plugin} {name} {--resource}';
 
     /**
      * @var string
@@ -87,6 +87,10 @@ class MakeControllerCommandClass extends MakePluginClassFileCommand
      */
     protected function getStubPath(): string
     {
+        if ($this->option('resource') == true) {
+            return __DIR__ . '/stubs/resource';
+        }
+
         return __DIR__ . '/stubs';
     }
 

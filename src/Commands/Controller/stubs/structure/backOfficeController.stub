@@ -31,7 +31,6 @@ class {{targetClassName}} extends Controller
         ]);
     }
 
-
     /**
      * @return mixed
      */
@@ -70,9 +69,10 @@ class {{targetClassName}} extends Controller
     }
 
     /**
+     * @param $id
      * @return mixed
      */
-    public function show()
+    public function show($id)
     {
         $pageTitle = '';
         $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.show';
@@ -86,9 +86,10 @@ class {{targetClassName}} extends Controller
     }
 
     /**
+     * @param $id
      * @return mixed
      */
-    public function edit()
+    public function edit($id)
     {
         $pageTitle = '';
         $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.edit';
@@ -100,11 +101,13 @@ class {{targetClassName}} extends Controller
 
     /**
      * @param Request $request
+     * @param $id
      * @return RedirectResponse
      * @throws Throwable
      */
     public function update(
-        Request               $request
+        Request               $request,
+        $id
     ): RedirectResponse
     {
         \XeDB::beginTransaction();
@@ -121,10 +124,11 @@ class {{targetClassName}} extends Controller
     }
 
     /**
+     * @param $id
      * @return mixed
      * @throws Throwable
      */
-    public function delete()
+    public function delete($id)
     {
         \XeDB::beginTransaction();
 
@@ -160,10 +164,11 @@ class {{targetClassName}} extends Controller
     }
 
     /**
+     * @param $id
      * @return mixed
      * @throws Throwable
      */
-    public function replicate()
+    public function replicate($id)
     {
         \XeDB::beginTransaction();
 

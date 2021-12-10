@@ -22,7 +22,10 @@ class MakeHandlerCommand extends MakePluginClassFileCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:handler {plugin} {name} {--structure}';
+    protected $signature = '
+        xe_cli:make:handler {plugin} {name}
+            {--structure}
+    ';
 
     /**
      * @var string

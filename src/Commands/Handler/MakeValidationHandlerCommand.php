@@ -14,7 +14,10 @@ class MakeValidationHandlerCommand extends MakeHandlerCommand
     /**
      * @var string
      */
-    protected $signature = 'xe_cli:make:validationHandler {plugin} {name} {--structure}';
+    protected $signature = '
+        xe_cli:make:validationHandler {plugin} {name}
+            {--structure}
+    ';
 
     /**
      * @var string
@@ -29,6 +32,10 @@ class MakeValidationHandlerCommand extends MakeHandlerCommand
      */
     protected function getStubFileName(): string
     {
+        if ($this->option('structure') == true) {
+            return 'handler.stub';
+        }
+
         return 'validationHandler.stub';
     }
 

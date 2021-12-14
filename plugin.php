@@ -2,6 +2,7 @@
 
 namespace XeHub\XePlugin\XeCli;
 
+use Illuminate\Filesystem\Filesystem;
 use Xpressengine\Plugin\AbstractPlugin;
 
 /**
@@ -13,52 +14,44 @@ use Xpressengine\Plugin\AbstractPlugin;
  */
 final class Plugin extends AbstractPlugin
 {
+    /** @var Filesystem */
+    protected $fileSystem;
+
+    /**
+     * Plugin __construct
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->fileSystem = app(Filesystem::class);
+    }
+
     /**
      * @return void
      */
     public function boot()
     {
-        // Service singletons
-        Services\MenuService::singleton();
-        Services\PluginService::singleton();
-        Services\StubFileService::singleton();
+        $this->registerConsoleCommands(__DIR__ . '/src/Console/Commands');
+    }
 
-        // Widget Commands
-        Commands\Widget\MakeWidget::register();
+    /**
+     * Register Console Commands
+     *
+     * @param string $commandsDirPath
+     */
+    public function registerConsoleCommands(string $commandsDirPath)
+    {
+        $commandFiles = $this->fileSystem->files($commandsDirPath);
 
-        // Skin Commands
-        Commands\Skin\MakeErrorSkinCommand::register();
-        Commands\Skin\MakeUserAuthSkinCommand::register();
-        Commands\Skin\MakeUserProfileSkin::register();
-        Commands\Skin\MakeUserSettingsSkin::register();
+        foreach ($commandFiles as $commandFile) {
+            $className = str_replace('.php', '', $commandFile->getFilename());
+            $commandClass = sprintf('%s\\Console\\Commands\\%s', __NAMESPACE__, $className);
 
-        // Migration Commands
-        Commands\Migration\MigrateQueueDatabaseCommand::register();
-        Commands\Migration\MigrateSessionDatabaseCommend::register();
-        Commands\Migration\MakeMigrationTableCommand::register();
-        Commands\Migration\MakeMigrationResourceCommand::register();
+            if (method_exists($commandClass, 'register') === false) {
+                continue;
+            }
 
-        // Helper Commands
-        Commands\Helper\MoveMenuItemCommand::register();
-        Commands\Helper\SetOrderMenuItemCommand::register();
-
-        // Controller Commands
-        Commands\Controller\MakeControllerCommandClass::register();
-        Commands\Controller\MakeBackOfficeControllerCommand::register();
-        Commands\Controller\MakeClientControllerCommand::register();
-
-        // Handler Commands
-        Commands\Handler\MakeHandlerCommand::register();
-        Commands\Handler\MakeValidationHandlerCommand::register();
-        Commands\Handler\MakeMessageHandlerCommand::register();
-
-        // Model Commands
-        Commands\Model\MakeModelCommandClass::register();
-
-        // View Commands
-        Commands\View\MakeBackOfficeIndexViewCommand::register();
-        Commands\View\MakeBackOfficeShowViewCommand::register();
-        Commands\View\MakeBackOfficeCreateViewCommand::register();
-        Commands\View\MakeBackOfficeEditViewCommand::register();
+            $commandClass::register();
+        }
     }
 }

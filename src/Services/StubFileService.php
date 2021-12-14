@@ -2,12 +2,12 @@
 
 namespace XeHub\XePlugin\XeCli\Services;
 
-use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
 /**
  * Class StubFileService
+ *
  * @package XeHub\XePlugin\XeCli\Services
  */
 class StubFileService
@@ -18,6 +18,11 @@ class StubFileService
     protected $fileSystem;
 
     /**
+     * @var PluginService
+     */
+    protected $pluginService;
+
+    /**
      * 싱글톤 등록
      *
      * @return void
@@ -26,8 +31,9 @@ class StubFileService
     {
         app()->singleton(__CLASS__, function () {
             $fileSystem = app(Filesystem::class);
+            $pluginService = app(PluginService::class);
 
-            return new self($fileSystem);
+            return new self($fileSystem, $pluginService);
         });
     }
 
@@ -43,70 +49,119 @@ class StubFileService
      * StubFileService __construct
      *
      * @param Filesystem $filesystem
+     * @param PluginService $pluginService
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(
+        Filesystem    $filesystem,
+        PluginService $pluginService
+    )
     {
         $this->fileSystem = $filesystem;
+        $this->pluginService = $pluginService;
     }
 
     /**
-     * Make File By Stub
+     * Make File
      *
-     * @param string $originStubFilePath
-     * @param string $copiedStubHandlerFilePath
-     * @param string $madeFilePath
+     * @param string $stubFilePath
+     * @param string $toFilePath
      * @param array $replaceData
      * @throws FileNotFoundException
-     * @throws Exception
      */
-    public function makeFileByStub(
-        string $originStubFilePath,
-        string $copiedStubHandlerFilePath,
-        string $madeFilePath,
-        array $replaceData
+    public function makeFile(
+        string $stubFilePath,
+        string $toFilePath,
+        array  $replaceData
     )
     {
-        /**
-         * @TODO File System 사용하는 방법에 대한 가이드 문서 추가.
-         */
-        if ($this->fileSystem->isFile($madeFilePath) === true) {
-            return;
+        $search = array_keys($replaceData);
+
+        $toFileDirectoryPath = dirname($toFilePath);
+        $toStubFilePath = $toFileDirectoryPath . '/' . basename($stubFilePath);
+
+        if ($this->fileSystem->isDirectory($toFileDirectoryPath) === false) {
+            $this->fileSystem->makeDirectory($toFileDirectoryPath, 0777, true);
         }
 
         $this->fileSystem->copy(
-            $originStubFilePath,
-            $copiedStubHandlerFilePath
+            $stubFilePath, $toStubFilePath
         );
 
         $this->buildFile(
-            $copiedStubHandlerFilePath,
-            array_keys($replaceData),
-            $replaceData,
-            $madeFilePath
+            $toStubFilePath, $search, $replaceData, $toFilePath
         );
     }
 
     /**
-     * Build the file with given parameters.
+     * Check Exists Content
      *
-     * @param string $file file for build
+     * @param string $toFilePath
+     * @param string $keyword
+     * @return bool
+     * @throws FileNotFoundException
+     */
+    public function checkExistsContent(
+        string $toFilePath,
+        string $keyword
+    )
+    {
+        $toFileContent = $this->fileSystem->get($toFilePath);
+        return strpos($toFileContent, $keyword) !== false;
+    }
+
+    /**
+     * Add Content File By Stub
+     *
+     * @param string $originStubFilePath
+     * @param string $toFilePath
+     * @param array $replaceData
+     * @throws FileNotFoundException
+     */
+    public function appendContent(
+        string $originStubFilePath,
+        string $toFilePath,
+        array  $replaceData
+    )
+    {
+        $stubFileContent = $this->fileSystem->get($originStubFilePath);
+
+        $replacedContent = str_replace(
+            array_keys($replaceData),
+            $replaceData,
+            $stubFileContent
+        );
+
+        $this->fileSystem->append(
+            $toFilePath, "\n" . trim($replacedContent)
+        );
+    }
+
+    /**
+     * Build File
+     *
+     * @param string $filePath
      * @param array $search searches
      * @param array $replace replaces
-     * @param string|null $to location to move
+     * @param string|null $toFilePath
      * @throws FileNotFoundException
      */
     protected function buildFile(
-        string $file,
-        array $search,
-        array $replace,
-        string $to = null
+        string $filePath,
+        array  $search,
+        array  $replace,
+        string $toFilePath = null
     )
     {
-        $code = str_replace($search, $replace, $this->fileSystem->get($file));
-        $this->fileSystem->put($file, $code);
+        $fileContent = $this->fileSystem->get($filePath);
 
-        if ($to) {
-            $this->fileSystem->move($file, $to);
+        $code = str_replace(
+            $search, $replace, $fileContent
+        );
+
+        $this->fileSystem->put($filePath, $code);
+
+        if ($toFilePath !== null) {
+            $this->fileSystem->move($filePath, $toFilePath);
         }
     }
 }

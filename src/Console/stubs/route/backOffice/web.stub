@@ -1,0 +1,72 @@
+<?php
+
+// BackOffice - {{camelCaseName}}
+Route::settings(
+    '{{camelCaseName}}',
+    function () {
+        Route::get('/', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.index',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@index',
+        ]);
+
+        Route::get('/create', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.create',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@create',
+        ]);
+
+        Route::get('/import-form', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.import_form',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@importForm',
+        ]);
+
+        Route::get('/{id}', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.show',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@show',
+        ]);
+
+        Route::get('/{id}/preview', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.preview',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@preview',
+        ]);
+
+        Route::post('/', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.store',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@store',
+        ]);
+
+        Route::post('/import', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.import',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@import',
+        ]);
+
+        Route::post('/replicate-batch', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.replicate_batch',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@replicateBatch',
+        ]);
+
+        Route::post('/{id}/replicate', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.replicate',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@replicate',
+        ]);
+
+        Route::get('/{id}/edit', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.edit',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@edit',
+        ]);
+
+        Route::put('/{id}', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.update',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@update',
+        ]);
+
+        Route::delete('/delete-batch', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.delete_batch',
+            'uses' => '{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@deleteBatch'
+        ]);
+
+        Route::delete('/{id}', [
+            'as' => '{{pluginId}}::backOffice.{{camelCaseName}}.delete',
+            'uses' => '\{{pluginNamespace}}\Controllers\BackOffice\{{studlyCaseName}}Controller@delete',
+        ]);
+    }
+);

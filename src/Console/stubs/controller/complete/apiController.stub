@@ -1,0 +1,95 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use App\Http\Controllers\Controller;
+use Xpressengine\Http\Request;
+use Throwable;
+use XePresenter;
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}} extends Controller
+{
+    /**
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    public function index(Request $request)
+    {
+        return XePresenter::makeApi([]);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws Throwable
+     */
+    public function store(Request $request)
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = $request->all();
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return XePresenter::makeApi([]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function show($id)
+    {
+        return XePresenter::makeApi([]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return mixed
+     * @throws Throwable
+     */
+    public function update(Request $request, $id)
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = array_filter($request->all());
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return XePresenter::makeApi([]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws Throwable
+     */
+    public function delete($id)
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return XePresenter::makeApi([]);
+    }
+}

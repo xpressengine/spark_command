@@ -182,7 +182,7 @@ class PluginService
      * @return PluginEntity
      * @throws Exception
      */
-    public function getPluginEntity(
+    public function getEntity(
         string $pluginName
     )
     {

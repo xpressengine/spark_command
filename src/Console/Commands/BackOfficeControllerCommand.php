@@ -125,6 +125,7 @@ class BackOfficeControllerCommand extends PluginClassFileCommand implements Comm
         $arguments = [
             'plugin' => $this->pluginName(),
             'name' => $this->argument('name'),
+            '--model' => true
         ];
 
         $this->call($command, $arguments);

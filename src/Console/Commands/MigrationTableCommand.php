@@ -3,6 +3,7 @@
 namespace XeHub\XePlugin\XeCli\Console\Commands;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use ReflectionException;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
@@ -70,11 +71,15 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
             $pluginEntity, 'Migrations/' . Str::studly($stubFileName) . '.php'
         );
 
-        $this->stubFileService->makeFile(
-            $stubFilePath,
-            $toFilePath,
-            $this->replaceData($pluginEntity)
-        );
+        if ($this->filesystem->exists($toFilePath) === false) {
+            $replaceData = $this->replaceData($pluginEntity);
+
+            $this->stubFileService->makeFile(
+                $stubFilePath,
+                $toFilePath,
+                $replaceData
+            );
+        }
     }
 
     /**
@@ -90,15 +95,25 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
         $replaceData = array_merge(parent::replaceData($pluginEntity), [
             '{{primaryColumn}}' => "\$table->string('{$this->pkOption()}', 36);",
             '{{primaryIndex}}' => "\$table->primary(['{$this->pkOption()}']);",
-            '{{softDeletes}}' => ''
+            '{{tableName}}' => "'{$this->name()}'",
+            '{{softDeletes}}' => '',
+            '{{modelNamespace}}' => '',
         ]);
 
+        $pluginNamespace = Arr::get($replaceData, '{{pluginNamespace}}');
+        $studlyCaseName = Arr::get($replaceData, '{{studlyCaseName}}');
+
         if ($this->softDeletesOption() === true) {
-            $replaceData['{{softDeletes}}'] = '$table->softDeletes();';
+            $replaceData['{{softDeletes}}'] = "\n\$table->softDeletes();";
         }
 
         if ($this->incrementingOption() === true) {
             $replaceData['{{primaryColumn}}'] = "\$table->unsignedInteger('{$this->pkOption()}');";
+        }
+
+        if ($this->modelOption() === true) {
+            $replaceData['{{tableName}}'] =  "{$studlyCaseName}Model::TABLE_NAME";
+            $replaceData['{{modelNamespace}}'] = "use {$pluginNamespace}\\Models\\{$studlyCaseName}Model;";
         }
 
         return $replaceData;
@@ -115,7 +130,7 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
 
         $arguments = [
             'plugin' => $this->pluginName(),
-            'name' => $this->argument('name'),
+            'name' => $this->name(),
             '--pk' => $this->pkOption(),
             '--soft-deletes' => $this->softDeletesOption(),
             '--incrementing' => $this->incrementingOption(),
@@ -132,6 +147,16 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
     protected function pluginName(): string
     {
         return $this->argument('plugin');
+    }
+
+    /**
+     * Get Name
+     *
+     * @return string
+     */
+    protected function name(): string
+    {
+        return $this->argument('name');
     }
 
     /**
@@ -153,7 +178,7 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
      */
     protected function toFilePath(PluginEntity $pluginEntity): string
     {
-        $studlyCaseName = studly_case($this->argument('name'));
+        $studlyCaseName = studly_case($this->name());
         $filePath = "Migrations/Table/{$studlyCaseName}Table.php";
 
         return $this->pluginService->getPluginPath($pluginEntity, $filePath);

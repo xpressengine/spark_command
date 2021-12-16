@@ -156,7 +156,7 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
      */
     protected function name(): string
     {
-        return $this->argument('name');
+        return Str::camel($this->argument('name'));
     }
 
     /**

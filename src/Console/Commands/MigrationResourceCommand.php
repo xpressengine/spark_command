@@ -39,6 +39,7 @@ class MigrationResourceCommand extends PluginClassFileCommand implements Command
     protected function make(PluginEntity $pluginEntity)
     {
         parent::make($pluginEntity);
+
         $this->makeInterfaceFile($pluginEntity);
     }
 
@@ -52,14 +53,21 @@ class MigrationResourceCommand extends PluginClassFileCommand implements Command
     protected function makeInterfaceFile(PluginEntity $pluginEntity)
     {
         $stubFileName = 'migrationInterface';
-        $stubDirectoryPath = dirname($this->stubFilePath());
-        $toFileDirectoryPath = dirname($this->toFilePath($pluginEntity));
+        $stubFilePath = dirname($this->stubFilePath()) . '/' . $stubFileName . '.stub';
 
-        $this->stubFileService->makeFile(
-            $stubDirectoryPath . '/' . $stubFileName . '.stub',
-            $toFileDirectoryPath . '/' . Str::studly($stubFileName) . '.php',
-            $this->replaceData($pluginEntity)
+        $toFilePath = $this->pluginService->getPluginPath(
+            $pluginEntity, 'Migrations/' . Str::studly($stubFileName) . '.php'
         );
+
+        if ($this->filesystem->exists($toFilePath) === false) {
+            $replaceData = $this->replaceData($pluginEntity);
+
+            $this->stubFileService->makeFile(
+                $stubFilePath,
+                $toFilePath,
+                $replaceData
+            );
+        }
     }
 
     /**

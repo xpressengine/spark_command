@@ -6,7 +6,6 @@ use XeDB;
 use XeEditor;
 use Exception;
 use Illuminate\Console\Command;
-use XeHub\XePlugin\XeCli\Services\MenuService;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 
 /**
@@ -42,21 +41,7 @@ class SetBoardContentsEditorConfigCommand extends Command implements CommandName
     protected $description = 'Set Board Contents Editor Config';
 
     /**
-     * @var MenuService
-     */
-    protected $menuService;
-
-    /**
-     * Set Board Contents Editor Config __construct
-     */
-    public function __construct()
-    {
-        $this->menuService = MenuService::make();
-        parent::__construct();
-    }
-
-    /**
-     * Move Menu Item Handle
+     * Set Board Contents Editor Handle
      *
      * @return void
      * @throws Exception

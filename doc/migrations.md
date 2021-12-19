@@ -28,6 +28,7 @@ xe_cli:make:migrationTable {plugin} {name}
     {--model : 마이그레이션에 대한 모델 파일을 생성}
     {--soft-deletes : soft-deletes 기능을 사용할 수 있도록 설정}
     {--incrementing : incrementing 기능을 사용할 수 있도록 설정}
+    {--timestamps : timestamps 기능을 사용할 수 있도록 설정}
     {--force : 기존 파일 삭제 후 새롭게 생성}
 ```
 
@@ -38,7 +39,9 @@ php artisan xe_cli:make:migrationTable xe_cli exam --model
 php artisan xe_cli:make:migrationTable xe_cli exam
 php artisan xe_cli:make:migrationTable xe_cli exam --soft-delets
 php artisan xe_cli:make:migrationTable xe_cli exam --model --soft-deletes
+php artisan xe_cli:make:migrationTable xe_cli exam --force --timestamps
 php artisan xe_cli:make:migrationTable xe_cli exam --force
+php artisan xe_cli:make:migrationTable xe_cli exam --timestamps
 ```
 
 <br>

@@ -28,7 +28,8 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
                                 {--incrementing}
                                 {--model}
                                 {--soft-deletes}
-                                {--force}';
+                                {--force}
+                                {--timestamps}';
 
     /**
      * @var string
@@ -98,6 +99,7 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
             '{{tableName}}' => "'{$this->name()}'",
             '{{softDeletes}}' => '',
             '{{modelNamespace}}' => '',
+            '{{timestamps}}' => '',
         ]);
 
         $pluginNamespace = Arr::get($replaceData, '{{pluginNamespace}}');
@@ -109,6 +111,10 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
 
         if ($this->incrementingOption() === true) {
             $replaceData['{{primaryColumn}}'] = "\$table->unsignedInteger('{$this->pkOption()}');";
+        }
+
+        if ($this->timestampsOption() === true) {
+            $replaceData['{{timestamps}}'] = "\$table->timestamps();";
         }
 
         if ($this->modelOption() === true) {
@@ -255,12 +261,22 @@ class MigrationTableCommand extends PluginClassFileCommand implements CommandNam
     }
 
     /**
-     * Get `SoftDelete` Option
+     * Get `soft-deletes` Option
      *
      * @return bool
      */
     protected function softDeletesOption(): bool
     {
         return $this->option('soft-deletes');
+    }
+
+    /**
+     * Get 'timestamps' Option
+     *
+     * @return bool
+     */
+    protected function timestampsOption(): bool
+    {
+        return $this->option('timestamps');
     }
 }

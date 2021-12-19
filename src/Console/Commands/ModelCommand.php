@@ -115,7 +115,8 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
             '--pk' => $this->option('pk'),
             '--incrementing' => $this->option('incrementing'),
             '--soft-deletes' => $this->option('soft-deletes'),
-            '--model' => true
+            '--timestamps'  => $this->option('timestamps'),
+            '--model' => true,
         ];
 
         $this->call($commentName, $arguments);

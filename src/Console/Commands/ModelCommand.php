@@ -31,6 +31,7 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
                             {--pk=id}
                             {--soft-deletes}
                             {--incrementing}
+                            {--timestamps}
                             {--force}';
 
     /**
@@ -77,8 +78,10 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
     protected function modelReplaceData(): array
     {
         $softDeletesOption = $this->option('soft-deletes');
+
         $incrementingProperty = $this->incrementingProperty();
         $primaryKeyProperty = $this->primaryKeyProperty();
+        $timestampsProperty = $this->timestampsProperty();
 
         $modelReplaceData = [
             '{{tableName}}' => $this->tableName(),
@@ -86,6 +89,7 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
             '{{useSoftDeletesNamespace}}' => '',
             '{{incrementingProperty}}' => $incrementingProperty,
             '{{primaryKeyProperty}}' => $primaryKeyProperty,
+            '{{timestampsProperty}}' => $timestampsProperty
         ];
 
         if ($softDeletesOption == true) {
@@ -135,7 +139,7 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
     }
 
     /**
-     * Incrementing Property
+     * incrementing Property
      *
      * @return string
      */
@@ -150,6 +154,24 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
             ->setDescription('Indicates if the IDs are auto-incrementing.');
 
         return $incrementingProperty->fullDeclaration();
+    }
+
+    /**
+     * timestamps Property
+     *
+     * @return string
+     */
+    protected function timestampsProperty(): string
+    {
+        $timestampsOption = $this->option('timestamps');
+
+        $timestampsProperty = (new DeclarationVariable('timestamps'))
+            ->setAccessModifier('public')
+            ->setType('bool')
+            ->setValue($timestampsOption == true ? 'true' : 'false')
+            ->setDescription('Indicates if the model should be timestamped.');
+
+        return $timestampsProperty->fullDeclaration();
     }
 
     /**
@@ -200,9 +222,7 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
         $studlyCaseName = studly_case($this->argument('name'));
         $filePath = "Models/{$studlyCaseName}Model.php";
 
-        return $this->pluginService->getPluginPath(
-            $pluginEntity, $filePath
-        );
+        return $this->pluginService->getPluginPath($pluginEntity, $filePath);
     }
 
     /**

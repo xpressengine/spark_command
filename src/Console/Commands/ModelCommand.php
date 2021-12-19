@@ -5,7 +5,7 @@ namespace XeHub\XePlugin\XeCli\Console\Commands;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 use ReflectionException;
-use XeHub\XePlugin\XeCli\Traits\DeclarationTrait;
+use XeHub\XePlugin\XeCli\DeclarationVariable;
 use XeHub\XePlugin\XeCli\Traits\RegisterArtisan;
 use Xpressengine\Plugin\PluginEntity;
 
@@ -19,7 +19,6 @@ use Xpressengine\Plugin\PluginEntity;
 class ModelCommand extends PluginClassFileCommand implements CommandNameInterface
 {
     use RegisterArtisan;
-    use DeclarationTrait;
 
     /**
      * @var string
@@ -78,23 +77,15 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
     protected function modelReplaceData(): array
     {
         $softDeletesOption = $this->option('soft-deletes');
-        $primaryKeyOption = $this->option('pk');
-        $incrementingOption = $this->option('incrementing');
-
-        $incrementingPropertyDeclaration = $this->getPropertyDeclaration(
-            'public', 'incrementing', 'bool', $incrementingOption == true ? 'true' : 'false'
-        );
-
-        $primaryKeyPropertyDeclaration = $this->getPropertyDeclaration(
-            'protected', 'primaryKey', 'string', $primaryKeyOption
-        );
+        $incrementingProperty = $this->incrementingProperty();
+        $primaryKeyProperty = $this->primaryKeyProperty();
 
         $modelReplaceData = [
             '{{tableName}}' => $this->tableName(),
             '{{useSoftDeletes}}' => '',
             '{{useSoftDeletesNamespace}}' => '',
-            '{{incrementing}}' => $incrementingPropertyDeclaration,
-            '{{primaryKey}}' => $primaryKeyPropertyDeclaration
+            '{{incrementingProperty}}' => $incrementingProperty,
+            '{{primaryKeyProperty}}' => $primaryKeyProperty
         ];
 
         if ($softDeletesOption == true) {
@@ -124,6 +115,41 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
         ];
 
         $this->call($commentName, $arguments);
+    }
+
+    /**
+     * primaryKey Property
+     *
+     * @return string
+     */
+    protected function primaryKeyProperty(): string
+    {
+        $primaryKeyOption = $this->option('pk');
+
+        $primaryKeyProperty = (new DeclarationVariable('primaryKey'))
+            ->setType('string')
+            ->setValue("'{$primaryKeyOption}'")
+            ->setDescription('The primary key for the model.');
+
+        return $primaryKeyProperty->fullDeclaration();
+    }
+
+    /**
+     * Incrementing Property
+     *
+     * @return string
+     */
+    protected function incrementingProperty(): string
+    {
+        $incrementingOption = $this->option('incrementing');
+
+        $incrementingProperty = (new DeclarationVariable('incrementing'))
+            ->setAccessModifier('public')
+            ->setType('bool')
+            ->setValue($incrementingOption == true ? 'true' : 'false')
+            ->setDescription('Indicates if the IDs are auto-incrementing.');
+
+        return $incrementingProperty->fullDeclaration();
     }
 
     /**

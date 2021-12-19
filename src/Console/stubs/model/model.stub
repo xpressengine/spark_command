@@ -19,21 +19,41 @@ class {{targetClassName}} extends DynamicModel
 {
     {{useSoftDeletes}}
     /**
+     * The table associated with the model.
+     *
      * @var string
      */
     public const TABLE_NAME = '{{tableName}}';
 
-    {{primaryKey}}
+    {{primaryKeyProperty}}
 
-    {{incrementing}}
+    {{incrementingProperty}}
 
     /**
+     * The table associated with the model.
+     *
      * @var string
      */
     protected $table = {{targetClassName}}::TABLE_NAME;
 
     /**
+     * The attributes that aren't mass assignable.
+     *
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var string[]
+     */
+    protected $dates = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var string[]
+     */
+    protected $casts = [];
 }

@@ -85,7 +85,7 @@ class ModelCommand extends PluginClassFileCommand implements CommandNameInterfac
             '{{useSoftDeletes}}' => '',
             '{{useSoftDeletesNamespace}}' => '',
             '{{incrementingProperty}}' => $incrementingProperty,
-            '{{primaryKeyProperty}}' => $primaryKeyProperty
+            '{{primaryKeyProperty}}' => $primaryKeyProperty,
         ];
 
         if ($softDeletesOption == true) {

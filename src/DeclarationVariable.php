@@ -157,11 +157,11 @@ class DeclarationVariable
     protected function commentDeclaration(): string
     {
         $comments = [];
-        $comments[] = "\t/**";
+        $comments[] = '/**';
 
         if ($this->description !== null) {
             $comments[] = "\t * {$this->description}";
-            $comments[] = "\t";
+            $comments[] = "\t *";
         }
 
         $comments[] = "\t * @var {$this->type}";

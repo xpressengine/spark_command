@@ -23,7 +23,7 @@ class {{targetClassName}} extends DynamicModel
      *
      * @var string
      */
-    public const TABLE_NAME = '{{tableName}}';
+    const TABLE_NAME = '{{tableName}}';
 
     {{primaryKeyProperty}}
 

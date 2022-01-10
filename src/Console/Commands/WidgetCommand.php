@@ -139,7 +139,7 @@ class WidgetCommand extends ComponentMakeCommand implements CommandNameInterface
 
         $path = $this->getPath($this->option('path'));
         $className = $this->getNamespace($path) . '\\' . $this->getClassName();
-        $file = $this->getClassFile($path, $className);
+        $file = $this->getClassFile($path, $this->getClassName());
 
         $title = $this->getTitleInput();
         $description = $this->getDescriptionInput();

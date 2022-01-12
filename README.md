@@ -496,8 +496,13 @@ php artisan xe_cli:widgetCode
 #### 예시
 
 ```
+----- CLI Command -----
 php artisan xe_cli:widgetCode widget/xpressengine@contentInfo  widget/xpressengine@contentInfo/skin/xpressengine@default
 php artisan xe_cli:widgetCode widget/news_client@news widget/news_client@news/skin/news_client@default
+
+----- composer.json -----
+"widget/xe_attendance@attendance": {... `<<< widget_id`
+"widget/xe_attendance@attendance/skinxe_attendance@gongbuhae": {... `<<< skin_id`
 ```
 
 
@@ -535,6 +540,25 @@ php artisan xe_cli:move:menuItem
 php artisan xe_cli:setPosition:menuItem 
     {menuItem}
     {position}
+```
+
+<br>
+
+### * Set board contents editor config
+
+보드 게시판 및 댓글 전체 혹은 특정부분만 Editor Config를 설정합니다
+
+```
+php artisan xe_cli:set:board_contents_editor_config
+    {editor_type}
+    {--only-board}
+    {--only-comment}
+    {--instance_id=*}
+    
+// {editor_type} : 설정할 에디터 타입 (예: editor/ckeditor@ckEditor)
+// {--only-board} : 게시판만 설정
+// {--only-comment} : 댓글만 설정
+// {--instance_id=*} : 특정 대상 지정 (복수선택가능)
 ```
 
 </p>

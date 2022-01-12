@@ -1,36 +1,57 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand;
+namespace XeHub\XePlugin\XeCli;
 
-use SparkWeb\XePlugin\SparkCommand\Commands\Error\ErrorSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\Queue\QueueDatabaseMigrate;
-use SparkWeb\XePlugin\SparkCommand\Commands\Session\SessionDatabaseMigrate;
-use SparkWeb\XePlugin\SparkCommand\Commands\User\UserAuthSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\User\UserProfileSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\User\UserSettingsSkinMake;
-use SparkWeb\XePlugin\SparkCommand\Commands\Widget\WidgetMake;
+use Illuminate\Filesystem\Filesystem;
 use Xpressengine\Plugin\AbstractPlugin;
 
+/**
+ * Class Plugin
+ *
+ * Xe Cli Plugin
+ *
+ * @package XeHub\XePlugin\XeCli
+ */
 final class Plugin extends AbstractPlugin
 {
+    /** @var Filesystem */
+    protected $fileSystem;
+
+    /**
+     * Plugin __construct
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->fileSystem = app(Filesystem::class);
+    }
+
     /**
      * @return void
      */
     public function boot()
     {
-        /** Widgets */
-        WidgetMake::register();
+        $this->registerConsoleCommands(__DIR__ . '/src/Console/Commands');
+    }
 
-        /** Users */
-        UserAuthSkinMake::register();
-        UserProfileSkinMake::register();
-        UserSettingsSkinMake::register();
+    /**
+     * Register Console Commands
+     *
+     * @param string $commandsDirPath
+     */
+    public function registerConsoleCommands(string $commandsDirPath)
+    {
+        $commandFiles = $this->fileSystem->files($commandsDirPath);
 
-        /** Errors */
-        ErrorSkinMake::register();
+        foreach ($commandFiles as $commandFile) {
+            $className = str_replace('.php', '', $commandFile->getFilename());
+            $commandClass = sprintf('%s\\Console\\Commands\\%s', __NAMESPACE__, $className);
 
-        /** Migrate */
-        SessionDatabaseMigrate::register();
-        QueueDatabaseMigrate::register();
+            if (method_exists($commandClass, 'register') === false) {
+                continue;
+            }
+
+            $commandClass::register();
+        }
     }
 }

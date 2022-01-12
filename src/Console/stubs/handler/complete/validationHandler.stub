@@ -1,0 +1,81 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use Xpressengine\Http\Request;
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}}
+{
+    /**
+     * 싱글톤을 등록합니다.
+     *
+     * @return void
+     */
+    public static function singleton()
+    {
+        app()->singleton(__CLASS__, function () {
+            return new self();
+        });
+    }
+
+    /**
+     * 서비스 핸들러에 등록된 값을 반환합니다.
+     *
+     * @return {{targetClassName}}
+     */
+    public static function make(): {{targetClassName}}
+    {
+        return app(__CLASS__);
+    }
+
+    /**
+     * 저장에 대한 Validation Rules 반환
+     *
+     * @return array
+     */
+    public function storedRules(Request $request)
+    {
+        $rules = [
+        ];
+
+        return $rules;
+    }
+
+   /**
+     * 수정에 대한 Validation Rules 반환
+     *
+     * @return array
+     */
+    public function updatedRules(Request $request)
+    {
+        return $this->storedRules($request);
+    }
+
+    /**
+     * Import 에 대한 Validation Rules 반환
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function importRule(Request $request)
+    {
+        return [
+            'excel_file' => 'required|file|mimes:xls,csv'
+        ];
+    }
+
+    /**
+     * Validation Messages 반환
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [];
+    }
+}

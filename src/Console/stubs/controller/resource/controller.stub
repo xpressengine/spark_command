@@ -1,0 +1,146 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Xpressengine\Http\Request;
+use Throwable;
+use XePresenter;
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}} extends Controller
+{
+    /**
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    public function index(
+        Request            $request
+    )
+    {
+        $pageTitle = '';
+        $viewPath = '';
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function create(
+        Request            $request
+    )
+    {
+        $pageTitle = '';
+        $viewPath = '';
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function store(
+        Request               $request
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = $request->all();
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        $redirectUrl = redirect()->back()->getTargetUrl();
+        return redirect()->to($redirectUrl);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function show($id)
+    {
+        $pageTitle = '';
+        $viewPath = '';
+
+        $redirectUrl = redirect()->back()->getTargetUrl();
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle,
+            'redirectUrl' => $redirectUrl,
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function edit($id)
+    {
+        $pageTitle = '';
+        $viewPath = '';
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function update(
+        Request               $request,
+        $id
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = array_filter($request->all());
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws Throwable
+     */
+    public function delete($id)
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->back();
+    }
+}

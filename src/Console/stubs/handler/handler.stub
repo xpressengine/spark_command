@@ -1,0 +1,33 @@
+<?php
+
+namespace {{targetNamespace}};
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}}
+{
+    /**
+     * 싱글톤 등록
+     *
+     * @return void
+     */
+    public static function singleton()
+    {
+        app()->singleton(__CLASS__, function () {
+            return new static();
+        });
+    }
+
+    /**
+     * 서비스 핸들러에 등록된 값을 반환
+     *
+     * @return {{targetClassName}}
+     */
+    public static function make(): {{targetClassName}}
+    {
+        return app(__CLASS__);
+    }
+}

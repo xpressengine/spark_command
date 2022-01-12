@@ -1,0 +1,61 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use Eloquent;
+use Xpressengine\Database\Eloquent\Builder;
+use Xpressengine\Database\Eloquent\DynamicModel;
+{{useSoftDeletesNamespace}}
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ * @method static Builder|{{targetClassName}} newModelQuery()
+ * @method static Builder|{{targetClassName}} newQuery()
+ * @method static Builder|{{targetClassName}} query()
+ * @mixin Eloquent
+ */
+class {{targetClassName}} extends DynamicModel
+{
+    {{useSoftDeletes}}
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    const TABLE_NAME = '{{tableName}}';
+
+    {{primaryKeyProperty}}
+
+    {{incrementingProperty}}
+
+    {{timestampsProperty}}
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = {{targetClassName}}::TABLE_NAME;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var string[]
+     */
+    protected $dates = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var string[]
+     */
+    protected $casts = [];
+}

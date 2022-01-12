@@ -1,9 +1,14 @@
 <?php
 
-namespace SparkWeb\XePlugin\SparkCommand\Traits;
+namespace XeHub\XePlugin\XeCli\Traits;
 
 use Illuminate\Console\Application as Artisan;
 
+/**
+ * Trait RegisterArtisan
+ *
+ * @package XeHub\XePlugin\XeCli\Traits
+ */
 trait RegisterArtisan
 {
     /**
@@ -14,7 +19,7 @@ trait RegisterArtisan
     public static function register()
     {
         Artisan::starting(function ($artisan) {
-            $artisan->resolveCommands(self::class);
+            $artisan->resolveCommands(static::class);
         });
     }
 }

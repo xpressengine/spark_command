@@ -1,0 +1,369 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Xpressengine\Http\Request;
+use Throwable;
+use XePresenter;
+use {{pluginNamespace}}\Handlers\{{studlyCaseName}}\{{studlyCaseName}}Handler;
+use {{pluginNamespace}}\Handlers\{{studlyCaseName}}\{{studlyCaseName}}MessageHandler;
+use {{pluginNamespace}}\Handlers\{{studlyCaseName}}\{{studlyCaseName}}ValidationHandler;
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}} extends Controller
+{
+    /**
+     * @param Request $request
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @return mixed
+     */
+    public function index(
+        Request            $request,
+        {{studlyCaseName}}Handler ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+    )
+    {
+        $pageTitle = '';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.index';
+
+        ${{pluralCaseName}} = ${{camelCaseName}}Handler->paginate($request->all());
+
+        $deletedConfirm = ${{camelCaseName}}MessageHandler->deletedConfirm();
+        $replicatedConfirm = ${{camelCaseName}}MessageHandler->replicatedConfirm();
+
+        $searchSubjectOptions = ${{camelCaseName}}Handler->adminSearchSubjectOptions();
+
+        return XePresenter::make($viewPath, [
+            '{{pluralCaseName}}' => ${{pluralCaseName}},
+            'pageTitle' => $pageTitle,
+            'hasPages' => ${{pluralCaseName}}->hasPages(),
+            'currentPage' => ${{pluralCaseName}}->currentPage(),
+            'lastPage' => ${{pluralCaseName}}->lastPage(),
+            'totalCount' => ${{pluralCaseName}}->total(),
+            'deletedConfirm' => $deletedConfirm,
+            'replicatedConfirm' => $replicatedConfirm,
+            'searchSubjectOptions' => $searchSubjectOptions,
+        ]);
+    }
+
+    /**
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @return mixed
+     */
+    public function create(
+        {{studlyCaseName}}Handler ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+    )
+    {
+        $pageTitle = '';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.create';
+
+        $storedConfirm = ${{camelCaseName}}MessageHandler->storedConfirm();
+
+        return XePresenter::make($viewPath, [
+            'pageTitle' => $pageTitle,
+            'storedConfirm' => $storedConfirm,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function store(
+        Request               $request,
+        {{studlyCaseName}}Handler           ${{camelCaseName}}Handler,
+        {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler,
+        {{studlyCaseName}}MessageHandler    ${{camelCaseName}}MessageHandler
+    ): RedirectResponse
+    {
+        $this->validate(
+            $request,
+            ${{camelCaseName}}ValidationHandler->storedRules($request),
+            ${{camelCaseName}}ValidationHandler->messages()
+        );
+
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = $request->all();
+            ${{camelCaseName}}Handler->store($inputs);
+
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        $storedSuccess = ${{camelCaseName}}MessageHandler->storedSuccess();
+        $redirectUrl = route('{{pluginId}}::backOffice.{{camelCaseName}}.index');
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => $storedSuccess
+        ]);
+
+        return redirect()->to($redirectUrl);
+    }
+
+    /**
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
+     * @return mixed
+     */
+    public function show(
+            {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+            {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+            string             ${{camelCaseName}}Id
+    )
+    {
+        $pageTitle = '';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.show';
+
+        ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+        $redirectUrl = redirect()->back()->getTargetUrl();
+
+        $deletedConfirm = ${{camelCaseName}}MessageHandler->deletedConfirm();
+        $replicatedConfirm = ${{camelCaseName}}MessageHandler->replicatedConfirm();
+
+        return XePresenter::make($viewPath, [
+            '{{camelCaseName}}' => ${{camelCaseName}},
+            'pageTitle' => $pageTitle,
+            'redirectUrl' => $redirectUrl,
+            'deletedConfirm' => $deletedConfirm,
+            'replicatedConfirm' => $replicatedConfirm
+        ]);
+    }
+
+    /**
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
+     * @return mixed
+     */
+    public function edit(
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+        string             ${{camelCaseName}}Id
+    )
+    {
+        $pageTitle = '';
+        $viewPath = '{{pluginId}}::views.backOffice.{{camelCaseName}}.edit';
+
+        ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+
+        $updatedConfirm = ${{camelCaseName}}MessageHandler->updatedConfirm();
+        $deletedConfirm = ${{camelCaseName}}MessageHandler->deletedConfirm();
+
+        return XePresenter::make($viewPath, [
+            '{{camelCaseName}}' => ${{camelCaseName}},
+            'pageTitle' => $pageTitle,
+            'updatedConfirm' => $updatedConfirm,
+            'deletedConfirm' => $deletedConfirm,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function update(
+        Request               $request,
+        {{studlyCaseName}}Handler           ${{camelCaseName}}Handler,
+        {{studlyCaseName}}ValidationHandler ${{camelCaseName}}ValidationHandler,
+        {{studlyCaseName}}MessageHandler    ${{camelCaseName}}MessageHandler,
+        string                ${{camelCaseName}}Id
+    ): RedirectResponse
+    {
+        $this->validate(
+            $request,
+            ${{camelCaseName}}ValidationHandler->updatedRules($request),
+            ${{camelCaseName}}ValidationHandler->messages()
+        );
+
+        \XeDB::beginTransaction();
+
+        try {
+            $inputs = array_filter($request->all());
+
+            ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+            ${{camelCaseName}}Handler->update(${{camelCaseName}}, $inputs);
+
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        $updatedSuccess = ${{camelCaseName}}MessageHandler->updatedSuccess();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => $updatedSuccess
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
+     * @return mixed
+     * @throws Throwable
+     */
+    public function delete(
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+        string             ${{camelCaseName}}Id
+    )
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+            ${{camelCaseName}}Handler->delete(${{camelCaseName}});
+
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        $deletedSuccess = ${{camelCaseName}}MessageHandler->deletedSuccess();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => $deletedSuccess
+        ]);
+
+        return XePresenter::makeApi([
+            'id' => ${{camelCaseName}}Id
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function deleteBatch(
+        Request            $request,
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            ${{camelCaseName}}Ids = $request->get('{{camelCaseName}}', []);
+            ${{camelCaseName}}Handler->deleteBatch(${{camelCaseName}}Ids);
+
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        $deletedSuccess = ${{camelCaseName}}MessageHandler->deletedSuccess();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => $deletedSuccess
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @param string ${{camelCaseName}}Id
+     * @return mixed
+     * @throws Throwable
+     */
+    public function replicate(
+        {{studlyCaseName}}Handler        ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler,
+        string             ${{camelCaseName}}Id
+    )
+    {
+        \XeDB::beginTransaction();
+
+        try {
+            ${{camelCaseName}} = ${{camelCaseName}}Handler->findOrFail(${{camelCaseName}}Id);
+            $new{{studlyCaseName}} = ${{camelCaseName}}Handler->replicate(${{camelCaseName}});
+
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+       $replicatedSuccess = ${{camelCaseName}}MessageHandler->replicatedSuccess();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => $replicatedSuccess
+        ]);
+
+        return XePresenter::makeApi([
+            'id' => $new{{studlyCaseName}}->getId()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param {{studlyCaseName}}Handler ${{camelCaseName}}Handler
+     * @param {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function replicateBatch(
+        Request            $request,
+        {{studlyCaseName}}Handler ${{camelCaseName}}Handler,
+        {{studlyCaseName}}MessageHandler ${{camelCaseName}}MessageHandler
+    ): RedirectResponse
+    {
+        \XeDB::beginTransaction();
+
+        try {
+           ${{camelCaseName}}Ids = $request->get('{{camelCaseName}}', []);
+           ${{camelCaseName}}Handler->replicateBatch(${{camelCaseName}}Ids);
+
+            \XeDB::commit();
+        } catch (Throwable $e) {
+            \XeDB::rollBack();
+            throw $e;
+        }
+
+        $replicatedSuccess = ${{camelCaseName}}MessageHandler->replicatedSuccess();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => $replicatedSuccess
+        ]);
+
+        return redirect()->back();
+    }
+}

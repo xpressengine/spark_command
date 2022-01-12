@@ -1,0 +1,15 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use App\Http\Controllers\Controller;
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}} extends Controller
+{
+
+}

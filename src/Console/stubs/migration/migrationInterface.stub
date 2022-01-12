@@ -1,0 +1,27 @@
+<?php
+
+namespace {{pluginNamespace}}\Migrations;
+
+/**
+ * Interface Migration
+ *
+ * @package {{pluginNamespace}}\Migrations
+ */
+interface Migration
+{
+    /**
+     * Check Not Exist
+     * 마이그레이션이 진행되지 않았는지 확인합니다.
+     *
+     * @return bool
+     */
+    public function checkNotExist(): bool;
+
+    /**
+     * Up
+     * 마이그레이션을 실행합니다.
+     *
+     * @return void
+     */
+    public function up();
+}

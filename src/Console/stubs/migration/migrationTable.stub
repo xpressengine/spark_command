@@ -1,0 +1,61 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use {{pluginNamespace}}\Migrations\Migration;
+{{modelNamespace}}
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}} implements Migration
+{
+    /**
+     * @return bool
+     */
+    public function checkNotExist(): bool
+    {
+        $hasTable = Schema::hasTable({{tableName}});
+
+        if ($hasTable === false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return void
+     */
+    public function up()
+    {
+        $hasTable = Schema::hasTable({{tableName}});
+
+        if ($hasTable === false) {
+            $this->createTable();
+        }
+    }
+
+    /**
+     * Create Table
+     *
+     * @return void
+     */
+    protected function createTable()
+    {
+        Schema::create(
+            {{tableName}},
+             function (Blueprint $table) {
+                {{primaryColumn}}
+                {{softDeletes}}
+                {{primaryIndex}}
+                {{timestamps}}
+                $table->engine = 'InnoDB';
+            }
+        );
+    }
+}

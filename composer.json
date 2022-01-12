@@ -1,28 +1,34 @@
 {
-    "name": "xpressengine-plugin/spark_command",
+    "name": "xpressengine-plugin/xe_cli",
     "description": "XpressEngine3의 위젯, 스킨을 빠르게 제작할 수 있도록 추가적인 커맨드를 제공합니다.",
     "keywords": [
         "xpressengine",
         "plugin"
     ],
     "license": "LGPL-3.0-or-later",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "xpressengine-plugin",
     "support": {
-        "email": "bi.kim@xharpen.com"
+        "email": "contact@xpressengine.com"
     },
     "authors": [
         {
-            "name": "Sparkweb",
-            "email": "parksu@xharpen.com",
-            "homepage": "https://sparkweb.co.kr",
+            "name": "XEHub",
+            "email": "parksu@xpressengine.com",
+            "homepage": "https://xpressengine.com",
             "role": "Developer"
+        },
+        {
+          "name": "XEHub",
+          "email": "bkim@xpressengine.com",
+          "homepage": "https://xpressengine.com",
+          "role": "Developer"
         }
     ],
     "extra": {
         "xpressengine": {
             "icon": "icon.png",
-            "title": "스파크 커맨드",
+            "title": "XE CLI",
             "component": {}
         }
     },
@@ -31,7 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SparkWeb\\XePlugin\\SparkCommand\\": "src/"
+            "XeHub\\XePlugin\\XeCli\\": "src/"
         }
     }
 }

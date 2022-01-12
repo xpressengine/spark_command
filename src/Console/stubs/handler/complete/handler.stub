@@ -1,0 +1,313 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Xpressengine\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use {{pluginNamespace}}\Models\{{studlyCaseName}}Model;
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}}
+{
+    /**
+     * 싱글톤 등록
+     *
+     * @return void
+     */
+    public static function singleton()
+    {
+        app()->singleton(__CLASS__, function () {
+            return new static();
+        });
+    }
+
+    /**
+     * 서비스 핸들러에 등록된 값을 반환
+     *
+     * @return {{targetClassName}}
+     */
+    public static function make(): {{targetClassName}}
+    {
+        return app(__CLASS__);
+    }
+
+    /**
+     * Admin Search Subject Options
+     *
+     * @return array[]
+     */
+    public function adminSearchSubjectOptions()
+    {
+        return [
+            'title' => [
+                'text' => '이름',
+                'value' => 'title',
+            ]
+        ];
+    }
+
+    /**
+     * 조건에 해당하는 문제 반환합니다.
+     *
+     * @param array $inputs
+     * @param array $columns
+     * @param callable|null $additionalQuery
+     * @return mixed
+     */
+    public function get(
+        array    $inputs = [],
+        array    $columns = ['*'],
+        callable $additionalQuery = null
+    )
+    {
+        $query = $this->makeWhere(
+            {{studlyCaseName}}Model::query(), $inputs
+        );
+
+        $query->when(
+            is_callable($additionalQuery) === true,
+            function (Builder $query) use ($additionalQuery) {
+                call_user_func($additionalQuery, $query);
+            }
+        );
+
+        return $query->get($columns);
+    }
+
+    /**
+     * 조건에 속하는 질문을 페이지 형태로 반환합니다.
+     *
+     * @param array $inputs
+     * @param array $columns
+     * @param callable|null $additionalQuery
+     * @return LengthAwarePaginator
+     */
+    public function paginate(
+        array    $inputs = [],
+        array    $columns = ['*'],
+        callable $additionalQuery = null
+    )
+    {
+        $perPage = Arr::get($inputs, 'perPage', 10);
+
+        $query = $this->makeWhere(
+            {{studlyCaseName}}Model::query(), $inputs
+        );
+
+        $query->when(
+            is_callable($additionalQuery) === true,
+            function (Builder $query) use ($additionalQuery) {
+                call_user_func($additionalQuery, $query);
+            }
+        );
+
+        return $query
+            ->paginate($perPage, $columns, 'page')
+            ->appends(array_except(request()->all(), 'page'));
+    }
+
+    /**
+     * @param string $id
+     * @param array $columns
+     * @return {{studlyCaseName}}Model|null
+     */
+    public function find(
+        string $id,
+        array  $columns = ['*']
+    )
+    {
+        return {{studlyCaseName}}Model::find($id, $columns);
+    }
+
+    /**
+     * @param string $id
+     * @param array $columns
+     * @return {{studlyCaseName}}Model
+     * @throws ModelNotFoundException
+     */
+    public function findOrFail(
+        string $id,
+        array  $columns = ['*']
+    )
+    {
+        return {{studlyCaseName}}Model::findOrFail($id, $columns);
+    }
+
+    /**
+     * 특정 아이디 목록에 해당하는 문제 반환
+     *
+     * @param array $ids
+     * @param array|string[] $columns
+     * @return Collection
+     */
+    public function findMany(
+        array $ids,
+        array $columns = ['*']
+    )
+    {
+        return {{studlyCaseName}}Model::findMany($ids, $columns);
+    }
+
+    /**
+     * @param array $inputs
+     * @return {{studlyCaseName}}Model
+     */
+    public function store(
+        array $inputs
+    )
+    {
+        $inputs = Arr::only($inputs, []);
+
+//        $inputs = array_merge($inputs, [
+//            'ip_address' => request()->ip(),
+//            'user_id' => auth()->id(),
+//        ]);
+
+        return tap(new {{studlyCaseName}}Model($inputs))->save();
+    }
+
+    /**
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
+     * @param array $inputs
+     * @return {{studlyCaseName}}Model
+     */
+    public function update(
+        {{studlyCaseName}}Model ${{camelCaseName}},
+        array    $inputs
+    )
+    {
+        $inputs = Arr::only($inputs, []);
+        return tap(${{camelCaseName}})->update($inputs);
+    }
+
+    /**
+     * (관계는 포함시키지 않습니다.)
+     *
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
+     * @return {{studlyCaseName}}Model
+     */
+    public function replicate(
+        {{studlyCaseName}}Model ${{camelCaseName}}
+    )
+    {
+        $now = now();
+
+        $new{{studlyCaseName}} = ${{camelCaseName}}->replicate(['id']);
+        $new{{studlyCaseName}}->push();
+
+//        $inputs = [
+//            'ip_address' => request()->ip(),
+//            'user_id' => auth()->id(),
+//            'created_at' => $now,
+//            'updated_at' => $now,
+//        ];
+
+        foreach ($inputs as $key => $value) {
+            $new{{studlyCaseName}}->setAttribute($key, $value);
+        }
+
+        return tap($new{{studlyCaseName}})->save();
+    }
+
+    /**
+     * @param array ${{camelCaseName}}Ids
+     * @return Collection
+     */
+    public function replicateBatch(array ${{camelCaseName}}Ids)
+    {
+        $new{{studlyCaseName}} = [];
+        ${{pluralCaseName}} = $this->findMany(${{camelCaseName}}Ids);
+
+        ${{pluralCaseName}}->each(function ({{studlyCaseName}}Model ${{camelCaseName}}) use (&$new{{studlyCaseName}}) {
+            $new{{studlyCaseName}}[] = $this->replicate(${{camelCaseName}});
+        });
+
+        return collect($new{{studlyCaseName}});
+    }
+
+    /**
+     * (관계는 포함시키지 않습니다.)
+     *
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
+     * @return {{studlyCaseName}}Model
+     */
+    public function replicateWithoutRelations(
+        {{studlyCaseName}}Model ${{camelCaseName}}
+    )
+    {
+        $now = now();
+        $new{{studlyCaseName}} = ${{camelCaseName}}->replicate(['id'])->setRelations([]);
+
+//        $inputs = [
+//            'ip_address' => request()->ip(),
+//            'user_id' => auth()->id(),
+//            'created_at' => $now,
+//            'updated_at' => $now,
+//        ];
+
+        foreach ($values as $key => $value) {
+            $new{{studlyCaseName}}->setAttribute($key, $value);
+        }
+
+        return tap($new{{studlyCaseName}})->save();
+    }
+
+    /**
+     * @param {{studlyCaseName}}Model ${{camelCaseName}}
+     * @return void
+     * @throws Exception
+     */
+    public function delete(
+        {{studlyCaseName}}Model ${{camelCaseName}}
+    )
+    {
+        ${{camelCaseName}}->delete();
+    }
+
+    /**
+     * @param array $ids
+     * @return void
+     */
+    public function deleteBatch(
+        array $ids
+    )
+    {
+        {{studlyCaseName}}Model::whereIn('id', $ids)->delete();
+    }
+
+    /**
+     * Make Where
+     *
+     * @param Builder $query
+     * @param array $inputs
+     * @return Builder
+     */
+    protected function makeWhere(
+        Builder $query,
+        array   $inputs
+    )
+    {
+        $word = Arr::get($inputs, 'word');
+        $wordSubject = Arr::get($inputs, 'word_subject');
+
+        // word, word_subject
+        $query->where(function ($query) use ($word, $wordSubject) {
+            $query->when(
+                empty($word) === false && is_string($word) === true,
+                function ($query) use ($word, $wordSubject) {
+                    $likeWord = "%$word%";
+                }
+            );
+        });
+
+        return $query;
+    }
+}

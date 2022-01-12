@@ -1,0 +1,140 @@
+<?php
+
+namespace {{targetNamespace}};
+
+/**
+ * Class {{targetClassName}}
+ *
+ * @package {{targetNamespace}}
+ */
+class {{targetClassName}}
+{
+    /**
+     * 싱글톤을 등록합니다.
+     *
+     * @return void
+     */
+    public static function singleton()
+    {
+        app()->singleton(__CLASS__, function () {
+            return new self();
+        });
+    }
+
+    /**
+     * 서비스 핸들러에 등록된 값을 반환합니다.
+     *
+     * @return {{targetClassName}}
+     */
+    public static function make(): {{targetClassName}}
+    {
+        return app(__CLASS__);
+    }
+
+    /**
+     * 생성에 대한 확인 메세지 반환
+     *
+     * @return string
+     */
+    public function storedConfirm(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}StoredConfirmMessage');
+    }
+
+    /**
+     * Store Success Message
+     * 생성에 대한 성공 메세지 반환
+     *
+     * @return string
+     */
+    public function storedSuccess(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}StoredSuccessMessage');
+    }
+    
+    /**
+     * Updated Confirm Message
+     * 수정에 대한 성공 메세지 반환
+     *
+     * @return string
+     */
+    public function updatedConfirm(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}UpdatedConfirmMessage');
+    }
+
+    /**
+     * updated Success Message
+     * 수정에 대한 성공 메세지 반환
+     *
+     * @return string
+     */
+    public function updatedSuccess(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}UpdatedSuccessMessage');
+    }
+
+    /**
+     * Deleted Confirm Message
+     * 삭제에 대한 확인 메세지 반환
+     *
+     * @return string
+     */
+    public function deletedConfirm(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}DeletedConfirmMessage');
+    }
+
+    /**
+     * Deleted Success Message
+     * 삭제에 대한 성공 메세지 반환
+     *
+     * @return string
+     */
+    public function deletedSuccess(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}DeletedSuccessMessage');
+    }
+
+    /**
+     * Replicate Success
+     * 복사가 성공했을 때 나오는 메세지 반환
+     *
+     * @return string
+     */
+    public function replicatedSuccess(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ReplicatedSuccessMessage');
+    }
+
+    /**
+     * Replicate Confirm
+     * 복사 확인 메시지 반환
+     *
+     * @return string
+     */
+    public function replicatedConfirm(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ReplicatedConfirmMessage');
+    }
+
+    /**
+     * Import 에 대한 확인 메세지 반환
+     *
+     * @return string
+     */
+    public function importConfirm(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ImportConfirmMessage');
+    }
+
+    /**
+     * Import 성공에 대한 메세지
+     *
+     * @return string
+     */
+    public function importSuccess(): string
+    {
+        return xe_trans('{{pluginId}}::{{camelCaseName}}ImportSuccessMessage');
+    }
+}

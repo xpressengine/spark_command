@@ -496,8 +496,13 @@ php artisan xe_cli:widgetCode
 #### 예시
 
 ```
+----- CLI Command -----
 php artisan xe_cli:widgetCode widget/xpressengine@contentInfo  widget/xpressengine@contentInfo/skin/xpressengine@default
 php artisan xe_cli:widgetCode widget/news_client@news widget/news_client@news/skin/news_client@default
+
+----- composer.json -----
+"widget/xe_attendance@attendance": {... `<<< widget_id`
+"widget/xe_attendance@attendance/skinxe_attendance@gongbuhae": {... `<<< skin_id`
 ```
 
 

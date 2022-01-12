@@ -154,7 +154,7 @@ class WidgetCodeCommand extends Command implements CommandNameInterface
     {
         $skinId = $this->argument('skin_id');
 
-        if ($this->skinHandler->has($skinId) === null) {
+        if ($this->skinHandler->has($skinId) === false) {
             throw new Exception('Not Found Skin ' . $skinId);
         }
 

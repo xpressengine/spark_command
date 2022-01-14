@@ -48,7 +48,7 @@ class UserAuthSkinCommand extends SkinMake implements CommandNameInterface
      */
     protected function getStubPath()
     {
-        return __DIR__ . '/stubs/user/auth';
+        return __DIR__ . '/../stubs/skin/user/auth';
     }
 
     /**

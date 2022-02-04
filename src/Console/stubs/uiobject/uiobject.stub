@@ -1,0 +1,41 @@
+<?php
+
+namespace {{targetNamespace}};
+
+use Throwable;
+use Xpressengine\UIObject\AbstractUIObject;
+
+/**
+ * Class {{targetClass}}
+ * @package {{targetNamespace}}
+ */
+class {{targetClass}} extends AbstractUIObject
+{
+    /**
+     * Ui Object 에 대한 Alias 을 등록.
+     *
+     * @return void
+     */
+    public static function setAlias()
+    {
+        app('xe.uiobject')->setAlias(
+            '{{pluginId}}_{{componentName}}', {{targetClass}}::getId()
+        );
+    }
+
+   /**
+     * Ui Object 출력
+     *
+     * @return string
+     * @throws Throwable
+     */
+    public function render(): string
+    {
+        $viewPath = '{{pluginId}}::src.Components.UiObjects.{{componentName}}.views.index';
+
+        $templateView = view($viewPath, []);
+        $this->template = $templateView->render();
+
+        return parent::render();
+    }
+}

@@ -579,6 +579,7 @@ php artisan xe_cli:set:board_contents_editor_config
 php artisan xe_cli:make:ui_object 
     {plugin}
     {name} 
+    {--skip}
 ```
 
 

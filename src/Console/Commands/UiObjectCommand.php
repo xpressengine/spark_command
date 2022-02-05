@@ -30,7 +30,8 @@ class UiObjectCommand extends ComponentMakeCommand implements CommandNameInterfa
                             {name}
                             {--id=}
                             {--path=}
-                            {--class=}';
+                            {--class=}
+                            {--skip}';
 
     /**
      * @var string
@@ -82,7 +83,7 @@ class UiObjectCommand extends ComponentMakeCommand implements CommandNameInterfa
             return true;
         }
 
-        if ($this->confirmCreateUiObject() === false) {
+        if (!$this->option('skip') && $this->confirmCreateUiObject() === false) {
             return false;
         }
 

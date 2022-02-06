@@ -24,7 +24,8 @@ class UserSettingsSkinCommand extends SkinMake implements CommandNameInterface
                             {name}
                             {--id=}
                             {--path=}
-                            {--class=}';
+                            {--class=}
+                            {--skip}';
 
     /**
      * @var string

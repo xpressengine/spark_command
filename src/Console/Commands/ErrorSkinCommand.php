@@ -27,7 +27,8 @@ class ErrorSkinCommand extends SkinMake implements CommandNameInterface
                             {name}
                             {--id=}
                             {--path=}
-                            {--class=}';
+                            {--class=}
+                            {--skip}';
 
     /**
      * Description

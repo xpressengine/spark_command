@@ -24,7 +24,8 @@ class UserProfileSkinCommand extends SkinMake implements CommandNameInterface
                             {name}
                             {--id=}
                             {--path=}
-                            {--class=}';
+                            {--class=}
+                            {--skip}';
 
     /**
      * @var string

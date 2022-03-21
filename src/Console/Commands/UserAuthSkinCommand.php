@@ -76,7 +76,11 @@ class UserAuthSkinCommand extends SkinMake implements CommandNameInterface
      */
     protected function makeViewFiles(string $pluginPath)
     {
-        $viewPaths = [$pluginPath . '/views'];
+        $viewPaths = [
+            $pluginPath . '/views',
+            $pluginPath . '/views/register',
+            $pluginPath . '/views/register/forms',
+        ];
 
         collect($viewPaths)->each(
             function (string $viewPath) {
@@ -97,7 +101,9 @@ class UserAuthSkinCommand extends SkinMake implements CommandNameInterface
     protected function stubToPhp(string $stubFilePathName)
     {
         $phpFilePathName = str_replace(
-            'stub', 'php', $stubFilePathName
+            'stub',
+            'php',
+            $stubFilePathName
         );
 
         rename($stubFilePathName, $phpFilePathName);

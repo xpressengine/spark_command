@@ -29,7 +29,9 @@ class WidgetCommand extends ComponentMakeCommand implements CommandNameInterface
                             {name}
                             {--id=}
                             {--path=}
-                            {--class=}';
+                            {--class=}
+                            {--skip}
+                            {--skip-skin-name=}';
 
     /**
      * @var string
@@ -56,13 +58,12 @@ class WidgetCommand extends ComponentMakeCommand implements CommandNameInterface
      * @param WidgetHandler $widgetHandler
      */
     public function __construct(
-        Filesystem     $filesystem,
-        Operator       $operator,
-        PluginHandler  $handler,
+        Filesystem $filesystem,
+        Operator $operator,
+        PluginHandler $handler,
         PluginProvider $provider,
-        WidgetHandler  $widgetHandler
-    )
-    {
+        WidgetHandler $widgetHandler
+    ) {
         $this->widgetHandler = $widgetHandler;
         parent::__construct($filesystem, $operator, $handler, $provider);
     }
@@ -83,7 +84,7 @@ class WidgetCommand extends ComponentMakeCommand implements CommandNameInterface
             return true;
         }
 
-        if ($this->confirmCreateWidget() === false) {
+        if ($this->isUsableSkipOption() === false && $this->confirmCreateWidget() === false) {
             return false;
         }
 
@@ -261,25 +262,48 @@ class WidgetCommand extends ComponentMakeCommand implements CommandNameInterface
      */
     protected function makeWidgetSkin(string $widgetId): bool
     {
+        if ($this->isUsableSkipOption() === true) {
+            $skinName = $this->option('skip-skin-name');
+
+            if ($skinName !== null) {
+                $this->callMakeSkin($widgetId, $skinName, true);
+            }
+
+            return true;
+        }
+
         while ($confirm = $this->ask("Do you want to add widget's skin? [yes|no]")) {
             if (strtolower($confirm) === 'no') {
                 break;
             }
 
-            $pluginNam = $this->getPluginName();
             $skinName = $this->askWidgetSkinName();
-            $widgetName = studly_case($this->getComponentName()) . 'Widget';
-            $path = 'src/Skins/' . $widgetName . '/' . studly_case($skinName);
-
-            $this->call('make:skin', [
-                'plugin' => $pluginNam,
-                'name' => $skinName,
-                'target' => $widgetId,
-                '--path' => $path
-            ]);
+            $this->callMakeSkin($widgetId, $skinName, false);
         }
 
         return strtolower($confirm) === 'yes';
+    }
+
+    /**
+     * call make skin
+     *
+     * @param string $widgetId
+     * @param string $skinName
+     * @param bool $skip
+     */
+    private function callMakeSkin(string $widgetId, string $skinName, bool $skip)
+    {
+        $widgetName = studly_case($this->getComponentName()) . 'Widget';
+
+        $commandOption = [
+            'plugin' => $this->getPluginName(),
+            'name' => $skinName,
+            'target' => $widgetId,
+            '--path' => 'src/Skins/' . $widgetName . '/' . studly_case($skinName),
+            '--skip' => $skip
+        ];
+
+        $this->call('make:skin', $commandOption);
     }
 
     /**
@@ -382,5 +406,19 @@ class WidgetCommand extends ComponentMakeCommand implements CommandNameInterface
     public function commandName(): string
     {
         return 'xe_cli:make:widget';
+    }
+
+    /**
+     * Get is usable skip's option
+     *
+     * @return bool
+     */
+    private function isUsableSkipOption()
+    {
+        if ($this->hasOption('skip') === false) {
+            return false;
+        }
+
+        return $this->option('skip') === true;
     }
 }

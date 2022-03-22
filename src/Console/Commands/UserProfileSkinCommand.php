@@ -49,7 +49,7 @@ class UserProfileSkinCommand extends SkinMake implements CommandNameInterface
      */
     protected function getStubPath()
     {
-        return __DIR__ . '/stubs/user/profile';
+        return __DIR__ . '/../stubs/skin/user/profile';
     }
 
     /**
@@ -97,10 +97,12 @@ class UserProfileSkinCommand extends SkinMake implements CommandNameInterface
     protected function stubToPhp(string $stubFilePathName)
     {
         $phpFilePathName = str_replace(
-            'stub', 'php', $stubFilePathName
+            'stub',
+            'php',
+            $stubFilePathName
         );
 
-        rename($stubFilePathName,$phpFilePathName);
+        rename($stubFilePathName, $phpFilePathName);
     }
 
     /**

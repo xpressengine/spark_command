@@ -27,7 +27,7 @@ php artisan plugin:private_install xe_cli
 이후 아래 명령어로 XE CLI 플러그인을 활성화시켜 주세요.
 
 ```
-php artisan plugin:private_install xe_cli
+php artisan plugin:activate xe_cli
 ```
 
 </p>
